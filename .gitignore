@@ -11,6 +11,9 @@
 # production
 /build
 
+# secure config files
+backend/src/configs/*.secure.json
+
 # misc
 .DS_Store
 .env.local
