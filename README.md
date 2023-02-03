@@ -1,20 +1,31 @@
+# The Aura 2023 Repo
 
-  npm start
-    Starts the development server.
+Hi! If you can see this, chances are, you are involved in the website development.
 
-  npm run build
-    Bundles the app into static files for production.
 
-  npm test
-    Starts the test runner.
+# What are we using for dev?
 
-  npm run eject
-    Removes this tool and copies build dependencies, configuration files
-    and scripts into the app directory. If you do this, you can’t go back!
+Basically plain MERN, for now.
 
-We suggest that you begin by typing:
+## "I don't know how to run the react build scripts!"
+### Here's what you need to keep a track of:
+`npm start` Starts the development server.
 
-  cd aura-web-d1
-  npm start
+`npm run build` Bundles the app into static files for production.
 
-Happy hacking!
+`npm test` Starts the test runner.
+
+`npm run eject` Removes this tool and copies build dependencies, configuration files and scripts into the app directory. If you do this, you can’t go back!
+
+This will only work in the cloned directory.
+
+## Where is the scrum board?
+
+[Here.](https://github.com/users/pi22by7/projects/2)
+
+# The Tech Stack
+_I will add a table here_
+
+|Library| |
+|-------|---
+|test   |
