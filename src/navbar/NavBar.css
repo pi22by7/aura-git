@@ -12,6 +12,11 @@
   place-items: center;
 }
 
+.navb a {
+  text-decoration: none;
+  color: #310a31;
+}
+
 .navb .logo {
   justify-self: start;
   font-size: larger;
@@ -25,7 +30,7 @@
 }
 
 .panel a {
-  padding: 50%;
+  margin: 50%;
 }
 
 .navb .user-pane {
@@ -39,12 +44,10 @@
   content: '';
   margin: 10%;
   padding: 2%;
-  text-decoration: none;
   /* text-align: center; */
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
   background: none;
   box-shadow: none;
   border-radius: 0px;
   cursor: pointer;
-  color: #310a31;
 }
