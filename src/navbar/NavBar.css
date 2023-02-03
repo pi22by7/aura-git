@@ -1,0 +1,50 @@
+.navb {
+  display: grid;
+  grid-template-columns: 10% 70% 20%;
+  grid-auto-flow: column;
+  align-items: center;
+
+  padding: 1.5%;
+  border-bottom: 2px solid;
+  background: #c6d8ff;
+  color: #310a31;
+
+  place-items: center;
+}
+
+.navb .logo {
+  justify-self: start;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.navb .panel {
+  content: '';
+  justify-self: center;
+  /* padding-right: 25%; */
+}
+
+.panel a {
+  padding: 50%;
+}
+
+.navb .user-pane {
+  content: '';
+
+  justify-self: end;
+  margin-right: 5%;
+}
+
+.user-pane a {
+  content: '';
+  margin: 10%;
+  padding: 2%;
+  text-decoration: none;
+  /* text-align: center; */
+  border-bottom: 1px solid;
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+  cursor: pointer;
+  color: #310a31;
+}
