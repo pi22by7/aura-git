@@ -1,0 +1,16 @@
+{
+  "name": "aura23-backend",
+  "version": "0.0.0",
+  "description": "Aura 23 Official Back-end application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "aura23",
+    "backend"
+  ],
+  "author": "DevTeam: Aura",
+  "license": "ISC"
+}
