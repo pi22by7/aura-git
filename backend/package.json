@@ -1,37 +1,16 @@
 {
-  "name": "uservalidation",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "aura23-backend",
+  "version": "0.0.0",
+  "description": "Aura 23 Official Back-end application",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/parishkar-9790/UserValidation.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/parishkar-9790/UserValidation/issues"
-  },
-  "homepage": "https://github.com/parishkar-9790/UserValidation#readme",
-  "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "ajv": "^8.12.0",
-    "bcrypt": "^5.1.0",
-    "body-parser": "^1.20.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-validator": "^6.14.3",
-    "joi": "^17.7.0",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.1",
-    "nodemon": "^2.0.20",
-    "validator": "^13.9.0"
-  }
+  "keywords": [
+    "aura23",
+    "backend"
+  ],
+  "author": "DevTeam: Aura",
+  "license": "ISC"
 }
