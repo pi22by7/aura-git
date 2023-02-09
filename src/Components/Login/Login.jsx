@@ -5,6 +5,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -52,9 +53,10 @@ const Login = () => {
               />
             </div>
             <div className="flex justify-center mt-8 mb-5">
-              <button className="btn w-full" onClick={handleSubmit}>
-                Login
-              </button>
+              {/* <button className="btn w-full" onClick={handleSubmit}> */}
+                <Link to="/user">Login</Link>
+                {/* Login */}
+              {/* </button> */}
             </div>
           </form>
           <div className="flex justify-between">

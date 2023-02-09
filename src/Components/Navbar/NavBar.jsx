@@ -4,7 +4,7 @@ import "./NavBar.css";
 export const NavBar = () => {
   return (
     <nav className="flex justify-between p-5 bg-secondary text-white">
-      <a className="font-bold text-xl">
+      <a href="//:0" className="font-bold text-xl">
         <Link to="/">Aura</Link>
       </a>
       <ul className="flex">
