@@ -1,40 +1,17 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const authRoute = require('./routes/authRoutes');
-const app = express();
-const { requireAuth, checkUser } = require('./middleware/authMiddleware');
-const bodyParser = require('body-parser');
-const authRoutes = require('./routes/authRoutes');
-const cookieParser = require('cookie-parser');
+// Load and cache all Environment variables
+require("dotenv").config();
 
-require('dotenv').config();
-mongoose.set('strictQuery', false);
+// Connect to MongoDB
+require("./scripts/mongodb.script");
 
-mongoose
-  .connect(process.env.DB, {
-    useNewUrlParser: true,
-    // useUnifiedTopology:true,
-    // useCreateIndex:true
-  })
-  .then(() => {
-    console.log('Connected to Database');
-  })
-  .catch((e) => {
-    console.log('Unable to connect to Database');
-    console.log(e);
-  });
+// Start Express server
+const { expressApp } = require("./utils/express.util");
+
+// Middlewares and Routes
+const { checkUser } = require("./middleware/authMiddleware");
+const authRoutes = require("./routes/authRoutes");
 
 // Route Middlewares
-app.use('/auth/user', authRoute);
-
-// middlewares
-app.use(bodyParser.json());
-app.use(express.json());
-app.use(cookieParser());
-
-app.get('*', checkUser);
-app.use(authRoutes);
-const port = 8080;
-app.listen(port, () => {
-  console.log(`Server Up and running @${port}`);
-});
+expressApp.get("*", checkUser);
+expressApp.use("/auth/user", authRoutes);
+expressApp.use(authRoutes);
