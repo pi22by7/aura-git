@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
@@ -60,7 +61,11 @@ module.exports.signup_post = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const user = await User.create({ name, email, password });
+    // Hash password
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await User.create({ name, email, password: hash });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user: user._id, nameUser: name });
