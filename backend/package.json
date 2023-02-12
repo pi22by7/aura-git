@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/parishkar-9790/UserValidation.git"
+    "url": "git+https://github.com/pi22by7/aura-git.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/parishkar-9790/UserValidation/issues"
+    "url": "https://github.com/pi22by7/aura-git/issues"
   },
-  "homepage": "https://github.com/parishkar-9790/UserValidation#readme",
+  "homepage": "https://github.com/pi22by7/aura-git/backend#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.12.0",
