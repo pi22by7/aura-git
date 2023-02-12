@@ -53,10 +53,7 @@ const UserPage = () => {
             value={user.bio}
             onChange={handleInputChange}
           />
-          <button
-            className="w-full mt-4 py-2 bg-secondary hover:bg-tertiary text-white font-medium rounded"
-            type="submit"
-          >
+          <button className="w-full mt-4 py-2 btn btn-primary" type="submit">
             Save
           </button>
         </form>
