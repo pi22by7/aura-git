@@ -8,6 +8,7 @@ const NotFoundPage = () => {
         src="https://www.prestashop.com/sites/default/files/wysiwyg/404_not_found.png"
         width="400"
         height="auto"
+        alt="not found"
       ></img>
     </div>
   );
