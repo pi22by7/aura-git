@@ -12,3 +12,4 @@ configs/*.secure.json
 
 # Misc
 .DS_Store
+*.mongodb
