@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import world from "./world.svg";
 
 const Map = () => {
   const zoomRef = useRef(null);
@@ -8,14 +9,12 @@ const Map = () => {
     const svg = d3
       .select(zoomRef.current)
       .append("svg")
-      .attr("width", 500)
-      .attr("height", 500);
+      .classed("w-11/12 h-full grid grid-cols-1 justify-items-center", true);
 
     const image = svg
       .append("image")
-      .attr("xlink:href", "https://via.placeholder.com/500x500")
-      .attr("width", 500)
-      .attr("height", 500);
+      .attr("xlink:href", world) //https://via.placeholder.com/1920x1080
+      .classed("w-full h-full", true);
 
     const zoom = d3
       .zoom()
@@ -31,7 +30,12 @@ const Map = () => {
     };
   }, []);
 
-  return <div ref={zoomRef} />;
+  return (
+    <div
+      className="mt-10 grid justify-items-center align-center w-screen h-screen3/4"
+      ref={zoomRef}
+    />
+  );
 };
 
 export default Map;
