@@ -42,7 +42,7 @@ const EventsDetailsPage = () => {
     <div className="flex flex-col items-center w-[90%] mx-auto">
       <div className="w-full">
         <img
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover rounded-lg shadow-2xl"
           src="https://cdn.pastemagazine.com/www/articles/best-of-festival-posters.jpg"
           alt={`${event.title}-banner`}
         />

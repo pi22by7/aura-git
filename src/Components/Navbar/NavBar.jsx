@@ -29,7 +29,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center bg-primary text-white fixed top-0 w-full md:px-16 px-6 py-6">
+    <nav className="flex justify-between items-center bg-primary text-white fixed top-0 w-full md:px-16 px-6 py-2">
       <div>
         <Link className="font-bold text-xl" to="/">
           Aura

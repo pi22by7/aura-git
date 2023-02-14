@@ -1,10 +1,11 @@
 import Map from "../Components/Map/Map";
+import GlobeComponent from "../Components/Globe/Globe";
 
 const HomePage = () => {
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center">Home</h1>
-      <Map />
+      <GlobeComponent />
+      {/* <Map /> */}
     </div>
   );
 };
