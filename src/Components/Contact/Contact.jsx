@@ -6,7 +6,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !email || !message) {
@@ -16,6 +16,9 @@ const Contact = () => {
     console.log(name, email, message);
     setLoading(true);
     setError("");
+    setName("");
+    setEmail("");
+    setMessage("");
   };
 
   return (
@@ -28,7 +31,7 @@ const Contact = () => {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="name">
                 Name
@@ -38,6 +41,7 @@ const Contact = () => {
                 type="text"
                 name="name"
                 id="name"
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 placeholder="Your Name"
@@ -52,6 +56,7 @@ const Contact = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Your Email"
@@ -66,6 +71,7 @@ const Contact = () => {
                 type="text"
                 name="message"
                 id="message"
+                value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
                 placeholder="Your Message"
@@ -73,7 +79,7 @@ const Contact = () => {
             </div>
             <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" onClick={handleSubmit}>
+              <button className="btn btn-primary w-full" type="submit">
                 Send Reset Link
               </button>
             </div>

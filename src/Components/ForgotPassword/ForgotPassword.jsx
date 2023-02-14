@@ -13,6 +13,7 @@ const ForgotPassword = () => {
     }
     setLoading(true);
     setError("");
+    setEmail("");
   };
 
   return (
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="email">
                 Email
@@ -35,6 +36,7 @@ const ForgotPassword = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Your Email"
@@ -42,7 +44,7 @@ const ForgotPassword = () => {
             </div>
             <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" onClick={handleSubmit}>
+              <button className="btn btn-primary w-full" type="submit">
                 Send Reset Link
               </button>
             </div>
