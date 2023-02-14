@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Globe from "globe.gl";
-import data from "../../Dataset/global_pop_cleaned.json";
+import earth from "./map.jpg";
+// import data from "../../Dataset/global_pop_cleaned.json";
 
 // data.features = data.features.map((f) => {
 //   return {
@@ -24,41 +25,19 @@ const GlobeComponent = () => {
   </svg>`;
 
     // Gen random data
-    const N = 30;
+    const N = 1;
     const gData = [...Array(N).keys()].map(() => ({
       lat: (Math.random() - 0.5) * 180,
       lng: (Math.random() - 0.5) * 360,
       size: 7 + Math.random() * 30,
       color: ["red", "white", "blue", "green"][Math.round(Math.random() * 3)],
     }));
+    console.log(gData);
+    // eslint-disable-next-line no-unused-vars
     const world = Globe()
-      .globeImageUrl(
-        "https://unpkg.com/three-globe@2.25.1/example/img/earth-dark.jpg"
-      )
-      .hexPolygonsData(data.features)
-      .hexPolygonResolution(3)
-      .hexPolygonMargin(0.3)
-      .hexPolygonColor(
-        () =>
-          `#${Math.round(Math.random() * Math.pow(2, 24))
-            .toString(16)
-            .padStart(6, "0")}`
-      )
-      .hexPolygonLabel(
-        ({ properties: d }) => `
-      <b>${d.NAME}</b> <br />
-      Contintent: <i>${d.CONTINENT}</i>
-    `
-      )
-      .onHexPolygonHover((hexPolygon, prevObject) => {
-        // console.log(hexPolygon);
-        // console.log(prevObject);
-      })
-      .onHexPolygonClick((polygon, event, { lat, lng }) => {
-        // console.log(polygon);
-        // console.log(event);
-        // console.log(lat, lng);
-      })
+      .backgroundColor("white")
+      .atmosphereColor("black")
+      .globeImageUrl(earth)
       .htmlElementsData(gData)
       .htmlElement((d) => {
         const el = document.createElement("div");
@@ -73,7 +52,7 @@ const GlobeComponent = () => {
       })(document.getElementById("globeViz"));
   }, []);
   return (
-    <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
+    <div className="">
       <div id="globeViz" className="w-[100vw]"></div>
     </div>
   );
