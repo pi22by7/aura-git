@@ -20,6 +20,7 @@ const EventCoordinators = ({ eventCoordinators }) => {
               <a
                 href={`https://wa.me/91${eventCoordinator.contact_number}`}
                 target="_blank"
+                rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faPhone} className="mx-2" />
                 {eventCoordinator.contact_number}
