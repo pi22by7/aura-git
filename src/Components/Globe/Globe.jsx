@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import Globe from "globe.gl";
-import earth from "./map.jpg";
-// import data from "../../Dataset/global_pop_cleaned.json";
-
+import data from "./realgeo.json";
+import map from "./map.jpg";
 // data.features = data.features.map((f) => {
 //   return {
 //     // ...f,
@@ -25,22 +24,53 @@ const GlobeComponent = () => {
   </svg>`;
 
     // Gen random data
-    const N = 1;
-    const gData = [...Array(N).keys()].map(() => ({
-      lat: (Math.random() - 0.5) * 180,
-      lng: (Math.random() - 0.5) * 360,
-      size: 7 + Math.random() * 30,
-      color: ["red", "white", "blue", "green"][Math.round(Math.random() * 3)],
-    }));
-    console.log(gData);
+    // const N = 30;
+    // const gData = [...Array(N).keys()].map(() => ({
+    //   lat: (Math.random() - 0.5) * 180,
+    //   lng: (Math.random() - 0.5) * 360,
+    //   size: 7 + Math.random() * 30,
+    //   color: ["red", "white", "blue", "green"][Math.round(Math.random() * 3)],
+    // }));
+    const gData = data.features.map((feature) => {
+      const lat = feature.geometry.coordinates[1];
+      const lng = feature.geometry.coordinates[0];
+      const name = feature.properties.Prop;
+
+      return {
+        lat,
+        lng,
+        element: `<div><a href="#">${name}</a></div>`,
+      };
+    });
     // eslint-disable-next-line no-unused-vars
     const world = Globe()
-      .backgroundColor("white")
-      .atmosphereColor("black")
-      .globeImageUrl(earth)
+      .globeImageUrl(map)
+      .hexPolygonsData(data.features)
+      .hexPolygonResolution(3)
+      .hexPolygonMargin(0.3)
+      .hexPolygonColor(
+        () =>
+          `#${Math.round(Math.random() * Math.pow(2, 24))
+            .toString(16)
+            .padStart(6, "0")}`
+      )
+      .hexPolygonLabel(
+        ({ properties: d }) => `
+      <b>${d.Prop}</b> <br />
+    `
+      )
+      .onHexPolygonHover((hexPolygon, prevObject) => {
+        // console.log(hexPolygon);
+        // console.log(prevObject);
+      })
+      .onHexPolygonClick((polygon, event, { lat, lng }) => {
+        // console.log(polygon);
+        // console.log(event);
+        // console.log(lat, lng);
+      })
       .htmlElementsData(gData)
       .htmlElement((d) => {
-        const el = document.createElement("div");
+        const el = document.createElement("a");
         el.innerHTML = markerSvg;
         el.style.color = d.color;
         el.style.width = `${d.size}px`;
