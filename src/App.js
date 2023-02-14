@@ -1,5 +1,6 @@
 import "./App.css";
 import { NavBar } from "./Components/Navbar/NavBar";
+import { Footer } from "./Components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import EventsPage from "./Pages/EventsPage";
@@ -26,6 +27,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>
+      <Footer />
     </div>
   );
 }
