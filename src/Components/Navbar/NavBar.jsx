@@ -29,44 +29,35 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center bg-white text-black fixed top-0 w-full md:px-16 px-6 py-6">
-      <div>
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center bg-white text-black fixed top-0 w-full md:px-12 px-6 py-4">
+      <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           Aura
         </Link>
       </div>
       <div
         ref={navMenuRef}
-        className="nav-menu md:static absolute min-h-fit bg-primary md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden transition duration-300 ease-in"
+        className="nav-menu md:place-self-center md:static absolute min-h-fit bg-white md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden transition duration-300 ease-in"
       >
-        <ul className="flex md:flex-row flex-col md:items-center gap-[3vh]">
-          <li className="px-5">
+        <ul className="flex md:flex-row flex-col md:items-center gap-3">
+          <li className="lg:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/">
               Home
             </NavLink>
           </li>
-          <li className="px-5">
+          <li className="lg:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/events">
               Events
             </NavLink>
           </li>
-          <li className="px-5">
+          <li className="lg:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/rule-book">
               Rule Book
             </NavLink>
           </li>
-          {/* <li className="px-5">
-            <NavLink to="/login">Login</NavLink>
-          </li>
-          <li className="px-5">
-            <NavLink to="/signup">Signup</NavLink>
-          </li>
-          <li className="px-5">
-            <NavLink to="/user">Profile</NavLink>
-          </li> */}
         </ul>
       </div>
-      <div>
+      <div className="md:place-self-end">
         {!user && (
           <>
             <NavLink onClick={handleMenuHide} to="/login">
@@ -92,7 +83,7 @@ export const NavBar = () => {
         )}
         <FontAwesomeIcon
           icon={menu ? faClose : faBars}
-          className="text-white text-lg cursor-pointer md:hidden px-1"
+          className="text-secondary text-lg cursor-pointer md:hidden px-1"
           onClick={handleMenuToggle}
         />
       </div>

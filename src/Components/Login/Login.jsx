@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -18,6 +18,8 @@ const Login = () => {
     setLoading(true);
     setUser({ email, password });
     setError("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -27,7 +29,7 @@ const Login = () => {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="email">
                 Email
@@ -37,6 +39,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Your Email"
@@ -51,14 +54,16 @@ const Login = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                minLength="8"
                 required
                 placeholder="Your Password"
               />
             </div>
             <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" onClick={handleSubmit}>
+              <button className="btn btn-primary w-full" type="submit">
                 Login
               </button>
             </div>
