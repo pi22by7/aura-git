@@ -75,7 +75,7 @@ export const Footer = () => {
               <FontAwesomeIcon icon={faLinkedin} className="text-xl" />
             </a>
           </div>
-          <div className="my-5">© Copyright 2020. All Rights Reserved.</div>
+          <div className="my-5">© Copyright 2023. All Rights Reserved.</div>
         </div>
       </div>
     </footer>
