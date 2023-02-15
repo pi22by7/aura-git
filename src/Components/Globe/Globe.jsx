@@ -6,6 +6,8 @@ import art_map from "./update.png";
 
 const GlobeComponent = () => {
   useEffect(() => {
+    const tooltip = document.createElement("div");
+
     const globeEl = document.getElementById("globeViz");
     globeEl.addEventListener("mouseenter", () => {
       setTimeout(100);
@@ -38,6 +40,7 @@ const GlobeComponent = () => {
       const color = ["red", "white", "blue", "green"][
         Math.round(Math.random() * 3)
       ];
+      const title = feature.properties.title;
 
       return {
         lat,
@@ -45,7 +48,7 @@ const GlobeComponent = () => {
         size,
         url,
         color,
-        title: feature.properties.title,
+        title,
       };
     });
 
@@ -56,9 +59,22 @@ const GlobeComponent = () => {
       .htmlElementsData(gData)
       .htmlElement((d) => {
         const el = document.createElement("a");
+        el.onmouseenter = (event) => {
+          console.log(d.title);
+          tooltip.innerText = d.title;
+          tooltip.style.display = "block";
+          tooltip.style.left = `${event.clientX}px`;
+          tooltip.style.top = `${event.clientY}px`;
+          tooltip.style.border = "2px solid white";
+          tooltip.style.zIndex = "9999";
+        };
+        el.onmouseleave = () => {
+          console.log("out");
+          tooltip.style.display = "none";
+        };
         el.innerHTML = marker;
         el.style.color = d.color;
-        el.style.width = 30;
+        el.style.width = `${d.size}px`;
 
         el.style["pointer-events"] = "auto";
         el.style.cursor = "pointer";
