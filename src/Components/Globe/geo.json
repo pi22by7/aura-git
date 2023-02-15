@@ -4,68 +4,56 @@
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Login or Register",
+        "title": "Login or Register",
+        "url": "/login",
         "Name": "India"
       },
       "geometry": {
-        "coordinates": [
-          74.50342658528442,
-          15.869407619709492
-        ],
+        "coordinates": [74.50342658528442, 15.869407619709492],
         "type": "Point"
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Events"
+        "title": "Events",
+        "url": "/events"
       },
       "geometry": {
-        "coordinates": [
-          52.50146879372639,
-          23.10004031296934
-        ],
+        "coordinates": [52.50146879372639, 23.10004031296934],
         "type": "Point"
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Contact"
+        "title": "Contact",
+        "url": "/contact-us"
       },
       "geometry": {
-        "coordinates": [
-          -99.2817672192599,
-          19.689393402605006
-        ],
+        "coordinates": [-99.2817672192599, 19.689393402605006],
         "type": "Point"
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Schedule",
-        "marker-color": "#7e7e7e",
-        "marker-size": "medium"
+        "title": "Schedule",
+        "url": "/schedule"
       },
       "geometry": {
-        "coordinates": [
-          -48.52644099578319,
-          -10.765994515212427
-        ],
+        "coordinates": [-48.52644099578319, -10.765994515212427],
         "type": "Point"
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Profile"
+        "title": "Profile",
+        "url": "/profile"
       },
       "geometry": {
-        "coordinates": [
-          139.5281976666639,
-          35.86784613904213
-        ],
+        "coordinates": [139.5281976666639, 35.86784613904213],
         "type": "Point"
       }
     }

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Globe from "globe.gl";
 import data from "./geo.json";
 import art_map from "./art_map.png";
+import MarkerSVG from "./Marker";
 
 const GlobeComponent = () => {
   useEffect(() => {
@@ -24,15 +25,19 @@ const GlobeComponent = () => {
       world.controls().autoRotate = true;
       world.controls().update();
     });
-    const markerSvg = `<svg viewBox="-4 0 36 36">
-      <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-      <circle fill="black" cx="14" cy="14" r="7"></circle>
-    </svg>`;
+    // console.log(MarkerSVG);
+    // const markerSvg = `<svg viewBox="-4 0 36 36">
+    //   <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
+    //   <text x="0" y="15" fill="red">I love SVG!</text>
+    //   <circle fill="black" cx="14" cy="14" r="7">
+    //   </circle>
+    // </svg>`;
 
     const gData = data.features.map((feature) => {
       const lat = feature.geometry.coordinates[1];
       const lng = feature.geometry.coordinates[0];
       const size = 30;
+      const url = feature.properties.url;
       const color = ["red", "white", "blue", "green"][
         Math.round(Math.random() * 3)
       ];
@@ -41,7 +46,9 @@ const GlobeComponent = () => {
         lat,
         lng,
         size,
+        url,
         color,
+        title: feature.properties.title,
       };
     });
 
@@ -52,15 +59,16 @@ const GlobeComponent = () => {
       .htmlElementsData(gData)
       .htmlElement((d) => {
         const el = document.createElement("a");
-        el.innerHTML = markerSvg;
+        el.innerHTML = "<h1>Hello there!</h1>";
+        // el.innerHTML = MarkerSVG;
         el.style.color = d.color;
-        el.style.width = `${d.size}px`;
+        el.style.width = 30;
 
         el.style["pointer-events"] = "auto";
         el.style.cursor = "pointer";
         // console.log(el);
         el.onclick = () => {
-          window.location.href = "/events";
+          window.location.href = d.url;
           console.info(d);
         };
         return el;
