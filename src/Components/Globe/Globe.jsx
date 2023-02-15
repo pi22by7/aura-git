@@ -1,91 +1,110 @@
-import { useEffect } from "react";
-import Globe from "globe.gl";
-import data from "./realgeo.json";
-import map from "./map.jpg";
-// data.features = data.features.map((f) => {
-//   return {
-//     // ...f,
-//     properties: {
-//       NAME: f.properties.NAME,
-//       CONTINENT: f.properties.CONTINENT,
-//     },
-//     geometry: {
-//       ...f.geometry,
-//     },
-//   };
-// });
-// console.log(data);
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
+import mapData from "./countries-50m.json";
+import { feature } from "topojson";
+// import brazil from "./brazil.png";
+// import mexico from "./mexico.png";
+// import { feature } from "topojson";
 
-const GlobeComponent = () => {
+// function Globe() {
+//   const svgRef = useRef();
+
+//   useEffect(() => {
+//     const svg = d3.select(svgRef.current);
+
+//     // Set the width and height of the SVG element
+//     const width = 800;
+//     const height = 600;
+//     svg.attr("width", width).attr("height", height);
+
+//     // Create a projection to convert the map coordinates to SVG coordinates
+//     const projection = d3.geoMercator().fitSize([width, height], mapData);
+
+//     // Create a path generator to draw the map
+//     const pathGenerator = d3.geoPath().projection(projection);
+
+//     // Define the patterns to use for filling the country polygons
+//     const defs = svg.append("defs");
+//     defs
+//       .append("pattern")
+//       .attr("id", "brazil")
+//       .attr("patternUnits", "userSpaceOnUse")
+//       .attr("width", 20)
+//       .attr("height", 20)
+//       .append("image")
+//       .attr("xlink:href", brazil)
+//       .attr("width", 20)
+//       .attr("height", 20);
+//     defs
+//       .append("pattern")
+//       .attr("id", "mexico")
+//       .attr("patternUnits", "userSpaceOnUse")
+//       .attr("width", 20)
+//       .attr("height", 20)
+//       .append("image")
+//       .attr("xlink:href", mexico)
+//       .attr("width", 20)
+//       .attr("height", 20);
+
+//     // Add the country polygons to the map
+//     svg
+//       .selectAll("path")
+//       .data(feature(mapData, mapData.objects.countries).features)
+//       .enter()
+//       .append("path")
+//       .attr("d", pathGenerator)
+//       .style("fill", (d) => {
+//         if (d.properties.name === "Brazil") {
+//           return "url(#brazil)";
+//         } else if (d.properties.name === "Mexico") {
+//           return "url(#mexico)";
+//         } else {
+//           return "#ccc"; // default fill color
+//         }
+//       });
+//   }, []);
+
+//   return (
+//     <svg ref={svgRef}>
+//       <g />
+//     </svg>
+//   );
+// }
+
+// export default Globe;
+
+function Globe() {
+  const svgRef = useRef();
+
   useEffect(() => {
-    const markerSvg = `<svg viewBox="-4 0 36 36">
-    <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-    <circle fill="black" cx="14" cy="14" r="7"></circle>
-  </svg>`;
+    const svg = d3.select(svgRef.current);
 
-    // Gen random data
-    // const N = 30;
-    // const gData = [...Array(N).keys()].map(() => ({
-    //   lat: (Math.random() - 0.5) * 180,
-    //   lng: (Math.random() - 0.5) * 360,
-    //   size: 7 + Math.random() * 30,
-    //   color: ["red", "white", "blue", "green"][Math.round(Math.random() * 3)],
-    // }));
-    const gData = data.features.map((feature) => {
-      const lat = feature.geometry.coordinates[1];
-      const lng = feature.geometry.coordinates[0];
-      const name = feature.properties.Prop;
+    // Set the width and height of the SVG element
+    const width = 800;
+    const height = 600;
+    svg.attr("width", width).attr("height", height);
 
-      return {
-        lat,
-        lng,
-        element: `<div><a href="#">${name}</a></div>`,
-      };
-    });
-    // eslint-disable-next-line no-unused-vars
-    const world = Globe()
-      .globeImageUrl(map)
-      .hexPolygonsData(data.features)
-      .hexPolygonResolution(3)
-      .hexPolygonMargin(0.3)
-      .hexPolygonColor(
-        () =>
-          `#${Math.round(Math.random() * Math.pow(2, 24))
-            .toString(16)
-            .padStart(6, "0")}`
-      )
-      .hexPolygonLabel(
-        ({ properties: d }) => `
-      <b>${d.Prop}</b> <br />
-    `
-      )
-      .onHexPolygonHover((hexPolygon, prevObject) => {
-        // console.log(hexPolygon);
-        // console.log(prevObject);
-      })
-      .onHexPolygonClick((polygon, event, { lat, lng }) => {
-        // console.log(polygon);
-        // console.log(event);
-        // console.log(lat, lng);
-      })
-      .htmlElementsData(gData)
-      .htmlElement((d) => {
-        const el = document.createElement("a");
-        el.innerHTML = markerSvg;
-        el.style.color = d.color;
-        el.style.width = `${d.size}px`;
+    // Create a projection to convert the map coordinates to SVG coordinates
+    const projection = d3.geoMercator().fitSize([width, height], mapData);
 
-        el.style["pointer-events"] = "auto";
-        el.style.cursor = "pointer";
-        // el.onclick = () => console.info(d);
-        return el;
-      })(document.getElementById("globeViz"));
+    // Create a path generator to draw the map
+    const pathGenerator = d3.geoPath().projection(projection);
+
+    // Add the country polygons to the map
+    svg
+      .selectAll("path")
+      .data(feature(mapData, mapData.objects.countries).features)
+      .enter()
+      .append("path")
+      .append("path")
+      .attr("d", pathGenerator);
   }, []);
-  return (
-    <div className="">
-      <div id="globeViz" className="w-[100vw]"></div>
-    </div>
-  );
-};
 
-export default GlobeComponent;
+  return (
+    <svg ref={svgRef}>
+      <g />
+    </svg>
+  );
+}
+
+export default Globe;

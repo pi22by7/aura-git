@@ -4,7 +4,8 @@
     {
       "type": "Feature",
       "properties": {
-        "Prop": "Login or Register"
+        "Prop": "Login or Register",
+        "Name": "India"
       },
       "geometry": {
         "coordinates": [

@@ -4,7 +4,8 @@
       {
         "type": "Feature",
         "properties": {
-          "Prop": "Events"
+          "Prop": "Events",
+          "image": "./brazil.png"
         },
         "geometry": {
           "coordinates": [
@@ -205,7 +206,8 @@
       {
         "type": "Feature",
         "properties": {
-          "Prop": "Login or Register"
+          "Prop": "Login or Register",
+          "image": "./mexico.png"
         },
         "geometry": {
           "coordinates": [
