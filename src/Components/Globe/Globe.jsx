@@ -1,10 +1,14 @@
-import { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { redirect, useNavigate } from "react-router-dom";
+import Marker from "./Marker/Marker";
 import Globe from "globe.gl";
 import data from "./geo.json";
 import art_map from "./update.png";
 // import marker from "./marker.png";
 
 const GlobeComponent = () => {
+  const detRef = useRef(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const globeEl = document.getElementById("globeViz");
     globeEl.addEventListener("mouseenter", () => {
@@ -26,9 +30,12 @@ const GlobeComponent = () => {
       world.controls().update();
     });
     const marker = `<svg viewBox="-4 0 36 36">
-      <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-      <circle fill="black" cx="14" cy="14" r="7"></circle>
-    </svg>`;
+        <path
+          fill="currentColor"
+          d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"
+        ></path>
+        <circle fill="black" cx="14" cy="14" r="7"></circle>
+      </svg>`;
 
     const gData = data.features.map((feature) => {
       const lat = feature.geometry.coordinates[1];
@@ -55,22 +62,11 @@ const GlobeComponent = () => {
       .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
       .htmlElementsData(gData)
       .htmlElement((d) => {
-        const el = document.createElement("a");
-        el.innerHTML = marker;
-        el.style.color = d.color;
-        el.style.width = 30;
-
-        el.style["pointer-events"] = "auto";
-        el.style.cursor = "pointer";
-        // console.log(el);
-        el.onclick = () => {
-          window.location.href = d.url;
-          console.info(d);
-        };
+        const el = Marker({ marker, url: d.url, navigate, detRef });
         return el;
       })(document.getElementById("globeViz"));
 
-    world.controls().enableZoom = true;
+    world.controls().enableZoom = false;
     world.controls().autoRotate = true;
     world.controls().autoRotateSpeed = 1.0;
     // world.controls().minDistance = 100;
@@ -82,6 +78,17 @@ const GlobeComponent = () => {
         AURA
       </p>
       <div id="globeViz" className="w-[100vw] z-10"></div>
+      <div
+        ref={detRef}
+        className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-20 p-10 hidden"
+      >
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
+          delectus asperiores maxime incidunt sunt corrupti debitis adipisci,
+          labore error quam odit. Quasi aspernatur nulla odit incidunt porro
+          perferendis velit eos?
+        </p>
+      </div>
     </div>
   );
 };
