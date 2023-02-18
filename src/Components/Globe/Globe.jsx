@@ -10,6 +10,8 @@ const GlobeComponent = () => {
   const detRef = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
+    const tooltip = document.createElement("div");
+
     const globeEl = document.getElementById("globeViz");
     globeEl.addEventListener("mouseenter", () => {
       setTimeout(100);
@@ -45,6 +47,7 @@ const GlobeComponent = () => {
       const color = ["red", "white", "blue", "green"][
         Math.round(Math.random() * 3)
       ];
+      const title = feature.properties.title;
 
       return {
         lat,
@@ -52,7 +55,7 @@ const GlobeComponent = () => {
         size,
         url,
         color,
-        title: feature.properties.title,
+        title,
       };
     });
 
