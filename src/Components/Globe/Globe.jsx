@@ -1,17 +1,16 @@
-import React, { useEffect, useRef } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Marker from "./Marker/Marker";
 import Globe from "globe.gl";
+import PreLoader from "./PreLoader/PreLoader";
 import data from "./geo.json";
 import art_map from "./update.png";
-// import marker from "./marker.png";
 
 const GlobeComponent = () => {
+  const [loading, setLoading] = useState(true);
   const detRef = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
-    const tooltip = document.createElement("div");
-
     const globeEl = document.getElementById("globeViz");
     globeEl.addEventListener("mouseenter", () => {
       setTimeout(100);
@@ -61,6 +60,9 @@ const GlobeComponent = () => {
 
     const world = Globe({ animateIn: true, waitForGlobeReady: false })
       .globeImageUrl(art_map)
+      .onGlobeReady(() => {
+        console.log("Globe is ready");
+      })
       // .pointOfView(74.50342658528442, 15.869407619709492)
       .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
       .htmlElementsData(gData)
@@ -74,25 +76,32 @@ const GlobeComponent = () => {
     world.controls().autoRotateSpeed = 1.0;
     // world.controls().minDistance = 100;
     // world.controls().maxDistance = 10;
-  }, []);
+  }, [navigate]);
   return (
-    <div className="w-[100vw] h-[100vh] absolute top-0">
-      <p className="text-5xl text-white font-extrabold absolute bottom-5 left-5 z-50">
-        AURA
-      </p>
-      <div id="globeViz" className="w-[100vw] z-10"></div>
-      <div
-        ref={detRef}
-        className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-20 p-10 hidden"
-      >
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-          delectus asperiores maxime incidunt sunt corrupti debitis adipisci,
-          labore error quam odit. Quasi aspernatur nulla odit incidunt porro
-          perferendis velit eos?
+    <>
+      {loading && <PreLoader />}
+      <div className="w-[100vw] h-[100vh] absolute top-0">
+        <p className="text-5xl text-white font-extrabold absolute bottom-5 left-5 z-50">
+          AURA
         </p>
+        <div
+          id="globeViz"
+          className="w-[100vw] z-10"
+          onChange={() => setLoading(false)}
+        ></div>
+        <div
+          ref={detRef}
+          className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-20 p-10 hidden"
+        >
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
+            delectus asperiores maxime incidunt sunt corrupti debitis adipisci,
+            labore error quam odit. Quasi aspernatur nulla odit incidunt porro
+            perferendis velit eos?
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

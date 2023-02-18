@@ -8,7 +8,6 @@ const Marker = ({ marker, url, navigate, detRef }) => {
 
   // on click, navigate to the url
   ele.addEventListener("click", () => {
-    console.log(detRef);
     navigate(url);
   });
 
