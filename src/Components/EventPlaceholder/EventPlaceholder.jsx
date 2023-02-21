@@ -11,7 +11,7 @@ export const EventPlaceholder = () => {
       <div className="event-info w-full md:text-left justify-center">
         <h1 className="text-3xl">Title</h1>
         <h3 className="text-xl">Tagline</h3>
-        <h3 className="text-xl mt-5">Rules:</h3>
+        <h3 className="text-xl mt-5">Description:</h3>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae,
           aperiam voluptatem nesciunt accusamus amet, veniam sunt rem soluta
