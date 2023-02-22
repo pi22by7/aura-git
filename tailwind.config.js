@@ -8,6 +8,7 @@ module.exports = {
         secondary: "#002855",
         tertiary: "#023e7d",
         quaternary: "#0466c8",
+        signinc: "#e4f4d7",
       },
       height: (theme) => ({
         "screen/90": "90vh",
@@ -17,6 +18,13 @@ module.exports = {
         "screen/4": "25vh",
         "screen/5": "20vh",
       }),
+      backgroundImage: {
+        signin: "url('./Assets/reg.png')",
+        events: "url('./Assets/events.png')",
+        schedule: "url('./Assets/schedule.png')",
+        contact: "url('./Assets/contact.png')",
+        profile: "url('./Assets/prof.png')",
+      },
     },
   },
   plugins: [],

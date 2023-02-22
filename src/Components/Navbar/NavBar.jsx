@@ -29,7 +29,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center bg-white text-black fixed top-0 w-full md:px-12 px-6 py-4">
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center bg-none text-black fixed top-0 w-full md:px-12 px-6 py-4">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           Aura
@@ -37,7 +37,7 @@ export const NavBar = () => {
       </div>
       <div
         ref={navMenuRef}
-        className="nav-menu md:place-self-center md:static absolute min-h-fit bg-white md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden transition duration-300 ease-in"
+        className="nav-menu md:place-self-center md:static absolute min-h-fit bg-none md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden transition duration-300 ease-in"
       >
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
           <li className="lg:px-5 px-3">

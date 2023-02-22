@@ -25,7 +25,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="contact-us" element={<Contact />} />
-          <Route path="user" element={<UserPage />} />
+          <Route path="profile" element={<UserPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>

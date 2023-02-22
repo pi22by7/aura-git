@@ -94,6 +94,7 @@ const GlobeComponent = () => {
           className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-20 p-10 hidden"
         >
           <p>
+            {/* {el.title} */}
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
             delectus asperiores maxime incidunt sunt corrupti debitis adipisci,
             labore error quam odit. Quasi aspernatur nulla odit incidunt porro

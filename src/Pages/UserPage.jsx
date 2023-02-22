@@ -11,7 +11,7 @@ const UserPage = () => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
   return (
-    <div className="grid grid-cols-2 md:grid-cols-10 justify-items-center">
+    <div className="grid grid-cols-2 md:grid-cols-10 justify-items-center bg-profile bg-contain bg-no-repeat">
       <div className="col-span-1 md:col-span-4 md:col-start-2 md:col-end-3 pl-4 pr-2">
         <img
           src={user.profileImage}
