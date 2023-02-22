@@ -48,7 +48,7 @@ code {
 }
 /* Styles for form pages */
 .form-container {
-  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center bg-contain bg-no-repeat mt-16;
+  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center bg-contain bg-no-repeat;
 }
 
 .form-box {
