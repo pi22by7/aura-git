@@ -4,12 +4,13 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [usn, setUsn] = useState("");
   const [email, setEmail] = useState("");
+  const [college, setCollege] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password || !name || !usn) {
+    if (!email || !password || !name || !usn || !college) {
       setError("Please enter all fields");
       return;
     }
@@ -22,8 +23,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="form-container bg-signin bg-signinc">
-      <div className="form-box">
+    <div className="grid form-container bg-signin bg-signinc w-screen">
+      <div className="form-box  bg-slate-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 border border-black-100 px-24 py-16 overflow-hidden col-start-2 md:mr-64 place-self-center">
         <h1 className="font-bold text-xl text-center m-2">Signup</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
@@ -45,8 +46,23 @@ const Signup = () => {
               />
             </div>
             <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="email">
+                Email
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="email"
+                name="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Your Email"
+              />
+            </div>
+            <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="usn">
-                USN
+                University Number
               </label>
               <input
                 className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
@@ -60,18 +76,18 @@ const Signup = () => {
               />
             </div>
             <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="email">
-                Email
+              <label className="py-3 col-span-1" htmlFor="college">
+                College
               </label>
               <input
                 className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="email"
-                name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                name="college"
+                id="college"
+                value={college}
+                onChange={(e) => setCollege(e.target.value)}
                 required
-                placeholder="Your Email"
+                placeholder="Your College Name"
               />
             </div>
             <div className="grid grid-cols-1 my-1">
