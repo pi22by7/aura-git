@@ -52,5 +52,5 @@ code {
 }
 
 .form-box {
-  @apply align-middle h-fit lg:col-start-2 rounded-lg grid bg-white justify-items-stretch p-5 lg:w-4/5 md:w-2/3 w-11/12 shadow-xl;
+  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 md:w-4/6 sm:w-2/3 w-11/12 shadow-xl;
 }

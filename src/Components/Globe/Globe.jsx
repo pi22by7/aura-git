@@ -39,8 +39,8 @@ const GlobeComponent = () => {
       </svg>`;
 
     const gData = data.features.map((feature) => {
-      const lat = feature.geometry.coordinates[1];
-      const lng = feature.geometry.coordinates[0];
+      const lat = feature.geometry.coordinates[1] - 7;
+      const lng = feature.geometry.coordinates[0] - 6;
       const size = 30;
       const url = feature.properties.url;
       const color = ["red", "white", "blue", "green"][
