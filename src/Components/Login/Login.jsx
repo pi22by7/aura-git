@@ -24,8 +24,8 @@ const Login = () => {
   };
 
   return (
-    <div className="form-container bg-signin bg-signinc w-screen">
-      <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100  md:mr-64">
+    <div className="grid form-container bg-signin bg-signinc w-screen">
+      <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
         <h1 className="font-bold text-xl text-center m-2">Login</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}

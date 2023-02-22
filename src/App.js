@@ -16,7 +16,6 @@ function App() {
   return (
     <div className="App">
       <NavBar />
-      {/* <section className="mb-10 mt-16"> */}
       <section>
         <Routes>
           <Route path="/" element={<HomePage />} />
