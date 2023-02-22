@@ -48,9 +48,15 @@ code {
 }
 /* Styles for form pages */
 .form-container {
-  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center bg-contain bg-no-repeat mt-16;
+  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right;
 }
 
 .form-box {
-  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 md:w-4/6 sm:w-2/3 w-11/12 shadow-xl;
+  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-2/3 w-11/12 shadow-xl;
+}
+
+/* Glass Morphism */
+
+.glass {
+  @apply bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20;
 }
