@@ -11,6 +11,7 @@ import SignUp from "./Components/Signup/Signup";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import Contact from "./Components/Contact/Contact";
 import UserPage from "./Pages/UserPage";
+import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="forgot-password/change" element={<PasswordEnter />} />
           <Route path="contact-us" element={<Contact />} />
           <Route path="profile" element={<UserPage />} />
           <Route path="*" element={<NotFoundPage />} />
