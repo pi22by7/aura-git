@@ -22,8 +22,8 @@ const Contact = () => {
   };
 
   return (
-    <div className="grid justify-items-center bg-contact bg-contain bg-no-repeat">
-      <div className="rounded-lg grid justify-items-stretch p-5 lg:w-2/5 md:w-2/3 w-11/12 shadow-xl">
+    <div className="form-container bg-signinc bg-contact">
+      <div className="form-box">
         <h1 className="font-bold text-xl text-center m-2">Contact Us</h1>
         <p className="font-semibold text-md text-center m-2">
           We are here to help you

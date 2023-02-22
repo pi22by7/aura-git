@@ -46,3 +46,11 @@ code {
 .btn-primary {
   @apply bg-primary;
 }
+/* Styles for form pages */
+.form-container {
+  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center bg-contain bg-no-repeat mt-16;
+}
+
+.form-box {
+  @apply align-middle h-fit lg:col-start-2 rounded-lg grid bg-white justify-items-stretch p-5 lg:w-4/5 md:w-2/3 w-11/12 shadow-xl;
+}
