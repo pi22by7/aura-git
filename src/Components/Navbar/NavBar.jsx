@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useUser } from "../../Contexts/userContect";
+import { useUser } from "../../Contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../Assets/logo.png";
@@ -30,7 +30,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 z-50">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           <img src={logo} className="h-16 mr-3 sm:h-9" alt="Aura Logo" />
@@ -71,7 +71,7 @@ export const NavBar = () => {
         )}
         {user && (
           <>
-            <NavLink onClick={handleMenuHide} to="/user">
+            <NavLink onClick={handleMenuHide} to="/profile">
               <button className="nav-btn bg-quaternary mx-2">Profile</button>
             </NavLink>
             <button

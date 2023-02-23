@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useUser } from "../../Contexts/userContect";
+import { useUser } from "../../Contexts/userContext";
 
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
