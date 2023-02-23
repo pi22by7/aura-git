@@ -43,15 +43,17 @@ const handleErrors = (err) => {
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({ id }, "net ninja secret", {
+  return jwt.sign({ id }, "JustAKey", {
     expiresIn: maxAge,
   });
 };
 
 // controller actions
 module.exports.signup_get = (req, res) => {
-  res.render("signup");
+  // res.render("signup");
+    res.json({'hey':'there'})
 };
+
 
 module.exports.login_get = (req, res) => {
   res.render("login");

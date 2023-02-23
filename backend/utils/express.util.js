@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 
 // TODO: Must use `https` later
 const http = require("http");
+// const bodyParser = require("body-parser");
 
 // Constants
 const expressApp = express();
@@ -11,6 +12,7 @@ const httpApp = http.createServer(expressApp);
 const { PORT } = process.env;
 
 // Body
+// expressApp.use(bodyParser.json())
 expressApp.use(express.json());
 expressApp.use(cookieParser());
 
