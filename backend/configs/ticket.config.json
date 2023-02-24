@@ -1,0 +1,11 @@
+{
+  "purposes": {
+    "EMAIL_VERIFICATION": "email_verification",
+    "PASSWORD_RESET": "password_reset"
+  },
+  "user_tickets_fields": {
+    "email_verification": "email_verification",
+    "password_reset": "password_reset"
+  },
+  "expiration": 180
+}

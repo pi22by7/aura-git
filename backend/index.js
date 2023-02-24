@@ -11,9 +11,11 @@ const { expressApp } = require("./utils/express.util");
 const { checkUser } = require("./middleware/authMiddleware");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
+const ticketRoutes = require("./routes/ticketRoutes");
 
 // Route Middlewares
 expressApp.get("*", checkUser);
 expressApp.use("/auth/user", authRoutes);
 expressApp.use("/event", eventRoutes);
-expressApp.use(authRoutes);
+// expressApp.use(authRoutes);
+expressApp.use("/tickets", ticketRoutes);

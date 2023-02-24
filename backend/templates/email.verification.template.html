@@ -1,0 +1,49 @@
+<!-- user_name, redirect_uri, reply_mail -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify your Email</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="padding: 2cm 2cm 2cm 2cm">
+    <div>
+      <img src="https://i.ibb.co/ZGG6J6b/LOGO-1.png" width="65%" />
+      <h2>Hi 👋 {{user_name}}!</h2>
+      <hr />
+      <span
+        >Congratulations! You're just one click away from completing your registration and embarking on an exciting journey with
+        Aura. We can't wait to see all the amazing things you'll achieve!
+      </span>
+      <br />
+      <br />
+      <span
+        >Welcome to <strong>Aura 23</strong>, the most anticipated festival of the year! We are absolutely thrilled to have you
+        join us as one of our wonderful participants. With your unique talents and energy, we know this will be an unforgettable
+        experience. Wishing you all the best as you embark on this incredible journey with us!
+      </span>
+      <hr />
+      <span>To complete your registration, click the button below to verify your email:</span>
+      <div style="text-align: center; padding-top: 1cm; padding-bottom: 0.25cm">
+        <a href="{{redirect_uri}}" class="btn btn-dark" style="padding: 0.5cm 1cm 0.5cm 1cm">Complete registration</a>
+      </div>
+      <hr />
+      <span
+        >For further more queries, please <a href="mailto:{{reply_email}}">reply to this email</a>.
+        <br />
+        <strong>Thank You and All the Best!</strong></span
+      >
+      <br /><br />
+
+      <span>- Team Aura</span>
+    </div>
+  </body>
+</html>

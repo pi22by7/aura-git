@@ -1,0 +1,16 @@
+{
+  "400": {
+    "authRequired": "400-authRequired",
+    "alreadyVerified": "400-emailAlreadyVerified",
+    "emailAlreadySent": "400-emailAlreadySent",
+    "tokenRequired": "400-tokenRequired",
+    "invalidRequest": "400-invalidRequest",
+    "newPasswordRequired": "400-newPasswordRequired",
+    "shortPassword": "400-shortPassword"
+  },
+  "404": {
+    "userNotFound": "404-userNotFound",
+    "ticketNotFound": "404-ticketNotFound"
+  },
+  "500": "500-internalError"
+}

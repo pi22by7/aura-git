@@ -1,0 +1,11 @@
+{
+  "host": "https://aura.git.edu",
+  "emails": {
+    "primary": "aura23.klsgit@gmail.com",
+    "reply_email": "aura23.klsgit@gmail.com"
+  },
+  "endpoints": {
+    "email_verification": "/verify",
+    "password_reset": "/forgot-password/change"
+  }
+}
