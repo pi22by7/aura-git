@@ -1,7 +1,7 @@
 {
-  "name": "uservalidation",
-  "version": "1.0.0",
-  "description": "",
+  "name": "aura23-backend",
+  "version": "0.0.0",
+  "description": "Aura 23 Official Back-end application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
