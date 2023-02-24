@@ -5,6 +5,7 @@ import Globe from "globe.gl";
 import PreLoader from "./PreLoader/PreLoader";
 import data from "./geo.json";
 import art_map from "./update.png";
+import logo from "../../Assets/logo.png";
 
 const GlobeComponent = () => {
   const [loading, setLoading] = useState(true);
@@ -80,18 +81,18 @@ const GlobeComponent = () => {
   return (
     <>
       {loading && <PreLoader />}
-      <div className="w-[100vw] h-[100vh] absolute top-0">
+      <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
         <p className="text-5xl text-white font-extrabold absolute bottom-5 left-5 z-50">
-          AURA
+          <img src={logo} className="lg:h-28 mr-3 h-16" alt="Aura Logo" />
         </p>
         <div
           id="globeViz"
-          className="w-[100vw] z-10"
+          className="w-[100vw] z-10 []"
           onChange={() => setLoading(false)}
         ></div>
         <div
           ref={detRef}
-          className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-20 p-10 hidden"
+          className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-50 p-10 hidden"
         >
           <p>
             {/* {el.title} */}

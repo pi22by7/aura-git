@@ -12,6 +12,7 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import Contact from "./Components/Contact/Contact";
 import UserPage from "./Pages/UserPage";
 import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
+import DevTeam from "./Components/DevTeam/DevTeam";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="forgot-password/change" element={<PasswordEnter />} />
           <Route path="contact-us" element={<Contact />} />
           <Route path="profile" element={<UserPage />} />
+          <Route path="dev-team" element={<DevTeam />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>
