@@ -61,7 +61,7 @@ const DevTeam = () => {
       <h2 className="text-2xl font-bold text-center">Dev Team</h2>
       <div className="grid md:grid-cols-3 grid-cols-1 my-5">
         {team.map((member) => (
-          <div className="flex flex-col items-center py-3">
+          <div className="flex flex-col items-center py-3" key={member.name}>
             <img
               src={member.image}
               alt="avatar"
