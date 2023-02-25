@@ -6,7 +6,7 @@ const ticketConfig = require("../configs/ticket.config.json");
 const meta = require("../configs/meta.json");
 const errors = require("../configs/error.codes.json");
 const Ticket = require("../models/Ticket");
-const { chooseEmailVerificationTemplate, choosePasswordResetTemplate } = require("../utils/templates.util");
+const { chooseEmailVerificationDarkTemplate, choosePasswordResetDarkTemplate } = require("../utils/templates.util");
 const { nodemailerCreateMail, nodemailerSendMail, jwtCreate, bcryptCompare } = require("../utils/utils");
 
 // Constants
@@ -97,12 +97,12 @@ userSchema.methods.createNewTicket = async function (purpose, data = null) {
   // Create email
   let html = null;
   if (purpose === ticketConfig.purposes.EMAIL_VERIFICATION)
-    html = await chooseEmailVerificationTemplate({
+    html = await chooseEmailVerificationDarkTemplate({
       user_name: this.name,
       redirect_uri: `${meta.host}${meta.endpoints.email_verification}?token=${token}`,
     });
   else if (purpose === ticketConfig.purposes.PASSWORD_RESET)
-    html = await choosePasswordResetTemplate({
+    html = await choosePasswordResetDarkTemplate({
       user_name: this.name,
       dismiss_uri: `${meta.host}${meta.endpoints.password_reset}?dismiss=true&token=${token}`,
       redirect_uri: `${meta.host}${meta.endpoints.password_reset}?token=${token}`,
