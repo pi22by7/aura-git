@@ -1,6 +1,4 @@
-const Team=require('../models/Team')
-
-const Team = require('../models/team');
+const Team = require("../models/Team");
 
 // Create a new team
 module.exports.createTeam = async (req, res) => {
@@ -14,9 +12,9 @@ module.exports.createTeam = async (req, res) => {
         });
 
         await newTeam.save();
-        res.status(201).json({ message: 'Team created successfully.', team: newTeam });
+        res.status(201).json({ message: "Team created successfully.", team: newTeam });
     } catch (err) {
-        res.status(500).json({ message: 'Failed to create team.', error: err });
+        res.status(500).json({ message: "Failed to create team.", error: err });
     }
 };
 
@@ -27,6 +25,6 @@ module.exports.fetchTeams = async (req, res) => {
         const teams = await Team.find({ event: event });
         res.status(200).json({ teams });
     } catch (err) {
-        res.status(500).json({ message: 'Failed to fetch teams.', error: err });
+        res.status(500).json({ message: "Failed to fetch teams.", error: err });
     }
 };

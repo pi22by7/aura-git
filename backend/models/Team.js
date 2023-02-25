@@ -1,23 +1,23 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const TeamSchema = new mongoose.Schema({
     // Event Partaking
-    event_participated:{
+    event_participated: {
         event_id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Event',
-            required: true
+            ref: "Event",
+            required: true,
         },
         event_title: {
             type: String,
-            ref: 'Event.title'
-        }
+            ref: "Event.title",
+        },
     },
 
     // Team Name
     team_name: {
         type: String,
-        required: true
+        required: true,
     },
 
     // Team Leader
@@ -25,7 +25,7 @@ const TeamSchema = new mongoose.Schema({
         id: {
             type: mongoose.Types.ObjectId,
             required: true,
-            ref: "User"
+            ref: "user",
         },
         usn: {
             type: String,
@@ -35,38 +35,36 @@ const TeamSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
-        email:{
-            type:String,
-            required:true
-        }
+        email: {
+            type: String,
+            required: true,
+        },
     },
     // Team Members
     team_members: {
-		type: [{
-			id: {
-				type: mongoose.Types.ObjectId,
-				required: true,
-				ref: "User"
-			},
-            email:{
-                type:String,
-                required:true
+        type: [{
+            id: {
+                type: mongoose.Types.ObjectId,
+                required: true,
+                ref: "user"
             },
-			usn: {
-				type: String,
-				required: true,
-			},
-			name: {
-				type: String,
-				required: true,
-			}
-		}],
-		default: {},
-	},
-    
+            email: {
+                type: String,
+                required: true
+            },
+            usn: {
+                type: String,
+                required: true,
+            },
+            name: {
+                type: String,
+                required: true,
+            }
+        }],
+        default: {},
+    },
+}, { timestamps: true });
 
-},{timestamps: true})
-
-const Team = mongoose.model('Team', TeamSchema);
+const Team = mongoose.model("Team", TeamSchema);
 
 module.exports = Team;
