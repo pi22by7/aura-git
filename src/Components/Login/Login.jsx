@@ -18,25 +18,27 @@ const Login = () => {
       return;
     }
     setLoading(true);
-    setError("");
-    setEmail("");
-    setPassword("");
     handleLogin();
   };
 
   const handleLogin = async (loginData) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/auth/user/login",
-        {
+      const response = await axios
+        .post("http://localhost:3001/auth/user/login", {
           email,
           password,
-        }
-      );
-      console.log(response.data);
-      setUser({ email, password });
+        })
+        .then((res) => {
+          setUser({ id: res.data.user, email, password });
+          setLoading(false);
+          setError("");
+          setEmail("");
+          setPassword("");
+        });
     } catch (error) {
       console.error(error);
+      setLoading(false);
+      setError("Invalid Credentials");
     }
   };
 

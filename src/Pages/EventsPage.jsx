@@ -142,7 +142,7 @@ const EventsPage = () => {
         const response = await axios.get(
           "http://localhost:3001/event/allEvents"
         );
-        // console.log(response.data.data);
+        console.log(response.data.data);
         setEvents(response.data.data);
       } catch (error) {
         console.error(error);
@@ -151,31 +151,32 @@ const EventsPage = () => {
 
     fetchEvents();
   }, []);
-  const [activeTab, setActiveTab] = useState("Drama");
+  const [activeTab, setActiveTab] = useState("Photography Club of GIT (PCGIT)");
 
   return (
     <div className="h-fit bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-fixed bg-eventc">
       <h1 className="text-3xl font-bold text-center pt-5">Events</h1>
       {/* Tabs for each club in events */}
       <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-3 gap-3 md:gap-x-3 gap-x-1 lg:w-3/4 w-11/12 mx-auto my-8">
-        {Object.keys(events).map((club) => (
+        {events.map((club) => (
           <p
             className=" bg-quaternary text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer"
             onClick={(e) => {
               console.log(club);
-              setActiveTab(club);
+              setActiveTab(club._id);
             }}
           >
-            {club}
+            {club._id}
           </p>
         ))}
       </div>
       {/* Club Tabs */}
-      {Object.keys(events).map((club) => {
+      {events.map((club) => {
+        console.log(club);
         return (
-          activeTab === club && (
+          activeTab === club._id && (
             <div className="grid grid-cols-1 justify-items-center ">
-              {events[club].map((event) => {
+              {club.events.map((event) => {
                 console.log(event);
                 return (
                   <EventCard

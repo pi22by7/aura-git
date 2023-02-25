@@ -3,21 +3,7 @@ import { useUser } from "../Contexts/userContext";
 
 const UserPage = () => {
   const { user, setUser } = useUser();
-  useEffect(() => {
-    setUser({
-      name: "Test User",
-      email: "pi@pi.com",
-      usn: "1PI19IS001",
-      college: "PESIT",
-      profileImage: "https://i.pravatar.cc/350",
-    });
-  }, [setUser]);
-  // const [user, setUser] = useState({
-  //   name: "Test User",
-  //   email: "pi@pi.com",
-  //   bio: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet cumque officia veritatis commodi fugit expedita quos alias.",
-  //   profileImage: "https://i.pravatar.cc/350",
-  // });
+  console.log(user);
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };

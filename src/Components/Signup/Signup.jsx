@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { useUser } from "../../Contexts/userContext";
 
 const Signup = () => {
+  const { user, setUser } = useUser();
   const [name, setName] = useState("");
   const [usn, setUsn] = useState("");
   const [email, setEmail] = useState("");
@@ -17,26 +19,30 @@ const Signup = () => {
       return;
     }
     setLoading(true);
-    setError("");
-    setEmail("");
-    setPassword("");
-    setName("");
-    setUsn("");
     handleSignUp();
   };
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/auth/user/signup",
-        {
+      const response = await axios
+        .post("http://localhost:3001/auth/user/signup", {
           name,
           email,
           password,
-        }
-      );
+        })
+        .then((res) => {
+          setUser({ id: res.data.user, email, password });
+          setLoading(false);
+          setError("");
+          setEmail("");
+          setPassword("");
+          setName("");
+          setUsn("");
+        });
       console.log(response.data);
     } catch (error) {
+      setLoading(false);
+      setError(error.response.data.error);
       console.error(error);
     }
   };
