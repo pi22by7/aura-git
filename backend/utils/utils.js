@@ -3,6 +3,8 @@ const nodemailer = require("nodemailer");
 const randexp = require("randexp");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const meta = require("../configs/meta.json");
+const { bcrypt: bcryptConfig } = require("../configs/utils.config.json");
 
 // - `nodemailer`
 const { NODEMAILER_EMAIL, NODEMAILER_PASS } = process.env;
@@ -14,7 +16,7 @@ const transporter = nodemailer.createTransport({
 	}
 });
 
-const nodemailerCreateMail = ({ from = NODEMAILER_EMAIL, to, subject, text = undefined, html = undefined }) => ({
+const nodemailerCreateMail = ({ from = meta.name, to, subject, text = undefined, html = undefined }) => ({
 	from,
 	to,
 	subject,
@@ -48,12 +50,9 @@ const jwtDecoded = async function (token) {
 //
 
 // `bcrypt`
-const BCRYPT_SALTROUNDS = 10;
-
 async function bcryptHash(s) {
-    return bcrypt.hash(s, BCRYPT_SALTROUNDS);
+    return bcrypt.hash(s, bcryptConfig["salt.rounds"]);
 }
-
 async function bcryptCompare(hash, s) {
     return bcrypt.compare(s, hash);
 }
