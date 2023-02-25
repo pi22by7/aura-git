@@ -12,10 +12,12 @@ const { checkUser } = require("./middleware/authMiddleware");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const teamRoutes = require("./routes/teamRoutes");
 
 // Route Middlewares
 expressApp.get("*", checkUser);
 expressApp.use("/auth/user", authRoutes);
 expressApp.use("/event", eventRoutes);
+expressApp.use("/teams", eventRoutes);
 // expressApp.use(authRoutes);
 expressApp.use("/tickets", ticketRoutes);
