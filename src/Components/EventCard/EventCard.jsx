@@ -1,6 +1,6 @@
 export const EventCard = ({ title, club, description }) => {
   return (
-    <div className="event glass grid md:grid-cols-2 rounded-lg bg-white m-5 lg:w-3/4 w-11/12 h-fit">
+    <div className="event grid md:grid-cols-2 rounded-lg m-5 lg:w-3/4 w-11/12 h-fit bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
       <div className="">
         <img
           src="https://cdn.pastemagazine.com/www/articles/best-of-festival-posters.jpg"

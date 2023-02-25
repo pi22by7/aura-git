@@ -11,7 +11,7 @@ const UserPage = () => {
       college: "PESIT",
       profileImage: "https://i.pravatar.cc/350",
     });
-  }, []);
+  }, [setUser]);
   // const [user, setUser] = useState({
   //   name: "Test User",
   //   email: "pi@pi.com",
@@ -27,8 +27,8 @@ const UserPage = () => {
     console.log(user);
   };
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 h-[100vh] place-items-center justify-items-center bg-profile bg-contain bg-no-repeat md:bg-contain md:bg-left bg-right">
-      <div className="glass lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg">
+    <div className="grid lg:grid-cols-3 grid-cols-1 h-[100vh] place-items-center justify-items-center bg-profile bg-contain bg-no-repeat md:bg-contain md:bg-left bg-right bg-profilec">
+      <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
         <div className="col-span-1">
           <img
             src={user.profileImage}

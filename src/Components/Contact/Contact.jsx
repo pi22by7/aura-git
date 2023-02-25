@@ -22,7 +22,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="form-container bg-signinc bg-contact">
+    <div className="form-container bg-contactc bg-contact">
       <div className="form-box">
         <h1 className="font-bold text-xl text-center m-2">Contact Us</h1>
         <p className="font-semibold text-md text-center m-2">

@@ -8,7 +8,11 @@ module.exports = {
         secondary: "#002855",
         tertiary: "#023e7d",
         quaternary: "#0466c8",
-        signinc: "#e4f4d7",
+        signinc: "#e3f4d7ff",
+        eventc: "#aade87ff",
+        schedulec: "#fff6d5ff",
+        profilec: "#e6e6e6ff",
+        contactc: "#ffd5d5ff",
       },
       height: (theme) => ({
         "screen/90": "90vh",

@@ -74,12 +74,13 @@ export const NavBar = () => {
             <NavLink onClick={handleMenuHide} to="/profile">
               <button className="nav-btn bg-quaternary mx-1">Profile</button>
             </NavLink>
-            <button
+            <Link
               className="nav-btn bg-quaternary mx-1"
               onClick={() => setUser(null)}
+              to="/"
             >
               Logout
-            </button>
+            </Link>
           </>
         )}
         <FontAwesomeIcon
