@@ -18,6 +18,6 @@ const teamRoutes = require("./routes/teamRoutes");
 expressApp.get("*", checkUser);
 expressApp.use("/auth/user", authRoutes);
 expressApp.use("/event", eventRoutes);
-expressApp.use("/teams", eventRoutes);
+expressApp.use("/teams", teamRoutes);
 // expressApp.use(authRoutes);
 expressApp.use("/tickets", ticketRoutes);
