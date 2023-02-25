@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+
 const Signup = () => {
   const [name, setName] = useState("");
   const [usn, setUsn] = useState("");
@@ -20,6 +22,23 @@ const Signup = () => {
     setPassword("");
     setName("");
     setUsn("");
+    handleSignUp();
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth/user/signup",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

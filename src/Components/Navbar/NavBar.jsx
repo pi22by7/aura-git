@@ -64,9 +64,9 @@ export const NavBar = () => {
             <NavLink onClick={handleMenuHide} to="/login">
               <button className="nav-btn bg-quaternary mx-1">Login</button>
             </NavLink>
-            <NavLink onClick={handleMenuHide} to="/signup">
+            {/* <NavLink onClick={handleMenuHide} to="/signup">
               <button className="nav-btn bg-quaternary mx-1">Signup</button>
-            </NavLink>
+            </NavLink> */}
           </>
         )}
         {user && (

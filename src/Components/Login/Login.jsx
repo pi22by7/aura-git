@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useUser } from "../../Contexts/userContext";
+import axios from "axios";
 
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
@@ -17,10 +18,26 @@ const Login = () => {
       return;
     }
     setLoading(true);
-    setUser({ email, password });
     setError("");
     setEmail("");
     setPassword("");
+    handleLogin();
+  };
+
+  const handleLogin = async (loginData) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth/user/login",
+        {
+          email,
+          password,
+        }
+      );
+      console.log(response.data);
+      setUser({ email, password });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
