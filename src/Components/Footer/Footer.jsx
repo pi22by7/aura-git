@@ -35,8 +35,8 @@ export const Footer = () => {
             <a className="my-3 block" href="/contact-us">
               Contact Us
             </a>
-            <a className="my-3 block" href="/#">
-              Privacy Policy
+            <a className="my-3 block" href="/dev-team">
+              Dev Team
             </a>
             <a className="my-3 block" href="/#">
               Conditions
@@ -46,7 +46,12 @@ export const Footer = () => {
             <div className="text-sm uppercase text-indigo-600 font-bold">
               Contact us
             </div>
-            <a className="my-3 block" href="/#">
+            <a
+              className="my-3 block"
+              href="https://goo.gl/maps/q4XM2aKJqnPW7soQ9"
+              target="_blank"
+              rel="noreferrer"
+            >
               Udyambag Industrial Area, Udyambag, Belagavi, Karnataka 590006
             </a>
             <a className="my-3 block" href="mailto: aura@git.edu">

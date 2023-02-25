@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useUser } from "../../Contexts/userContect";
+import { useUser } from "../../Contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../Assets/logo.png";
@@ -30,15 +30,15 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border bg-opacity-20 border-black-100 z-40">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
-          <img src={logo} className="h-16 mr-3 sm:h-9" alt="Aura Logo" />
+          <img src={logo} className="lg:h-16 mr-3 h-9" alt="Aura Logo" />
         </Link>
       </div>
       <div
         ref={navMenuRef}
-        className="nav-menu md:place-self-center md:static absolute min-h-fit bg-none md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden transition duration-300 ease-in"
+        className="nav-menu md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden bg-white"
       >
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
           <li className="lg:px-5 px-3">
@@ -58,24 +58,24 @@ export const NavBar = () => {
           </li>
         </ul>
       </div>
-      <div className="md:place-self-end">
+      <div className="md:place-self-end md:my-auto">
         {!user && (
           <>
             <NavLink onClick={handleMenuHide} to="/login">
-              <button className="nav-btn bg-quaternary mx-2">Login</button>
+              <button className="nav-btn bg-quaternary mx-1">Login</button>
             </NavLink>
             <NavLink onClick={handleMenuHide} to="/signup">
-              <button className="nav-btn bg-quaternary mx-2">Signup</button>
+              <button className="nav-btn bg-quaternary mx-1">Signup</button>
             </NavLink>
           </>
         )}
         {user && (
           <>
-            <NavLink onClick={handleMenuHide} to="/user">
-              <button className="nav-btn bg-quaternary mx-2">Profile</button>
+            <NavLink onClick={handleMenuHide} to="/profile">
+              <button className="nav-btn bg-quaternary mx-1">Profile</button>
             </NavLink>
             <button
-              className="nav-btn bg-quaternary mx-2"
+              className="nav-btn bg-quaternary mx-1"
               onClick={() => setUser(null)}
             >
               Logout
