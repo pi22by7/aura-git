@@ -6,12 +6,30 @@
     "tokenRequired": "400-tokenRequired",
     "invalidRequest": "400-invalidRequest",
     "newPasswordRequired": "400-newPasswordRequired",
-    "shortPassword": "400-shortPassword"
+    "shortPassword": "400-shortPassword",
+    "nameRequired": "400-nameRequired",
+    "emailRequired": "400-emailRequired",
+    "invalidEmail": "400-invalidEmail",
+    "passwordRequired": "400-passwordRequired"
+  },
+  "401": {
+    "authRequired": "401-authRequired",
+    "invalidOrExpiredToken": "401-invalidOrExpiredToken"
+  },
+  "403": {
+    "passwordMismatch": "403-passwordMismatch",
+    "emailAlreadyInUse": "403-emailAlreadyInUse",
+    "emailUnverified": "403-emailUnverified"
   },
   "404": {
     "userNotFound": "404-userNotFound",
     "ticketNotFound": "404-ticketNotFound",
-    "eventNotFound": "404-eventNotFound"
+    "eventNotFound": "404-eventNotFound",
+    "emailNotFound": "404-emailNotFound"
+  },
+  "440": {
+    "sessionExpired": "440-sessionExpired",
+    "sessionInvalidated": "440-sessionInvalidated"
   },
   "500": "500-internalError"
 }

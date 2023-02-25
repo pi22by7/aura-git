@@ -1,9 +1,7 @@
 // Imports
-const express = require("express");
 const errors = require("../configs/error.codes.json");
 const ticketConfig = require("../configs/ticket.config.json");
 const Ticket = require("../models/Ticket");
-const User = require("../models/User");
 const Response = require("../models/standard.response.model");
 const { jwtDecoded, bcryptHash } = require("../utils/utils");
 
@@ -11,7 +9,7 @@ const { jwtDecoded, bcryptHash } = require("../utils/utils");
 async function ticketCreateEmailVerificationController(req, res, next) {
 	try {
 		if (!res.locals.user)
-			return res.status(400).send(Response(errors[400].authRequired));
+			return res.status(401).send(Response(errors[401].authRequired));
 		
 		const code = await res.locals.user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
 
@@ -39,7 +37,7 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 async function ticketResolveEmailVerificationController(req, res, next) {
 	try {
 		if (!res.locals.user)
-			return res.status(400).send(Response(errors[400].authRequired));
+			return res.status(401).send(Response(errors[401].authRequired));
 		
 		const { query } = req;
 		
@@ -81,7 +79,7 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 async function ticketCreatePasswordResetController(req, res, next) {
 	try {
 		if (!res.locals.user)
-			return res.status(400).send(Response(errors[400].authRequired));
+			return res.status(401).send(Response(errors[401].authRequired));
 		
 		const { body } = req;
 		if (!("new_password" in body))
@@ -113,7 +111,7 @@ async function ticketCreatePasswordResetController(req, res, next) {
 async function ticketResolvePasswordResetController(req, res, next) {
 	try {
 		if (!res.locals.user)
-			return res.status(400).send(Response(errors[400].authRequired));
+			return res.status(401).send(Response(errors[401].authRequired));
 		
 		const { query } = req;
 		

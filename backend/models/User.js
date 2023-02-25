@@ -1,13 +1,13 @@
 // Imports
 const mongoose = require("mongoose");
-const { isEmail, isLength } = require("validator");
-const bcrypt = require("bcrypt");
+const { isEmail } = require("validator");
+const { jwt: jwtConfig } = require("../configs/utils.config.json");
 const ticketConfig = require("../configs/ticket.config.json");
 const meta = require("../configs/meta.json");
 const errors = require("../configs/error.codes.json");
 const Ticket = require("../models/Ticket");
 const { chooseEmailVerificationTemplate, choosePasswordResetTemplate } = require("../utils/templates.util");
-const { nodemailerCreateMail, nodemailerSendMail } = require("../utils/utils");
+const { nodemailerCreateMail, nodemailerSendMail, jwtCreate, bcryptCompare } = require("../utils/utils");
 
 // Constants
 const purposeData = new Map([
@@ -23,15 +23,15 @@ const purposeData = new Map([
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please Enter a name"],
+    required: [true, errors[400].nameRequired],
     // validate: [isLength({min:6}),]
   },
   email: {
     type: String,
-    required: [true, "Please enter an email"],
+    required: [true, errors[400].emailRequired],
     unique: true,
     lowercase: true,
-    validate: [isEmail, "Please enter a valid email"],
+    validate: [isEmail, errors[400].invalidEmail],
   },
   email_verified: {
     type: Boolean,
@@ -39,8 +39,8 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please enter a password"],
-    minlength: [6, "Minimum password length is 6 characters"],
+    required: [true, errors[400].passwordRequired],
+    minlength: [6, errors[400].shortPassword],
   },
   tickets: {
     email_verification: {
@@ -52,6 +52,12 @@ const userSchema = new mongoose.Schema({
       default: null,
     },
   },
+  _profile_information: {
+    last_password_reset: {
+      type: Date,
+      default: Date.now,
+    },
+  },
 });
 
 // Avoid redundant hashing
@@ -61,6 +67,7 @@ const userSchema = new mongoose.Schema({
 //   next();
 // });
 
+// Methods
 userSchema.methods.createNewTicket = async function (purpose, data = null) {
   // Validate purpose
   if (!Object.values(ticketConfig.purposes).includes(purpose))
@@ -107,17 +114,28 @@ userSchema.methods.createNewTicket = async function (purpose, data = null) {
   return 2;
 };
 
+userSchema.methods.createToken = function () {
+  return jwtCreate({
+    id: this._id,
+    last_password_reset: this._profile_information.last_password_reset.getTime(),
+  }, jwtConfig.ages.login);
+};
+
 // static method to login user
 userSchema.statics.login = async function (email, password) {
+  if (!isEmail(email))
+    throw Error(errors[400].invalidEmail);
+
+  // Check if user exists
   const user = await this.findOne({ email });
-  if (user) {
-    const auth = await bcrypt.compare(password, user.password);
-    if (auth) {
-      return user;
-    }
-    throw Error("incorrect password");
-  }
-  throw Error("incorrect email");
+  if (!user)
+    throw Error(errors[404].userNotFound);
+
+  // Validate password
+  if (!(await bcryptCompare(user.password, password)))
+    throw Error(errors[403].passwordMismatch);
+  
+  return user;
 };
 
 const User = mongoose.model("user", userSchema);

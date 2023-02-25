@@ -1,0 +1,10 @@
+{
+  "jwt": {
+    "ages": {
+      "login": 259200
+    }
+  },
+  "bcrypt": {
+    "salt.rounds": 10
+  }
+}

@@ -1,43 +1,75 @@
+// Imports
 const jwt = require("jsonwebtoken");
+const errors = require("../configs/error.codes.json");
 const User = require("../models/User");
+const Response = require("../models/standard.response.model");
+const { jwtDecoded } = require("../utils/utils");
 
-const requireAuth = (req, res, next) => {
+// Body
+async function requireAuth(req, res, next) {
   const token = req.cookies.jwt;
 
-  // check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, "JustAKey", (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.redirect("/login");
-      } else {
-        console.log(decodedToken);
-        next();
-      }
-    });
-  } else {
-    res.redirect("/login");
+  if (!token) return res.status(401).send(Response(errors[401].authRequired));
+
+  try {
+    const decoded = await jwtDecoded(token);
+
+    if (!decoded)
+      // Invalid/Expired token
+      return res.status(401).send(Response(errors[401].invalidOrExpiredToken));
+    
+    const user = await User.findById(decoded.id);
+    if (!user)
+      return res.status(404).send(Response(errors[404].userNotFound));
+    
+    if (decoded.last_password_reset !== user._profile_information.last_password_reset.getTime())
+      return res.status(440).send(Response(errors[440].sessionExpired));
+    
+    res.locals.user = user;
+  } catch (error) {
+    console.error("[authMiddleware]", error);
+
+    if (error instanceof jwt.TokenExpiredError)
+      return res.status(440).send(errors[440].sessionInvalidated);
+
+    if ("message" in error) return res.status(400).send(Response(error.message));
+    return res.status(500).send(Response(errors[500]));
   }
-};
+
+  return next();
+}
+async function requireVerifiedAuth(req, res, next) {
+  await requireAuth(req, res, () => { });
+
+  if (!res.locals.user.email_verified)
+    return res.status(403).send(Response(errors[403].emailUnverified));
+  
+  return next();
+}
 
 // check current user
-const checkUser = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, "JustAKey", async (err, decodedToken) => {
-      if (err) {
-        res.locals.user = null;
-        next();
-      } else {
-        let user = await User.findById(decodedToken.id);
-        res.locals.user = user;
-        next();
-      }
-    });
-  } else {
-    res.locals.user = null;
-    next();
-  }
-};
+async function checkUser(req, res, next) {
+  // Set `user` to null
+  res.locals.user = null;
 
-module.exports = { requireAuth, checkUser };
+  const token = req.cookies.jwt;
+
+  // Skip if no token is provided
+  if (!token) return next();
+
+  try {
+    const decoded = await jwtDecoded(token);
+
+    if (decoded) {
+      const user = await User.findById(decoded.id);
+      if (user && decoded.last_password_reset === user._profile_information.last_password_reset.getTime())
+        res.locals.user = user;
+    }  
+  } catch (error) {
+    console.error("[authMiddleware]", error);
+  }
+
+  return next();
+}
+
+module.exports = { requireAuth, requireVerifiedAuth, checkUser };
