@@ -120,6 +120,11 @@ async function ticketResolvePasswordResetController(req, res, next) {
 			return res.status(400).send(Response(errors[400].tokenRequired));
 		const { id, user_id } = await jwtDecoded(query.token);
 
+		// `dismiss`
+		let dismiss = false;
+		if ("dismiss" in query && query.dismiss === "true")
+			dismiss = true;
+
 		// Validate user
 		if (String(res.locals.user._id) !== user_id)
 			return res.status(400).send(Response(errors[400].invalidRequest));
@@ -130,10 +135,22 @@ async function ticketResolvePasswordResetController(req, res, next) {
 		const ticket = await Ticket.findOne({ _id: id, user_id: res.locals.user._id, purpose: ticketConfig.purposes.PASSWORD_RESET });
 		if (!ticket)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
+		
+		// If dismissed, remove the ticket
+		if (dismiss) {
+			res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
+			await res.locals.user.save();
+			await Ticket.deleteOne({ _id: ticket._id });
+
+			return res.status(200).send(Response(false));
+		}
+		
+		// Else, continue with password reset
 		const { new_password } = ticket.data;
 
 		// Resolve ticket
 		res.locals.user.password = new_password;
+		res.locals.user._profile_information.last_password_reset = Date.now();
 		res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
 		await res.locals.user.save();
 		await Ticket.deleteOne({ _id: ticket._id });
