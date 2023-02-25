@@ -10,7 +10,8 @@
     "nameRequired": "400-nameRequired",
     "emailRequired": "400-emailRequired",
     "invalidEmail": "400-invalidEmail",
-    "passwordRequired": "400-passwordRequired"
+    "passwordRequired": "400-passwordRequired",
+    "usnRequired": "400-usnRequired"
   },
   "401": {
     "authRequired": "401-authRequired",

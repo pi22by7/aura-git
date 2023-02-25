@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, errors[400].nameRequired],
-    // validate: [isLength({min:6}),]
   },
   email: {
     type: String,
@@ -32,6 +31,11 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     validate: [isEmail, errors[400].invalidEmail],
+  },
+  usn: {
+    type: String,
+    required: [true, errors[400].usnRequired],
+    trim: true,
   },
   email_verified: {
     type: Boolean,

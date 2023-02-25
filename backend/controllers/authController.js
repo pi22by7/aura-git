@@ -40,10 +40,10 @@ const getError = error => {
 
 // Body
 module.exports.signup_post = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, usn, password } = req.body;
 
   try {
-    const user = await User.create({ name, email, password: await bcryptHash(password) });
+    const user = await User.create({ name, email, usn, password: await bcryptHash(password) });
     const token = user.createToken();
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
