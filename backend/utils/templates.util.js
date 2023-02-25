@@ -4,8 +4,8 @@ const path = require("path");
 const meta = require("../configs/meta.json");
 
 // Constants
-const emailVerificationTemplate = path.join(__dirname, "..", "templates", "email.verification.rendered.template.html");
-const passwordResetTemplate = path.join(__dirname, "..", "templates", "password.reset.rendered.template.html");
+const emailVerificationTemplate = path.join(__dirname, "..", "templates", "email.verification.template.html");
+const passwordResetTemplate = path.join(__dirname, "..", "templates", "password.reset.template.html");
 
 const emailVerificationDarkTemplate = path.join(__dirname, "..", "templates", "email.verification.dark.template.html");
 const passwordResetDarkTemplate = path.join(__dirname, "..", "templates", "password.reset.dark.template.html");
