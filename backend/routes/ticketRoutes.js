@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const { checkUser } = require("../middleware/authMiddleware");
+const { requireAuth } = require("../middleware/authMiddleware");
 const {
 	ticketCreateEmailVerificationController,
 	ticketResolveEmailVerificationController,
@@ -12,10 +12,10 @@ const {
 const Router = express.Router();
 
 // Body
-Router.get("/verification/email", checkUser, ticketCreateEmailVerificationController);
-Router.get("/verification/email/resolve", checkUser, ticketResolveEmailVerificationController);
+Router.get("/verification/email", requireAuth, ticketCreateEmailVerificationController);
+Router.get("/verification/email/resolve", requireAuth, ticketResolveEmailVerificationController);
 
-Router.post("/verification/password", checkUser, ticketCreatePasswordResetController);
-Router.get("/verification/password/resolve", checkUser, ticketResolvePasswordResetController);
+Router.post("/verification/password", requireAuth, ticketCreatePasswordResetController);
+Router.get("/verification/password/resolve", requireAuth, ticketResolvePasswordResetController);
 
 module.exports = Router;
