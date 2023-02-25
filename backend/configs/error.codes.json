@@ -10,7 +10,8 @@
   },
   "404": {
     "userNotFound": "404-userNotFound",
-    "ticketNotFound": "404-ticketNotFound"
+    "ticketNotFound": "404-ticketNotFound",
+    "eventNotFound": "404-eventNotFound"
   },
   "500": "500-internalError"
 }
