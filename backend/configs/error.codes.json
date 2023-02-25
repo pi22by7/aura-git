@@ -11,7 +11,20 @@
     "emailRequired": "400-emailRequired",
     "invalidEmail": "400-invalidEmail",
     "passwordRequired": "400-passwordRequired",
-    "usnRequired": "400-usnRequired"
+    "usnRequired": "400-usnRequired",
+    "participationEventIdRequired": "400-participationEventIdRequired",
+    "participationEventNameRequired": "400-participationEventNameRequired",
+    "teamNameRequired": "400-teamNameRequired",
+    "teamLeaderIdRequired": "400-teamLeaderIdRequired",
+    "teamLeaderUsnRequired": "400-teamLeaderUsnRequired",
+    "teamLeaderNameRequired": "400-teamLeaderNameRequired",
+    "teamLeaderEmailRequired": "400-teamLeaderEmailRequired",
+    "teamMemberIdRequired": "400-teamMemberIdRequired",
+    "teamMemberUsnRequired": "400-teamMemberUsnRequired",
+    "teamMemberNameRequired": "400-teamMemberNameRequired",
+    "teamMemberEmailRequired": "400-teamMemberEmailRequired",
+    "eventDetailsRequired": "400-eventDetailsRequired",
+    "teamLeaderDetailsRequired": "400-teamLeaderDetailsRequired"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -20,7 +33,10 @@
   "403": {
     "passwordMismatch": "403-passwordMismatch",
     "emailAlreadyInUse": "403-emailAlreadyInUse",
-    "emailUnverified": "403-emailUnverified"
+    "emailUnverified": "403-emailUnverified",
+    "eventAlreadyRegistered": "403-eventAlreadyRegistered",
+    "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
+    "invalidOperation": "403-invalidOperation"
   },
   "404": {
     "userNotFound": "404-userNotFound",

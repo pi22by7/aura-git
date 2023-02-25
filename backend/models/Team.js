@@ -1,70 +1,69 @@
+// Imports
 const mongoose = require("mongoose");
+const errors = require("../configs/error.codes.json");
 
+// Constants
 const TeamSchema = new mongoose.Schema({
     // Event Partaking
     event_participated: {
         event_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Event",
-            required: true,
+            required: [true, errors[400].participationEventIdRequired],
         },
         event_title: {
             type: String,
             ref: "Event.title",
+            required: [true, errors[400].participationEventNameRequired],
         },
     },
-
-    // Team Name
     team_name: {
         type: String,
-        required: true,
+        required: [true, errors[400].teamNameRequired],
     },
-
-    // Team Leader
     team_leader: {
         id: {
             type: mongoose.Types.ObjectId,
-            required: true,
             ref: "user",
+            required: [true, errors[400].teamLeaderIdRequired],
         },
         usn: {
             type: String,
-            required: true,
+            required: [true, errors[400].teamLeaderUsnRequired],
         },
         name: {
             type: String,
-            required: true,
+            required: [true, errors[400].teamLeaderNameRequired],
         },
         email: {
             type: String,
-            required: true,
+            required: [true, errors[400].teamLeaderEmailRequired],
         },
     },
-    // Team Members
     team_members: {
         type: [{
             id: {
                 type: mongoose.Types.ObjectId,
-                required: true,
-                ref: "user"
+                ref: "user",
+                required: [true, errors[400].teamMemberIdRequired],
             },
             email: {
                 type: String,
-                required: true
+                required: [true, errors[400].teamMemberEmailRequired],
             },
             usn: {
                 type: String,
-                required: true,
+                required: [true, errors[400].teamMemberUsnRequired],
             },
             name: {
                 type: String,
-                required: true,
-            }
+                required: [true, errors[400].teamMemberNameRequired],
+            },
         }],
         default: {},
     },
 }, { timestamps: true });
 
-const Team = mongoose.model("Team", TeamSchema);
+const Team = mongoose.model("team", TeamSchema);
 
 module.exports = Team;
