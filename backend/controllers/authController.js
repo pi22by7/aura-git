@@ -75,16 +75,10 @@ module.exports.getUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (id === "me") {
-      if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
+    const user = await User.findById(id, "-password");
+    if (!user) return res.status(404).send(Response(errors[404].userNotFound));
 
-      return res.status(200).send(Response(false, { me: await User.findById(res.locals.user._id, "-password") }));
-    } else {
-      const user = await User.findById(id, "-password");
-      if (!user) return res.status(404).send(Response(errors[404].userNotFound));
-
-      return res.status(200).send(Response(false, { user }));
-    }
+    return res.status(200).send(Response(false, { user }));
   } catch (error) {
     console.error("[authController]", error);
 
