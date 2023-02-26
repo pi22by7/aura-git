@@ -26,7 +26,12 @@
     "eventDetailsRequired": "400-eventDetailsRequired",
     "teamLeaderDetailsRequired": "400-teamLeaderDetailsRequired",
     "shortName": "400-shortName",
-    "searchQueryRequired": "400-searchQueryRequired"
+    "searchQueryRequired": "400-searchQueryRequired",
+    "schemeRequired": "400-schemeRequired",
+    "invalidScheme": "400-invalidScheme",
+    "orderIdRequired": "400-orderIdRequired",
+    "paymentIdRequired": "400-paymentIdRequired",
+    "paymentSignatureRequired": "400-paymentSignatureRequired"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -38,13 +43,15 @@
     "emailUnverified": "403-emailUnverified",
     "eventAlreadyRegistered": "403-eventAlreadyRegistered",
     "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
-    "invalidOperation": "403-invalidOperation"
+    "invalidOperation": "403-invalidOperation",
+    "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed"
   },
   "404": {
     "userNotFound": "404-userNotFound",
     "ticketNotFound": "404-ticketNotFound",
     "eventNotFound": "404-eventNotFound",
-    "emailNotFound": "404-emailNotFound"
+    "emailNotFound": "404-emailNotFound",
+    "orderNotFound": "404-orderNotFound"
   },
   "440": {
     "sessionExpired": "440-sessionExpired",
