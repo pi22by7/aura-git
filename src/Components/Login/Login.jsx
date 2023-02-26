@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useUser } from "../../Contexts/userContext";
-import axios from "axios";
+import { useCookies } from "react-cookie";
+// import axios from "axios";
+import api from "../../Utils/axios.config";
+import { jar } from "../../Utils/axios.config";
 
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
@@ -10,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [cookies, setCookie] = useCookies(["user"]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,12 +27,13 @@ const Login = () => {
 
   const handleLogin = async (loginData) => {
     try {
-      const response = await axios
-        .post("http://localhost:3001/auth/user/login", {
+      await api
+        .post("/auth/user/login", {
           email,
           password,
         })
         .then((res) => {
+          localStorage.setItem("uid", res.data.data.user);
           setUser({ id: res.data.user, email, password });
           setLoading(false);
           setError("");

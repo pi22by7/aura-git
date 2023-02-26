@@ -1,4 +1,7 @@
 import "./App.css";
+import { useState, useEffect } from "react";
+import api from "./Utils/axios.config";
+import { useUser } from "./Contexts/userContext";
 import { NavBar } from "./Components/Navbar/NavBar";
 import { Footer } from "./Components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
@@ -16,6 +19,28 @@ import DevTeam from "./Components/DevTeam/DevTeam";
 // import PaymentForm from "./Components/PaymentForm/PaymentForm";
 
 function App() {
+  const { setUser } = useUser();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(localStorage.getItem("uid"));
+      await api
+        .get(
+          `${
+            process.env.REACT_APP_BACKEND_HOST
+          }/auth/user/${localStorage.getItem("uid")}`
+        )
+        .then((res) => {
+          setUser(res.data.data.user);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <div className="App">
       <NavBar />

@@ -1,23 +1,52 @@
 import { useState, useEffect } from "react";
-import { useUser } from "../Contexts/userContext";
+import api from "../Utils/axios.config";
 
 const UserPage = () => {
-  const { user, setUser } = useUser();
-  console.log(user);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(localStorage.getItem("uid"));
+      await api
+        .get(
+          `${
+            process.env.REACT_APP_BACKEND_HOST
+          }/auth/user/${localStorage.getItem("uid")}`
+        )
+        .then((res) => {
+          setUser(res.data.data.user);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
   // Handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(user);
   };
+  if (loading) {
+    return (
+      <p className="h-[100vh] grid place-items-center text-center">Loading</p>
+    );
+  }
+
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 h-[100vh] place-items-center justify-items-center bg-profile bg-contain bg-no-repeat md:bg-contain md:bg-left bg-right bg-profilec">
       <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
         <div className="col-span-1">
           <img
-            src={user.profileImage}
+            src={
+              user.profileImage
+                ? user.profileImage
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbrfDKCmowwSwdUfA3aL1jKQX_ALj1iLf4RIA1DG5FHQ&s"
+            }
             alt="Profile"
             className="w-32 h-32 md:w-44 md:h-44 rounded-full m-4 max-w-none max-h-none"
           />

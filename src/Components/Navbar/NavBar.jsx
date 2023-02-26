@@ -4,6 +4,7 @@ import { useUser } from "../../Contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../Assets/logo.png";
+import api from "../../Utils/axios.config";
 import "./NavBar.css";
 
 export const NavBar = () => {
@@ -59,6 +60,7 @@ export const NavBar = () => {
         </ul>
       </div>
       <div className="md:place-self-end md:my-auto">
+        {console.log(user)}
         {!user && (
           <>
             <NavLink onClick={handleMenuHide} to="/login">
@@ -76,7 +78,11 @@ export const NavBar = () => {
             </NavLink>
             <Link
               className="nav-btn bg-quaternary mx-1"
-              onClick={() => setUser(null)}
+              onClick={async () => {
+                setUser(null);
+                localStorage.removeItem("uid");
+                await api.get("/auth/user/logout");
+              }}
               to="/"
             >
               Logout

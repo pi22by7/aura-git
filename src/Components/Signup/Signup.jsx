@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../Utils/axios.config";
 import { useUser } from "../../Contexts/userContext";
 
 const Signup = () => {
@@ -24,11 +24,13 @@ const Signup = () => {
 
   const handleSignUp = async () => {
     try {
-      const response = await axios
-        .post("http://localhost:3001/auth/user/signup", {
+      const response = await api
+        .post("/auth/user/signup", {
           name,
           email,
           password,
+          usn,
+          college,
         })
         .then((res) => {
           setUser({ id: res.data.user, email, password });
