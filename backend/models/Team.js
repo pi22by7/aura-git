@@ -20,6 +20,8 @@ const TeamSchema = new mongoose.Schema({
     team_name: {
         type: String,
         required: [true, errors[400].teamNameRequired],
+        trim: true,
+        minlength: [6, errors[400].shortName],
     },
     team_leader: {
         id: {
