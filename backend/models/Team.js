@@ -14,7 +14,7 @@ const TeamSchema = new mongoose.Schema({
         event_title: {
             type: String,
             ref: "Event.title",
-            required: [true, errors[400].participationEventNameRequired],
+            required: [true, errors[400].participationEventTitleRequired],
         },
     },
     team_name: {

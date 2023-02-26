@@ -13,7 +13,7 @@
     "passwordRequired": "400-passwordRequired",
     "usnRequired": "400-usnRequired",
     "participationEventIdRequired": "400-participationEventIdRequired",
-    "participationEventNameRequired": "400-participationEventNameRequired",
+    "participationEventTitleRequired": "400-participationEventTitleRequired",
     "teamNameRequired": "400-teamNameRequired",
     "teamLeaderIdRequired": "400-teamLeaderIdRequired",
     "teamLeaderUsnRequired": "400-teamLeaderUsnRequired",
