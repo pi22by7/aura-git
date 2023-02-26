@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(localStorage.getItem("uid"));
+      if (!localStorage.getItem("uid")) return setLoading(false);
       await api
         .get(
           `${
