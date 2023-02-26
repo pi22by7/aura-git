@@ -42,6 +42,7 @@ async function requireAuth(req, res, next) {
 }
 async function requireVerifiedAuth(req, res, next) {
   await requireAuth(req, res, () => { });
+  if (!res.locals.user) return;
 
   if (!res.locals.user.email_verified)
     return res.status(403).send(Response(errors[403].emailUnverified));
