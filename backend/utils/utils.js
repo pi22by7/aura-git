@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const meta = require("../configs/meta.json");
 const errors = require("../configs/error.codes.json");
 const { bcrypt: bcryptConfig } = require("../configs/utils.config.json");
+const { JsonWebTokenError } = require("jsonwebtoken");
 
 // - `nodemailer`
 const { NODEMAILER_EMAIL, NODEMAILER_PASS } = process.env;
@@ -68,7 +69,18 @@ module.exports = {
 	bcryptHash,
 	bcryptCompare,
 	errorHandler: function (error) {
+		if (typeof error === "string")
+			return { status: 500, message: error };
+
 		try {
+			// `JsonWebTokenError`
+			if (error instanceof JsonWebTokenError) {
+				return {
+					status: 401,
+					message: errors[401].invalidOrExpiredToken,
+				};
+			}
+
 			// `ValidationError`
 			if (error.name === "ValidationError")
 				return {

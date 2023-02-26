@@ -8,26 +8,22 @@ const { bcryptHash, errorHandler, quoteRegExp } = require("../utils/utils");
 
 // Constants
 const errorMessages = Object.freeze({
-  byMessage: {
-    "incorrect email": errors[404].emailNotFound,
-    "incorrect password": errors[403].passwordMismatch,
-  },
   byCodes: {
-    11000: errors[403].emailAlreadyInUse,
+    11000: {
+      status: 403,
+      message: errors[403].emailAlreadyInUse,
+    },
   },
 });
 
 const getError = (error) => {
-  let msg = "";
-
-  // Check by message
-  if ((msg = errorMessages.byMessage[error.message])) return msg;
+  let msg;
 
   // Check by code
   if ((msg = errorMessages.byCodes[error.code])) return msg;
 
   // Unhandled error
-  return errorHandler(error).message;
+  return errorHandler(error);
 };
 
 // Body
@@ -44,8 +40,9 @@ module.exports.signup_post = async (req, res, next) => {
     res.locals.data.user = user._id;
     res.locals.data.name = name;
     res.locals.status = 201;
-  } catch (err) {
-    return res.status(400).json(Response(getError(err)));
+  } catch (error) {
+    const { status, message } = getError(error);
+    return res.status(status).json(Response(message));
   }
 
   return next();
@@ -62,8 +59,9 @@ module.exports.login_post = async (req, res, next) => {
     if (!res.locals.data)
       res.locals.data = {};
     res.locals.data.user = user._id;
-  } catch (err) {
-    return res.status(400).json(Response(getError(err)));
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).json(Response(message));
   }
 
   return next();
