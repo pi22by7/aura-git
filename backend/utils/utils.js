@@ -93,6 +93,7 @@ module.exports = {
 			status: 500,
 			message: errors[500],
 		};
-	}
+	},
+	quoteRegExp: (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
 };
 
