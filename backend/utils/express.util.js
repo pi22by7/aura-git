@@ -2,10 +2,10 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const meta = require("../configs/meta.json");
 
 // TODO: Must use `https` later
 const http = require("http");
-// const bodyParser = require("body-parser");
 
 // Constants
 const expressApp = express();
@@ -13,11 +13,10 @@ const httpApp = http.createServer(expressApp);
 const { PORT } = process.env;
 
 // Body
-// expressApp.use(bodyParser.json())
 expressApp.use(express.json());
 expressApp.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: meta.dev_host,
     credentials: true,
   })
 );

@@ -1,5 +1,6 @@
 {
   "host": "https://aura.git.edu",
+  "dev_host": "http://localhost:3000",
   "name": "Aura 23",
   "emails": {
     "primary": "aura23.klsgit@gmail.com",
