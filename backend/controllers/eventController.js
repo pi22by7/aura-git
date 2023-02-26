@@ -1,7 +1,10 @@
+// Imports
 const errors = require("../configs/error.codes.json");
 const Event = require("../models/Event");
 const Response = require("../models/standard.response.model");
+const { errorHandler } = require("../utils/utils");
 
+// Body
 module.exports.event_get = async (req, res, next) => {
   try {
     const event = await Event.findOne({ _id: req.params.id });
@@ -11,10 +14,8 @@ module.exports.event_get = async (req, res, next) => {
       res.locals.data = {};
     res.locals.data.event = event;
   } catch (error) {
-    console.error("[eventController]", error);
-
-    if ("message" in error) return res.status(500).json(Response(error.message));
-    return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
   }
 
   return next();
@@ -37,10 +38,8 @@ module.exports.allevent_get = async (req, res, next) => {
       res.locals.data = {};
     res.locals.data.events = events;
   } catch (error) {
-    console.error("[eventController]", error);
-
-    if ("message" in error) return res.status(500).json(Response(error.message));
-    return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
   }
 
   return next();

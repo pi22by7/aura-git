@@ -3,7 +3,7 @@ const errors = require("../configs/error.codes.json");
 const { jwt: jwtConfig } = require("../configs/utils.config.json");
 const User = require("../models/User");
 const Response = require("../models/standard.response.model");
-const { bcryptHash } = require("../utils/utils");
+const { bcryptHash, errorHandler } = require("../utils/utils");
 
 // Constants
 const errorMessages = Object.freeze({
@@ -25,14 +25,8 @@ const getError = (error) => {
   // Check by code
   if ((msg = errorMessages.byCodes[error.code])) return msg;
 
-  // Check if the error is a User validation error
-  if ("message" in error && error.message.includes("user validation failed"))
-    // Return first error
-    return Object.values(error.errors)[0].properties.message;
-
   // Unhandled error
-  if ("message" in error) return error.message;
-  return errors[500];
+  return errorHandler(error).message;
 };
 
 // Body
@@ -50,7 +44,6 @@ module.exports.signup_post = async (req, res, next) => {
     res.locals.data.name = name;
     res.locals.status = 201;
   } catch (err) {
-    console.error("[authController]", err);
     return res.status(400).json(Response(getError(err)));
   }
 
@@ -69,7 +62,6 @@ module.exports.login_post = async (req, res, next) => {
       res.locals.data = {};
     res.locals.data.user = user._id;
   } catch (err) {
-    console.error("[authController]", err);
     return res.status(400).json(Response(getError(err)));
   }
 
@@ -93,10 +85,8 @@ module.exports.getUser = async (req, res, next) => {
       res.locals.data = {};
     res.locals.data.user = user;
   } catch (error) {
-    console.error("[authController]", error);
-
-    if ("message" in error) return res.status(200).send(Response(error.message));
-    return res.status(200).send(Response(errors[500]));
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
   }
 
   return next();

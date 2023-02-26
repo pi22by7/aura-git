@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const errors = require("../configs/error.codes.json");
 const User = require("../models/User");
 const Response = require("../models/standard.response.model");
-const { jwtDecoded } = require("../utils/utils");
+const { jwtDecoded, errorHandler } = require("../utils/utils");
 
 // Body
 async function requireAuth(req, res, next) {
@@ -31,13 +31,11 @@ async function requireAuth(req, res, next) {
     };
     await res.locals.refreshProfile();
   } catch (error) {
-    console.error("[authMiddleware]", error);
-
     if (error instanceof jwt.TokenExpiredError)
       return res.status(440).send(errors[440].sessionInvalidated);
 
-    if ("message" in error) return res.status(400).send(Response(error.message));
-    return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
   }
 
   return next();
@@ -75,9 +73,7 @@ async function checkUser(req, res, next) {
         await res.locals.refreshProfile();
       }
     }  
-  } catch (error) {
-    console.error("[authMiddleware]", error);
-  }
+  } catch (error) { /* Do something */ }
 
   return next();
 }

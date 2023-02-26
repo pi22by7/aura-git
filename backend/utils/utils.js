@@ -4,6 +4,7 @@ const randexp = require("randexp");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const meta = require("../configs/meta.json");
+const errors = require("../configs/error.codes.json");
 const { bcrypt: bcryptConfig } = require("../configs/utils.config.json");
 
 // - `nodemailer`
@@ -66,5 +67,32 @@ module.exports = {
 	jwtDecoded,
 	bcryptHash,
 	bcryptCompare,
+	errorHandler: function (error) {
+		try {
+			// `ValidationError`
+			if (error.name === "ValidationError")
+				return {
+					status: 400,
+					message: Object.values(error.errors).find(_error => _error.properties).message,
+				};
+			if ("message" in error)
+				return {
+					status: 400,
+					message: error.message,
+				};
+			
+			return {
+				status: 500,
+				message: errors[500],
+			};
+		} catch (fatal_error) {
+			console.error("[FATAL]", fatal_error);
+		}
+
+		return {
+			status: 500,
+			message: errors[500],
+		};
+	}
 };
 

@@ -3,6 +3,7 @@ const Team = require("../models/Team");
 const User = require("../models/User");
 const errors = require("../configs/error.codes.json");
 const Response = require("../models/standard.response.model");
+const { errorHandler } = require("../utils/utils");
 
 // Body
 // Create a new team
@@ -18,11 +19,11 @@ module.exports.createTeam = async (req, res, next) => {
 			return res.status(400).send(Response(errors[400].teamNameRequired));
 
 		let { event_participated, team_name, team_members = [] } = req.body;
-		
+
 		// Check if team members contains leader
 		if (team_members.find(id => id === String(res.locals.user._id)))
 			return res.status(403).send(Response(errors[403].invalidOperation));
-		
+
 		team_members = await Promise.all(team_members.map(id => User.findById(id)));
 		if (team_members.length > 0 && team_members.find(member => !member))
 			return res.status(404).send(Response(errors[404].userNotFound));
@@ -80,15 +81,9 @@ module.exports.createTeam = async (req, res, next) => {
 			res.locals.data = {};
 		res.locals.data.team = newTeam;
 		res.locals.status = 201;
-	} catch (err) {
-		console.error("[teamController]", err);
-
-		if ("message" in err) {
-			if (err.message.includes("validation failed"))
-				return res.status(400).send(Response(Object.values(err.errors)[0].properties.message));
-			return res.status(500).json(Response(err.message));
-		}
-		return res.status(500).send(Response(errors[500]));
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 
 	return next();
@@ -102,12 +97,9 @@ module.exports.fetchTeams = async (req, res, next) => {
 		if (!res.locals.data)
 			res.locals.data = {};
 		res.locals.data.teams = await Team.find({ "event_participated.event_id": id });
-	} catch (err) {
-		console.error("[teamController]", err);
-
-		if ("message" in err)
-			return res.status(500).json(Response(err.message));
-		return res.status(500).send(Response(errors[500]));
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 
 	return next();

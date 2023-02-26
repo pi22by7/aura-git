@@ -3,7 +3,7 @@ const errors = require("../configs/error.codes.json");
 const ticketConfig = require("../configs/ticket.config.json");
 const Ticket = require("../models/Ticket");
 const Response = require("../models/standard.response.model");
-const { jwtDecoded, bcryptHash } = require("../utils/utils");
+const { jwtDecoded, bcryptHash, errorHandler } = require("../utils/utils");
 
 // Body
 async function ticketCreateEmailVerificationController(req, res, next) {
@@ -28,11 +28,8 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 		// Email ticket created
 		res.locals.status = 201;
 	} catch (error) {
-		console.error("[ticketController]", error);
-
-		if ("message" in error)
-			return res.status(500).send(Response(error.message));
-		return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 
 	return next();
@@ -70,11 +67,8 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 		await res.locals.user.save();
 		await res.locals.refreshProfile();
 	} catch (error) {
-		console.error("[ticketController]", error);
-
-		if ("message" in error)
-			return res.status(500).send(Response(error.message));
-		return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 	
 	return next();
@@ -106,11 +100,8 @@ async function ticketCreatePasswordResetController(req, res, next) {
 		// Password reset ticket created
 		res.locals.status = 201;
 	} catch (error) {
-		console.error("[ticketController]", error);
-
-		if ("message" in error)
-			return res.status(500).send(Response(error.message));
-		return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 
 	return next();
@@ -164,11 +155,8 @@ async function ticketResolvePasswordResetController(req, res, next) {
 		await res.locals.refreshProfile();
 		await Ticket.deleteOne({ _id: ticket._id });
 	} catch (error) {
-		console.error("[ticketController]", error);
-
-		if ("message" in error)
-			return res.status(500).send(Response(error.message));
-		return res.status(500).send(Response(errors[500]));
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
 	}
 
 	return next();
