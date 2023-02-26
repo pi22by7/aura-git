@@ -9,11 +9,7 @@ const UserPage = () => {
     const fetchData = async () => {
       console.log(localStorage.getItem("uid"));
       await api
-        .get(
-          `${
-            process.env.REACT_APP_BACKEND_HOST
-          }/auth/user/${localStorage.getItem("uid")}`
-        )
+        .get(`/auth/user/${localStorage.getItem("uid")}`)
         .then((res) => {
           setUser(res.data.data.user);
           setLoading(false);
