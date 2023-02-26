@@ -82,8 +82,8 @@ const GlobeComponent = () => {
     <>
       {loading && <PreLoader />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
-        <p className="text-5xl text-white font-extrabold absolute bottom-5 left-5 z-50">
-          <img src={logo} className="lg:h-28 mr-3 h-16" alt="Aura Logo" />
+        <p className="absolute bottom-12 left-16 z-50">
+          <img src={logo} className="md:h-32 mr-44 h-20" alt="Aura Logo" />
         </p>
         <div
           id="globeViz"

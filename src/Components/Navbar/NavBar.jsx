@@ -31,10 +31,14 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border bg-opacity-20 border-black-100 z-40">
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border bg-opacity-20 border-black-100 z-4">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
-          <img src={logo} className="lg:h-16 mr-3 h-9" alt="Aura Logo" />
+          <img
+            src={logo}
+            className="md:h-20 mr-3 mb-0 h-12 overflow-clip"
+            alt="Aura Logo"
+          />
         </Link>
       </div>
       <div
@@ -42,17 +46,17 @@ export const NavBar = () => {
         className="nav-menu md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden bg-white"
       >
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
-          <li className="lg:px-5 px-3">
+          <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/">
               Home
             </NavLink>
           </li>
-          <li className="lg:px-5 px-3">
+          <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/events">
               Events
             </NavLink>
           </li>
-          <li className="lg:px-5 px-3">
+          <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/rule-book">
               Rule Book
             </NavLink>

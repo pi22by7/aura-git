@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 
 const UserPage = () => {
@@ -114,6 +115,7 @@ const UserPage = () => {
               Save
             </button>
           </form>
+          <PaymentForm />
         </div>
       </div>
     </div>
