@@ -1,0 +1,7 @@
+{
+  "search.options": {
+    "email": "^{email}",
+    "name": "^{name}",
+    "usn": "^{usn}"
+  }
+}

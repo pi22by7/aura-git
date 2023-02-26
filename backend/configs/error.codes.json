@@ -25,7 +25,8 @@
     "teamMemberEmailRequired": "400-teamMemberEmailRequired",
     "eventDetailsRequired": "400-eventDetailsRequired",
     "teamLeaderDetailsRequired": "400-teamLeaderDetailsRequired",
-    "shortName": "400-shortName"
+    "shortName": "400-shortName",
+    "searchQueryRequired": "400-searchQueryRequired"
   },
   "401": {
     "authRequired": "401-authRequired",
