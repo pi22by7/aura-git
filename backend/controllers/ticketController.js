@@ -21,17 +21,21 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 		if (code === 1)
 			return res.status(400).send(Response(errors[400].emailAlreadySent));
 		
+		// Handle unknown errors
+		if (code !== 2)
+			return res.status(500).send(Response(errors[500]));
+		
 		// Email ticket created
-		if (code === 2)
-			return res.status(200).send(Response(false));
+		res.locals.status = 201;
 	} catch (error) {
 		console.error("[ticketController]", error);
 
 		if ("message" in error)
 			return res.status(500).send(Response(error.message));
-		else
-			return res.status(500).send(Response(errors[500]));
+		return res.status(500).send(Response(errors[500]));
 	}
+
+	return next();
 }
 
 async function ticketResolveEmailVerificationController(req, res, next) {
@@ -64,16 +68,16 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 		res.locals.user.email_verified = true;
 		res.locals.user.tickets[ticketConfig.user_tickets_fields.email_verification] = null;
 		await res.locals.user.save();
-
-		return res.status(200).send(Response(false));
+		await res.locals.refreshProfile();
 	} catch (error) {
 		console.error("[ticketController]", error);
 
 		if ("message" in error)
 			return res.status(500).send(Response(error.message));
-		else
-			return res.status(500).send(Response(errors[500]));
+		return res.status(500).send(Response(errors[500]));
 	}
+	
+	return next();
 }
 
 async function ticketCreatePasswordResetController(req, res, next) {
@@ -95,17 +99,21 @@ async function ticketCreatePasswordResetController(req, res, next) {
 		if (code === 1)
 			return res.status(400).send(Response(errors[400].emailAlreadySent));
 		
+		// Handle unknown errors
+		if (code !== 2)
+			return res.status(500).send(Response(errors[500]));
+		
 		// Password reset ticket created
-		if (code === 2)
-			return res.status(200).send(Response(false));
+		res.locals.status = 201;
 	} catch (error) {
 		console.error("[ticketController]", error);
 
 		if ("message" in error)
 			return res.status(500).send(Response(error.message));
-		else
-			return res.status(500).send(Response(errors[500]));
+		return res.status(500).send(Response(errors[500]));
 	}
+
+	return next();
 }
 
 async function ticketResolvePasswordResetController(req, res, next) {
@@ -153,17 +161,17 @@ async function ticketResolvePasswordResetController(req, res, next) {
 		res.locals.user._profile_information.last_password_reset = Date.now();
 		res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
 		await res.locals.user.save();
+		await res.locals.refreshProfile();
 		await Ticket.deleteOne({ _id: ticket._id });
-
-		return res.status(200).send(Response(false));
 	} catch (error) {
 		console.error("[ticketController]", error);
 
 		if ("message" in error)
 			return res.status(500).send(Response(error.message));
-		else
-			return res.status(500).send(Response(errors[500]));
+		return res.status(500).send(Response(errors[500]));
 	}
+
+	return next();
 }
 
 module.exports = {

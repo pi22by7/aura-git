@@ -36,7 +36,7 @@ const getError = (error) => {
 };
 
 // Body
-module.exports.signup_post = async (req, res) => {
+module.exports.signup_post = async (req, res, next) => {
   const { name, email, usn, password } = req.body;
 
   try {
@@ -44,14 +44,20 @@ module.exports.signup_post = async (req, res) => {
     const token = user.createToken();
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
-    res.status(201).json(Response(false, { user: user._id, name: name }));
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.user = user._id;
+    res.locals.data.name = name;
+    res.locals.status = 201;
   } catch (err) {
     console.error("[authController]", err);
-    res.status(400).json(Response(getError(err)));
+    return res.status(400).json(Response(getError(err)));
   }
+
+  return next();
 };
 
-module.exports.login_post = async (req, res) => {
+module.exports.login_post = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
@@ -59,30 +65,39 @@ module.exports.login_post = async (req, res) => {
     const token = user.createToken();
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
-    res.status(200).json(Response(false, { user: user._id }));
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.user = user._id;
   } catch (err) {
     console.error("[authController]", err);
-    res.status(400).json(Response(getError(err)));
+    return res.status(400).json(Response(getError(err)));
   }
+
+  return next();
 };
 
-module.exports.logout_get = (req, res) => {
+module.exports.logout_get = (req, res, next) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.status(200).send(Response(false));
+
+  return next();
 };
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     const user = await User.findById(id, "-password");
     if (!user) return res.status(404).send(Response(errors[404].userNotFound));
 
-    return res.status(200).send(Response(false, { user }));
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.user = user;
   } catch (error) {
     console.error("[authController]", error);
 
     if ("message" in error) return res.status(200).send(Response(error.message));
     return res.status(200).send(Response(errors[500]));
   }
+
+  return next();
 };

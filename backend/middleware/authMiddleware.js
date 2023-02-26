@@ -26,6 +26,10 @@ async function requireAuth(req, res, next) {
       return res.status(440).send(Response(errors[440].sessionExpired));
     
     res.locals.user = user;
+    res.locals.refreshProfile = async () => {
+      res.locals.profile = await User.findById(decoded.id, "-password");
+    };
+    await res.locals.refreshProfile();
   } catch (error) {
     console.error("[authMiddleware]", error);
 
@@ -49,8 +53,9 @@ async function requireVerifiedAuth(req, res, next) {
 
 // check current user
 async function checkUser(req, res, next) {
-  // Set `user` to null
+  // Set `user` and `profile` to null
   res.locals.user = null;
+  res.locals.profile = null; 
 
   const token = req.cookies.jwt;
 
@@ -62,8 +67,13 @@ async function checkUser(req, res, next) {
 
     if (decoded) {
       const user = await User.findById(decoded.id);
-      if (user && decoded.last_password_reset === user._profile_information.last_password_reset.getTime())
+      if (user && decoded.last_password_reset === user._profile_information.last_password_reset.getTime()) {
         res.locals.user = user;
+        res.locals.refreshProfile = async () => {
+          res.locals.profile = await User.findById(decoded.id, "-password");
+        };
+        await res.locals.refreshProfile();
+      }
     }  
   } catch (error) {
     console.error("[authMiddleware]", error);

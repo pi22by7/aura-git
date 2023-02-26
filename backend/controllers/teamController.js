@@ -6,7 +6,7 @@ const Response = require("../models/standard.response.model");
 
 // Body
 // Create a new team
-module.exports.createTeam = async (req, res) => {
+module.exports.createTeam = async (req, res, next) => {
 	if (!res.locals.user)
 		return res.status(401).send(Response(errors[401].authRequired));
 
@@ -75,7 +75,11 @@ module.exports.createTeam = async (req, res) => {
 				usn: member.usn,
 			})),
 		});
-		res.status(201).json(Response(false, { team: newTeam }));
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.team = newTeam;
+		res.locals.status = 201;
 	} catch (err) {
 		console.error("[teamController]", err);
 
@@ -86,14 +90,18 @@ module.exports.createTeam = async (req, res) => {
 		}
 		return res.status(500).send(Response(errors[500]));
 	}
+
+	return next();
 };
 
 // Fetch all teams under the a specific event
-module.exports.fetchTeams = async (req, res) => {
+module.exports.fetchTeams = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 
-		res.status(200).json(Response(false, { teams: await Team.find({ "event_participated.event_id": id }) }));
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.teams = await Team.find({ "event_participated.event_id": id });
 	} catch (err) {
 		console.error("[teamController]", err);
 
@@ -101,4 +109,6 @@ module.exports.fetchTeams = async (req, res) => {
 			return res.status(500).json(Response(err.message));
 		return res.status(500).send(Response(errors[500]));
 	}
+
+	return next();
 };
