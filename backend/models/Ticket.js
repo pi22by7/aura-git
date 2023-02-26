@@ -1,6 +1,5 @@
 // Imports
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const ticketConfig = require("../configs/ticket.config.json");
 const { jwtCreate } = require("../utils/utils");
 

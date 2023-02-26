@@ -1,48 +1,51 @@
+// Imports
 const mongoose = require("mongoose");
 
+// Body
 const EventSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     club: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     team_size: {
         type: Number,
-        required: true
+        required: true,
     },
     rounds: {
         type: Number,
-        required: true
+        required: true,
     },
     registration_limit: {
         type: String,
-        required: true
+        required: true,
     },
     rules: {
         type: [String],
-        required: true
+        required: true,
     },
     event_coordinators: [{
         name: {
             type: String,
-            required: true
+            required: true,
         },
         contact_number: {
             type: String,
-            required: true
+            required: true,
         },
         image: {
             type: String,
-            required: true
-        }
-    }]
+            required: true,
+        },
+    }],
 });
+
 const Event = mongoose.model("event", EventSchema);
 module.exports = Event;

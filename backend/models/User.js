@@ -64,13 +64,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Avoid redundant hashing
-// userSchema.pre("save", async function (next) {
-//   const salt = await bcrypt.genSalt();
-//   this.password = await bcrypt.hash(this.password, salt);
-//   next();
-// });
-
 // Methods
 userSchema.methods.createNewTicket = async function (purpose, data = null) {
   // Validate purpose
