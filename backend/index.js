@@ -17,7 +17,7 @@ const teamRoutes = require("./routes/teamRoutes");
 // Route Middlewares
 expressApp.get("*", checkUser);
 expressApp.use("/auth/user", authRoutes);
-expressApp.use("/event", eventRoutes);
+expressApp.use("/events", eventRoutes);
 expressApp.use("/teams", teamRoutes);
 // expressApp.use(authRoutes);
 expressApp.use("/tickets", ticketRoutes);
