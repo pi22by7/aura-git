@@ -16,25 +16,22 @@ const errorMessages = Object.freeze({
   },
 });
 
-const getError = error => {
+const getError = (error) => {
   let msg = "";
 
   // Check by message
-  if ((msg = errorMessages.byMessage[error.message]))
-    return msg;
-  
+  if ((msg = errorMessages.byMessage[error.message])) return msg;
+
   // Check by code
-  if ((msg = errorMessages.byCodes[error.code]))
-    return msg;
-  
+  if ((msg = errorMessages.byCodes[error.code])) return msg;
+
   // Check if the error is a User validation error
   if ("message" in error && error.message.includes("user validation failed"))
     // Return first error
     return Object.values(error.errors)[0].properties.message;
 
   // Unhandled error
-  if ("message" in error)
-    return error.message;
+  if ("message" in error) return error.message;
   return errors[500];
 };
 
@@ -60,7 +57,7 @@ module.exports.login_post = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = user.createToken();
-    
+
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
     res.status(200).json(Response(false, { user: user._id }));
   } catch (err) {
@@ -74,27 +71,24 @@ module.exports.logout_get = (req, res) => {
   res.status(200).send(Response(false));
 };
 
-module.exports.getUser = async (req, res) => { 
+module.exports.getUser = async (req, res) => {
   try {
     const { id } = req.params;
 
     if (id === "me") {
-      if (!res.locals.user)
-        return res.status(401).send(Response(errors[401].authRequired));
-      
+      if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
+
       return res.status(200).send(Response(false, { me: await User.findById(res.locals.user._id, "-password") }));
     } else {
       const user = await User.findById(id, "-password");
-      if (!user)
-        return res.status(404).send(Response(errors[404].userNotFound));
-      
+      if (!user) return res.status(404).send(Response(errors[404].userNotFound));
+
       return res.status(200).send(Response(false, { user }));
     }
   } catch (error) {
     console.error("[authController]", error);
-    
-    if ("message" in error)
-      return res.status(200).send(Response(error.message));
+
+    if ("message" in error) return res.status(200).send(Response(error.message));
     return res.status(200).send(Response(errors[500]));
   }
 };

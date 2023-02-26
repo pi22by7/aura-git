@@ -15,7 +15,12 @@ const { PORT } = process.env;
 // Body
 // expressApp.use(bodyParser.json())
 expressApp.use(express.json());
-expressApp.use(cors());
+expressApp.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 expressApp.use(cookieParser());
 
 httpApp.listen(PORT, () => console.log("[express.util] Express server running on port", PORT));
