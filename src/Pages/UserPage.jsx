@@ -42,7 +42,7 @@ const UserPage = () => {
             src={
               user.profileImage
                 ? user.profileImage
-                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbrfDKCmowwSwdUfA3aL1jKQX_ALj1iLf4RIA1DG5FHQ&s"
+                : "https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
             }
             alt="Profile"
             className="w-32 h-32 md:w-44 md:h-44 rounded-full m-4 max-w-none max-h-none"

@@ -73,8 +73,8 @@ const PaymentForm = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p className="mt-5">Register Now</p>
+      <header className="App-header text-center">
+        <p className="my-5">Register Now</p>
         <button
           className="btn btn-primary"
           onClick={displayModal}
