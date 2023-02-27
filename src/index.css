@@ -1,13 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --clr-primary: #7286d3;
+  --clr-secondary: #8ea7e9;
+  --clr-tertiary: #e5e0ff;
+  --clr-quaternary: #fff2f2;
+} */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: scroll;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+/* Custom scroll bar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  background: #002855;
+}
+::-webkit-scrollbar-thumb {
+  background: #023e7d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0466c8;
+}
+
+/* Tailwind Buttons */
+.btn {
+  @apply text-white bg-primary rounded-full px-4 py-2 hover:bg-tertiary font-semibold duration-700;
 }

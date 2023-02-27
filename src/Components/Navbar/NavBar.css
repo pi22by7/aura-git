@@ -1,0 +1,3 @@
+a.active {
+  @apply font-bold text-quaternary;
+}
