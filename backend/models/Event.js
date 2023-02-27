@@ -55,7 +55,6 @@ const EventSchema = new mongoose.Schema({
 	_slugs: {
 		title: {
 			type: String,
-			unique: true,
 			trim: true,
 			default: function () {
 				return sluggify(this.title);
