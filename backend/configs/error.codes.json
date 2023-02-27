@@ -51,7 +51,8 @@
     "ticketNotFound": "404-ticketNotFound",
     "eventNotFound": "404-eventNotFound",
     "emailNotFound": "404-emailNotFound",
-    "orderNotFound": "404-orderNotFound"
+    "orderNotFound": "404-orderNotFound",
+    "clubNotFound": "404-clubNotFound"
   },
   "440": {
     "sessionExpired": "440-sessionExpired",

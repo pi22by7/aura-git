@@ -1,12 +1,19 @@
+// Imports
 const { Router } = require("express");
 const { complete } = require("../controllers/controllers");
-const eventController = require("../controllers/eventController");
+const {
+	eventGetAllController,
+	eventGetByClubController,
+	eventGetByClubAndTitleController,
+} = require("../controllers/eventController");
 const { checkUser } = require("../middleware/authMiddleware");
 
+// Constants
 const router = Router();
 
-router.get("/", checkUser, eventController.allevent_get, complete);
-router.get("/:id", checkUser, eventController.event_get, complete);
+// Body
+router.get("/", checkUser, eventGetAllController, complete);
+router.get("/:club", checkUser, eventGetByClubController, complete);
+router.get("/:club/:title", checkUser, eventGetByClubAndTitleController, complete);
 
-//
 module.exports = router;
