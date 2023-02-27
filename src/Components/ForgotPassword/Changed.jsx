@@ -1,32 +1,33 @@
 import axios from "axios";
+import { useEffect } from "react";
+
 const Changed = () => {
-  success();
-  async function success() {
-    try {
-      let slug = (url) => new URL(url).pathname.match(/[^\/]+/g);
-      if (slug === "verifyPass") {
-        const params = new URLSearchParams(window.location.search);
-        const response = await axios.get(
-          "http://localhost:3001/tickets/verification/password/resolve",
-          {
-            params,
-          }
-        );
-        console.log(response.data.msg);
-      } else if (slug === "verifyEmail") {
-        const params = new URLSearchParams(window.location.search);
-        const response = await axios.get(
-          "http://localhost:3001/tickets/verification/email/resolve",
-          {
-            params,
-          }
-        );
-        console.log(response.data.msg);
+  let slugFind = (url) => new URL(url).pathname.match(/[^/]+/g);
+  let slug = String(slugFind(window.location.href));
+  let params = String(window.location.search);
+  console.log("test", slug, params);
+
+  useEffect(() => {
+    async function onSuccess() {
+      try {
+        if (slug === "verifyPass") {
+          const response = await axios.get(
+            `http://localhost:3001/tickets/verification/password/resolve${params}`
+          );
+          console.log(response.data.msg);
+          console.log(params);
+        } else if (slug === "verifyEmail") {
+          const response = await axios.get(
+            `http://localhost:3001/tickets/verification/email/resolve${params}`
+          );
+          console.log(response.data.msg);
+        }
+      } catch (error) {
+        console.log("Error Verifying Change.", error);
       }
-    } catch (error) {
-      console.log("Error Resetting Password.", error);
     }
-  }
+    onSuccess();
+  });
 
   return (
     <div className="grid justify-items-center v-screen w-screen">
