@@ -107,5 +107,6 @@ module.exports = {
 		};
 	},
 	quoteRegExp: (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+	sluggify: (str) => str.trim().toLowerCase().replace(/[^a-z0-9 -]/g, "").replace(/\s+/, " ").split(" ").join("-"),
 };
 
