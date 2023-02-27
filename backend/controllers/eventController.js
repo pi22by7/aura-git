@@ -1,5 +1,6 @@
 // Imports
 const errors = require("../configs/error.codes.json");
+const eventConfig = require("../configs/event.config.json");
 const Event = require("../models/Event");
 const Response = require("../models/standard.response.model");
 const { errorHandler } = require("../utils/utils");
@@ -54,7 +55,7 @@ module.exports.eventGetByClubController = async (req, res, next) => {
   try {
     const { club } = req.params;
 
-    const events = await Event.find({ "_slugs.club": club });
+    const events = await Event.find({ "_slugs.club": club, kind: eventConfig.kinds.event });
 
     if (events.length === 0)
       return res.status(404).send(Response(errors[404].clubNotFound));
@@ -74,7 +75,7 @@ module.exports.eventGetByClubAndTitleController = async (req, res, next) => {
   try {
     const { club, title } = req.params;
 
-    const event = await Event.findOne({ "_slugs.club": club, "_slugs.title": title });
+    const event = await Event.findOne({ "_slugs.club": club, "_slugs.title": title, kind: eventConfig.kinds.event });
     if (!event)
       return res.status(404).send(Response(errors[404].eventNotFound));
 
