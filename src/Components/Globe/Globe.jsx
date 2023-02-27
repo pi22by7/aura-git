@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Marker from "./Marker/Marker";
 import Globe from "globe.gl";
-import PreLoader from "./PreLoader/PreLoader";
+import PreLoader from "../PreLoader/PreLoader";
 import data from "./geo.json";
 import art_map from "./update.png";
 import logo from "../../Assets/logo.png";
@@ -80,7 +80,7 @@ const GlobeComponent = () => {
   }, [navigate]);
   return (
     <>
-      {loading && <PreLoader />}
+      {loading && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
         <p className="absolute bottom-12 left-16 z-50">
           <img src={logo} className="md:h-32 mr-44 h-20" alt="Aura Logo" />

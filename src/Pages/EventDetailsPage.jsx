@@ -1,43 +1,31 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import api from "../Utils/axios.config";
 import EventDetails from "../Components/EventDetails/EventDetails";
 import EventCoordinators from "../Components/EventCoords/EventCoords";
+import PreLoader from "../Components/PreLoader/PreLoader";
 
 const EventsDetailsPage = () => {
   const eventId = useParams().id;
-  const [event, setEvent] = useState({
-    title: "The Event Title",
-    club: "Club Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    team_size: 4,
-    rounds: 3,
-    registration_limit: "50",
-    rules: [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Ut eu diam quis purus dignissim malesuada.",
-      "Pellentesque eu sem varius, tincidunt diam vitae, semper eros.",
-      "Praesent et elit at sapien euismod pretium.",
-    ],
-    event_coordinators: [
-      {
-        name: "John Doe",
-        contact_number: "1234567890",
-        image: "https://randomuser.me/api/portraits/men/1.jpg",
-      },
-      {
-        name: "Patrik Bateman",
-        contact_number: "6969696969",
-        image: "https://randomuser.me/api/portraits/men/3.jpg",
-      },
-      {
-        name: "Ananya Grande",
-        contact_number: "4545454545",
-        image: "https://randomuser.me/api/portraits/women/3.jpg",
-      },
-    ],
-  });
+  const [event, setEvent] = useState(null);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        const response = await api.get(`/events/${eventId}`);
+        console.log(response.data.data);
+        setEvent(response.data.data.event);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchEvent();
+  }, [eventId]);
+
+  if (!event) {
+    return <PreLoader type="loading" />;
+  }
 
   return (
     <div className="flex flex-col items-center w-[90%] mx-auto">

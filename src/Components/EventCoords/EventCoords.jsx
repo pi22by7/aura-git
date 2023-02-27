@@ -11,8 +11,12 @@ const EventCoordinators = ({ eventCoordinators }) => {
             <img
               className="w-36 h-36 rounded-full shadow-2xl"
               src={eventCoordinator.image}
+              // src={`https://drive.google.com/uc?export=view&id=${
+              //   eventCoordinator.image.match(/d\/([A-Za-z0-9\-_]+)/)[0]
+              // }`}
               alt={eventCoordinator.name}
             />
+            {console.log(eventCoordinator.image)}
             <p className="font-semibold text-xl my-2">
               {eventCoordinator.name}
             </p>

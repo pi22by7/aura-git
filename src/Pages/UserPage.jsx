@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
-import PreLoader from "../Components/Globe/PreLoader/PreLoader";
+import PreLoader from "../Components/PreLoader/PreLoader";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
@@ -30,7 +30,7 @@ const UserPage = () => {
     event.preventDefault();
   };
   if (loading) {
-    return <PreLoader />;
+    return <PreLoader type="loading" />;
   }
 
   return (

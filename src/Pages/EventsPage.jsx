@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import api from "../Utils/axios.config";
 import { EventCard } from "../Components/EventCard/EventCard";
+import PreLoader from "../Components/PreLoader/PreLoader";
 
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState(null);
@@ -12,8 +13,8 @@ const EventsPage = () => {
       try {
         const response = await api.get("/events");
         console.log(response.data.data);
-        setEvents(response.data.data);
-        setActiveTab(response.data.data[0]._id);
+        setEvents(response.data.data.events);
+        setActiveTab(response.data.data.events[0]._id);
       } catch (error) {
         console.error(error);
       }
@@ -21,6 +22,10 @@ const EventsPage = () => {
 
     fetchEvents();
   }, []);
+
+  if (events.length === 0) {
+    return <PreLoader type="loading" />;
+  }
 
   return (
     <div className="h-fit bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-fixed bg-eventc">
@@ -41,7 +46,6 @@ const EventsPage = () => {
       </div>
       {/* Club Tabs */}
       {events.map((club) => {
-        console.log(club);
         return (
           activeTab === club._id && (
             <div className="grid grid-cols-1 justify-items-center ">
@@ -49,6 +53,7 @@ const EventsPage = () => {
                 console.log(event);
                 return (
                   <EventCard
+                    id={event._id}
                     title={event.title}
                     club={event.club}
                     description={event.description}

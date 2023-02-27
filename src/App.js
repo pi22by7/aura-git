@@ -5,6 +5,7 @@ import { useUser } from "./Contexts/userContext";
 import { NavBar } from "./Components/Navbar/NavBar";
 import { Footer } from "./Components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
+import { AuthAvailabel, AuthRequired } from "./Utils/AuthCheck/AuthCheck";
 import HomePage from "./Pages/HomePage";
 import EventsPage from "./Pages/EventsPage";
 import EventsDetailsPage from "./Pages/EventDetailsPage";
@@ -50,12 +51,33 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="events" element={<EventsPage />} />
           <Route path="events/:id" element={<EventsDetailsPage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<SignUp />} />
+          <Route
+            path="login"
+            element={
+              <AuthAvailabel>
+                <Login />
+              </AuthAvailabel>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <AuthAvailabel>
+                <SignUp />
+              </AuthAvailabel>
+            }
+          />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="forgot-password/change" element={<PasswordEnter />} />
           <Route path="contact-us" element={<Contact />} />
-          <Route path="profile" element={<UserPage />} />
+          <Route
+            path="profile"
+            element={
+              <AuthRequired>
+                <UserPage />
+              </AuthRequired>
+            }
+          />
           <Route path="dev-team" element={<DevTeam />} />
           <Route path="verifyPass" element={<Changed />} />
           <Route path="verifyEmail" element={<Changed />} />

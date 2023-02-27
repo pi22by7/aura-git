@@ -4,16 +4,15 @@ import { useUser } from "../../Contexts/userContext";
 import { useCookies } from "react-cookie";
 // import axios from "axios";
 import api from "../../Utils/axios.config";
-import { jar } from "../../Utils/axios.config";
 
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies(["user"]);
+  // const [cookies, setCookie] = useCookies(["user"]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
