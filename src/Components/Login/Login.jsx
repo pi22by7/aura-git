@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useUser } from "../../Contexts/userContext";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 // import axios from "axios";
 import api from "../../Utils/axios.config";
 
