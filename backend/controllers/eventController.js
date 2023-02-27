@@ -8,10 +8,14 @@ const { errorHandler } = require("../utils/utils");
 // Body
 module.exports.eventGetAllController = async (req, res, next) => {
   try {
-    const events = await Event.aggregate([
+    const { kind = eventConfig.kinds.event } = req.query;
+    if (!Object.values(eventConfig.kinds).includes(kind))
+      return res.status(400).send(Response(errors[400].invalidKind));
+
+    const records = await Event.aggregate([
       {
         $match: {
-          kind: "event",
+          kind: kind,
         },
       },
       {
@@ -42,7 +46,10 @@ module.exports.eventGetAllController = async (req, res, next) => {
 
     if (!res.locals.data)
       res.locals.data = {};
-    res.locals.data.events = events;
+    if (kind === eventConfig.kinds.event)
+      res.locals.data.events = records;
+    else if (kind === eventConfig.kinds.rulebook)
+      res.locals.data.rulebooks = records;
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
@@ -54,15 +61,21 @@ module.exports.eventGetAllController = async (req, res, next) => {
 module.exports.eventGetByClubController = async (req, res, next) => {
   try {
     const { club } = req.params;
+    const { kind = eventConfig.kinds.event } = req.query;
+    if (!Object.values(eventConfig.kinds).includes(kind))
+      return res.status(400).send(Response(errors[400].invalidKind));
 
-    const events = await Event.find({ "_slugs.club": club, kind: eventConfig.kinds.event });
+    const records = await Event.find({ "_slugs.club": club, kind });
 
-    if (events.length === 0)
+    if (records.length === 0)
       return res.status(404).send(Response(errors[404].clubNotFound));
 
     if (!res.locals.data)
       res.locals.data = {};
-    res.locals.data.events = events;
+    if (kind === eventConfig.kinds.event)
+      res.locals.data.events = records;
+    else if (kind === eventConfig.kinds.rulebook)
+      res.locals.data.rulebooks = records;
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
@@ -75,13 +88,16 @@ module.exports.eventGetByClubAndTitleController = async (req, res, next) => {
   try {
     const { club, title } = req.params;
 
-    const event = await Event.findOne({ "_slugs.club": club, "_slugs.title": title, kind: eventConfig.kinds.event });
-    if (!event)
+    const record = await Event.findOne({ "_slugs.club": club, "_slugs.title": title });
+    if (!record)
       return res.status(404).send(Response(errors[404].eventNotFound));
 
     if (!res.locals.data)
       res.locals.data = {};
-    res.locals.data.event = event;
+    if (record.kind === eventConfig.kinds.event)
+      res.locals.data.event = record;
+    else if (record.kind === eventConfig.kinds.rulebook)
+      res.locals.data.rulebook = record;
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
