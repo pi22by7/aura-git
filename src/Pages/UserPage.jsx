@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
@@ -34,7 +35,7 @@ const UserPage = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 h-[100vh] place-items-center justify-items-center bg-profile bg-contain bg-no-repeat md:bg-contain md:bg-left bg-right bg-profilec">
+    <div className="grid lg:grid-cols-3 grid-cols-1 lg:h-[100vh] h-fit place-items-center justify-items-center bg-profile lg:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-profilec py-5">
       <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
         <div className="col-span-1">
           <img
@@ -113,6 +114,14 @@ const UserPage = () => {
             <button className="w-full mt-4 py-2 btn btn-primary" type="submit">
               Save
             </button>
+            <Link to="/forgot-password/change">
+              <button
+                className="w-full mt-4 py-2 btn btn-primary"
+                type="submit"
+              >
+                Change Password
+              </button>
+            </Link>
           </form>
           <PaymentForm />
         </div>

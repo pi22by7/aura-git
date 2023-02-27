@@ -64,7 +64,6 @@ export const NavBar = () => {
         </ul>
       </div>
       <div className="md:place-self-end md:my-auto">
-        {console.log(user)}
         {!user && (
           <>
             <NavLink onClick={handleMenuHide} to="/login">
@@ -81,7 +80,6 @@ export const NavBar = () => {
               <button className="nav-btn bg-quaternary mx-1">Profile</button>
             </NavLink>
             <Link
-              className="nav-btn bg-quaternary mx-1"
               onClick={async () => {
                 setUser(null);
                 localStorage.removeItem("uid");
@@ -89,7 +87,7 @@ export const NavBar = () => {
               }}
               to="/"
             >
-              Logout
+              <button className="nav-btn bg-quaternary mx-1">Logout</button>
             </Link>
           </>
         )}

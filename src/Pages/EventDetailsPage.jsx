@@ -7,13 +7,13 @@ import EventCoordinators from "../Components/EventCoords/EventCoords";
 import PreLoader from "../Components/PreLoader/PreLoader";
 
 const EventsDetailsPage = () => {
-  const eventId = useParams().id;
+  const { club, title } = useParams();
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
     async function fetchEvent() {
       try {
-        const response = await api.get(`/events/${eventId}`);
+        const response = await api.get(`/events/${club}/${title}`);
         console.log(response.data.data);
         setEvent(response.data.data.event);
       } catch (error) {
@@ -21,14 +21,14 @@ const EventsDetailsPage = () => {
       }
     }
     fetchEvent();
-  }, [eventId]);
+  }, [club, title]);
 
   if (!event) {
     return <PreLoader type="loading" />;
   }
 
   return (
-    <div className="flex flex-col items-center w-[90%] mx-auto">
+    <div className="flex flex-col items-center w-[90%] mx-auto pt-5">
       <div className="w-full">
         <img
           className="w-full h-full object-cover rounded-lg shadow-2xl"
@@ -45,7 +45,9 @@ const EventsDetailsPage = () => {
             Register
           </button>
         </div>
-        <EventCoordinators eventCoordinators={event.event_coordinators} />
+        {event.event_coordinators.length != 0 && (
+          <EventCoordinators eventCoordinators={event.event_coordinators} />
+        )}
         <p className="text-xl text-center font-bold my-5">
           Orgainzed By: {event.club}
         </p>

@@ -74,8 +74,12 @@ const PaymentForm = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Register Now</p>
-        <button className="btn" onClick={displayModal} disabled={loading}>
+        <p className="mt-5">Register Now</p>
+        <button
+          className="btn btn-primary"
+          onClick={displayModal}
+          disabled={loading}
+        >
           {loading ? "Loading..." : "Pay ₹50"}
         </button>
       </header>

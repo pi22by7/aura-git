@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../Utils/axios.config";
 const PasswordEnter = () => {
   const [password, setPassword] = useState("");
   const [confPass, setconfPassword] = useState("");
@@ -13,6 +13,10 @@ const PasswordEnter = () => {
       setError("Please enter all fields");
       return;
     }
+    if (password !== confPass) {
+      setError("Passwords do not match");
+      return;
+    }
     setLoading(true);
     handleReset();
     // setError("");
@@ -21,10 +25,9 @@ const PasswordEnter = () => {
   };
   async function handleReset() {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/tickets/verification/password",
-        password
-      );
+      const response = await api.post("/tickets/verification/password", {
+        new_password: password,
+      });
       console.log(response.data.msg);
     } catch (error) {
       console.log("Error Resetting Password.", error);

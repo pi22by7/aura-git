@@ -33,7 +33,9 @@ const EventDetails = ({ event }) => {
             className="text-3xl my-2 text-quaternary"
           />
           <h3 className="text-xl font-bold my-2">Registration Limit</h3>
-          <p className="text-xl font-semibold">{event.registration_limit}</p>
+          <p className="text-xl font-semibold">
+            {event.registration_limit ? event.registration_limit : "NA"}
+          </p>
         </div>
       </div>
       <div>

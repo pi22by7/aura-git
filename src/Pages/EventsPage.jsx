@@ -12,7 +12,9 @@ const EventsPage = () => {
     async function fetchEvents() {
       try {
         const response = await api.get("/events");
-        console.log(response.data.data);
+        response.data.data.events.sort((a, b) => {
+          return a._id > b._id ? 1 : -1;
+        });
         setEvents(response.data.data.events);
         setActiveTab(response.data.data.events[0]._id);
       } catch (error) {
@@ -31,12 +33,12 @@ const EventsPage = () => {
     <div className="h-fit bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-fixed bg-eventc">
       <h1 className="text-3xl font-bold text-center pt-5">Events</h1>
       {/* Tabs for each club in events */}
-      <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-3 gap-3 md:gap-x-3 gap-x-1 lg:w-3/4 w-11/12 mx-auto my-8">
+      <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-3 md:gap-x-3 gap-x-1 lg:w-3/4 w-11/12 mx-auto my-8">
         {events.map((club) => (
           <p
+            key={club._id}
             className=" bg-quaternary text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer"
             onClick={(e) => {
-              console.log(club);
               setActiveTab(club._id);
             }}
           >
@@ -46,16 +48,21 @@ const EventsPage = () => {
       </div>
       {/* Club Tabs */}
       {events.map((club) => {
+        console.log(club);
         return (
           activeTab === club._id && (
-            <div className="grid grid-cols-1 justify-items-center ">
+            <div
+              key={club._id}
+              className="grid grid-cols-1 justify-items-center "
+            >
               {club.events.map((event) => {
-                console.log(event);
                 return (
                   <EventCard
+                    key={event._id}
                     id={event._id}
                     title={event.title}
                     club={event.club}
+                    slugs={event._slugs}
                     description={event.description}
                   />
                 );
@@ -64,12 +71,6 @@ const EventsPage = () => {
           )
         );
       })}
-
-      {/* <div className="grid grid-cols-1 justify-items-center">
-        <EventCard />
-        <EventCard />
-        <EventCard />
-      </div> */}
     </div>
   );
 };
