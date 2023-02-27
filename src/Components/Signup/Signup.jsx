@@ -33,7 +33,9 @@ const Signup = () => {
           college,
         })
         .then((res) => {
-          setUser({ id: res.data.user, email, password });
+          console.log(res.data);
+          localStorage.setItem("uid", res.data.data.user);
+          setUser({ id: res.data.data.user, email, password });
           setLoading(false);
           setError("");
           setEmail("");
@@ -44,8 +46,7 @@ const Signup = () => {
       console.log(response.data);
     } catch (error) {
       setLoading(false);
-      setError(error.response.data.error);
-      console.error(error);
+      setError("Invalid Credentials");
     }
   };
 

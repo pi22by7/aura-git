@@ -30,8 +30,8 @@ const Changed = () => {
   });
 
   return (
-    <div className="grid justify-items-center v-screen w-screen">
-      <div className="rounded-lg grid justify-items-stretch p-5 lg:w-2/5 md:w-2/3 w-11/12 shadow-xl">
+    <div className="grid justify-items-center h-[90vh] place-items-center">
+      <div className="rounded-lg grid justify-items-stretch p-5 h-fit lg:w-2/5 md:w-2/3 w-11/12 shadow-xl">
         <h1 className="font-bold text-xl text-center m-2">Reset Password</h1>
         <p className="font-semibold text-md text-center m-2">
           Your password has been changed!

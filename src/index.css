@@ -57,7 +57,7 @@ code {
 }
 
 .form-box {
-  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-2/3 w-11/12 shadow-xl;
+  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl;
 }
 
 /* Glass Morphism */

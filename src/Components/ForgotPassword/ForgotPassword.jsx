@@ -17,8 +17,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="grid justify-items-center">
-      <div className="rounded-lg grid justify-items-stretch p-5 lg:w-2/5 md:w-2/3 w-11/12 shadow-xl">
+    <div className="grid form-container bg-signin bg-signinc w-screen">
+      <div className="glass align-middle lg:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl">
         <h1 className="font-bold text-xl text-center m-2">Reset Password</h1>
         <p className="font-semibold text-md text-center m-2">
           We will send you a reset link to your registered email

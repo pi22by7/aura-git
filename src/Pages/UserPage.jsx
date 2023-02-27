@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
@@ -10,7 +10,9 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(localStorage.getItem("uid"));
+      if (!localStorage.getItem("uid")) {
+        return redirect("/login");
+      }
       await api
         .get(`/auth/user/${localStorage.getItem("uid")}`)
         .then((res) => {
