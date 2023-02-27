@@ -1,0 +1,7 @@
+{
+  "defaultKind": "event",
+  "kinds": {
+    "event": "event",
+    "rulebook": "rulebook"
+  }
+}
