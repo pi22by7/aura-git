@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 const PasswordEnter = () => {
   const [password, setPassword] = useState("");
   const [confPass, setconfPassword] = useState("");
@@ -13,20 +14,32 @@ const PasswordEnter = () => {
       return;
     }
     setLoading(true);
-    setError("");
-    setPassword("");
-    setconfPassword("");
+    handleReset();
+    // setError("");
+    // setPassword("");
+    // setconfPassword("");
   };
+  async function handleReset() {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tickets/verification/password",
+        password
+      );
+      console.log(response.data.msg);
+    } catch (error) {
+      console.log("Error Resetting Password.", error);
+    }
+  }
 
   return (
-    <div className="grid justify-items-center">
+    <div className="grid justify-items-center v-screen w-screen">
       <div className="rounded-lg grid justify-items-stretch p-5 lg:w-2/5 md:w-2/3 w-11/12 shadow-xl">
         <h1 className="font-bold text-xl text-center m-2">Reset Password</h1>
         <p className="font-semibold text-md text-center m-2">
           Please enter your new password:
         </p>
         {error && <p className="text-red-500 text-center">{error}</p>}
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
+        {loading && <p className="text-green-500 text-center">Link Sent</p>}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
@@ -35,11 +48,12 @@ const PasswordEnter = () => {
               </label>
               <input
                 className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="pass"
-                name="pass"
-                id="pass"
+                type="password"
+                name="password"
+                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                minLength="8"
                 required
                 placeholder="New Password"
               />
@@ -50,19 +64,24 @@ const PasswordEnter = () => {
               </label>
               <input
                 className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="pass"
-                name="c-pass"
-                id="c-pass"
+                type="password"
+                name="password"
+                id="password"
                 value={confPass}
                 onChange={(e) => setconfPassword(e.target.value)}
+                minLength="8"
                 required
                 placeholder="Confirm Password"
               />
             </div>
             <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" type="submit">
-                Set the New Password
+              <button
+                className="btn btn-primary w-full"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Send Email Verification Link
               </button>
             </div>
           </form>

@@ -7,7 +7,8 @@ const PaymentForm = () => {
 
   async function createOrder() {
     try {
-      const { data } = await axios.post("http://localhost:3001/payment/orders");
+      const { data } = await axios.post("http://localhost:3001/payments/order");
+      console.log("posted");
       return data;
     } catch (error) {
       console.log("Error creating order:", error);
@@ -24,7 +25,7 @@ const PaymentForm = () => {
         razorpaySignature: paymentData.razorpay_signature,
       };
       const response = await axios.post(
-        "http://localhost:3001/payment/success",
+        "http://localhost:3001/payments/order/:orderId",
         data
       );
       alert(response.data.msg);

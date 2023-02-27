@@ -16,6 +16,7 @@ import Contact from "./Components/Contact/Contact";
 import UserPage from "./Pages/UserPage";
 import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 import DevTeam from "./Components/DevTeam/DevTeam";
+import Changed from "./Components/ForgotPassword/Changed";
 // import PaymentForm from "./Components/PaymentForm/PaymentForm";
 
 function App() {
@@ -56,6 +57,8 @@ function App() {
           <Route path="contact-us" element={<Contact />} />
           <Route path="profile" element={<UserPage />} />
           <Route path="dev-team" element={<DevTeam />} />
+          <Route path="verifyPass" element={<Changed />} />
+          <Route path="verifyEmail" element={<Changed />} />
           {/* <Route path="payment" element={<PaymentForm />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

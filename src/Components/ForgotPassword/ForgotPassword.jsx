@@ -25,7 +25,7 @@ const ForgotPassword = () => {
         </p>
         {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
-        <div>
+        <div className="grid">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="email">
@@ -42,14 +42,14 @@ const ForgotPassword = () => {
                 placeholder="Your Email"
               />
             </div>
-            <div className="mt-8 mb-5">
+            <div className="grid mt-8 mb-5 justify-center">
               {/* <Link to="/user">Login</Link> */}
               <Link
                 to="/forgot-password/change"
                 className="btn btn-primary w-full"
                 type="submit"
               >
-                Send Reset Link
+                Set a New Password
               </Link>
             </div>
           </form>
