@@ -12,14 +12,14 @@ const Marker = ({ marker, url, navigate, detRef }) => {
   });
 
   // on mouse over, show the details
-  ele.addEventListener("mouseover", () => {
-    detRef.current.classList.remove("hidden");
-  });
+  // ele.addEventListener("mouseover", () => {
+  //   detRef.current.classList.remove("hidden");
+  // });
 
   // on mouse out, hide the details
-  ele.addEventListener("mouseout", () => {
-    detRef.current.classList.add("hidden");
-  });
+  // ele.addEventListener("mouseout", () => {
+  //   detRef.current.classList.add("hidden");
+  // });
 
   return ele;
 };

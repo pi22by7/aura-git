@@ -4,13 +4,31 @@ import Marker from "./Marker/Marker";
 import Globe from "globe.gl";
 import PreLoader from "../PreLoader/PreLoader";
 import data from "./geo.json";
-import art_map from "./update.png";
+import art_map from "./map.png";
+import legend from "./legend.png";
 import logo from "../../Assets/logo.png";
 
 const GlobeComponent = () => {
   const [loading, setLoading] = useState(true);
   const detRef = useRef(null);
+  const mapRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setLoading(false);
+    });
+
+    observer.observe(mapRef.current, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const globeEl = document.getElementById("globeViz");
     globeEl.addEventListener("mouseenter", () => {
@@ -61,7 +79,7 @@ const GlobeComponent = () => {
 
     const world = Globe({ animateIn: true, waitForGlobeReady: false })
       .globeImageUrl(art_map)
-      .onGlobeReady(() => {
+      .onGlobeReady((e) => {
         console.log("Globe is ready");
       })
       // .pointOfView(74.50342658528442, 15.869407619709492)
@@ -80,27 +98,18 @@ const GlobeComponent = () => {
   }, [navigate]);
   return (
     <>
-      {loading && <PreLoader type="welcome" />}
+      {loading == true && <PreLoader type="welcome" />}
+      {console.log(loading)}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
         <p className="absolute bottom-12 left-16 z-50">
           <img src={logo} className="md:h-32 mr-44 h-20" alt="Aura Logo" />
         </p>
-        <div
-          id="globeViz"
-          className="w-[100vw] z-10 []"
-          onChange={() => setLoading(false)}
-        ></div>
+        <div id="globeViz" className="w-[100vw] z-10" ref={mapRef}></div>
         <div
           ref={detRef}
-          className="w-[25vw] absolute right-20 top-[25vh] bg-white rounded-lg z-50 p-10 hidden"
+          className="w-[25vw] h-[60vh] absolute right-20 top-[20vh] rounded-lg"
         >
-          <p>
-            {/* {el.title} */}
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-            delectus asperiores maxime incidunt sunt corrupti debitis adipisci,
-            labore error quam odit. Quasi aspernatur nulla odit incidunt porro
-            perferendis velit eos?
-          </p>
+          <img src={legend} alt="legend" />
         </div>
       </div>
     </>
