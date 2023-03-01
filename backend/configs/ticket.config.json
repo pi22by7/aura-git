@@ -7,5 +7,5 @@
     "email_verification": "email_verification",
     "password_reset": "password_reset"
   },
-  "expiration": 180
+  "expiration": 300
 }
