@@ -65,3 +65,12 @@ code {
 .glass {
   @apply bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20;
 }
+
+.selector {
+  /* user-drag: none; */
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

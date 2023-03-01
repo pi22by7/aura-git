@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="grid form-container bg-signin bg-signinc w-screen">
+    <div className="grid form-container bg-signin bg-signinc w-screen user-none">
       <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
         <h1 className="font-bold text-xl text-center m-2">Login</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -94,7 +94,7 @@ const Login = () => {
           </form>
           <div className="grid grid-cols-2">
             <Link className="col-span-1 justify-self-start" to="/signup">
-              Signup
+              New? Signup here!
             </Link>
             <Link className="col-span-1 justify-self-end" to="/forgot-password">
               Forgot Password

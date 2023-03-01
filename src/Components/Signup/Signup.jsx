@@ -144,7 +144,7 @@ const Signup = () => {
           </form>
           <div className="grid grid-cols-2">
             <Link className="col-span-1 justify-self-start" to="/login">
-              Login
+              Already have an account? Login
             </Link>
             <Link className="col-span-1 justify-self-end" to="/forgot-password">
               Forgot Password

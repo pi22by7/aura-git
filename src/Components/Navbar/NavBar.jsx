@@ -31,13 +31,14 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border bg-opacity-20 border-black-100 z-40">
+    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border-1px bg-opacity-20 z-40 ">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           <img
             src={logo}
             className="md:h-20 mr-3 mb-0 h-12 overflow-clip"
             alt="Aura Logo"
+            draggable={false}
           />
         </Link>
       </div>
@@ -53,12 +54,17 @@ export const NavBar = () => {
           </li>
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/events">
-              Events
+              Competitions
             </NavLink>
           </li>
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/rule-book">
               Rule Book
+            </NavLink>
+          </li>
+          <li className="md:px-5 px-3">
+            <NavLink onClick={handleMenuToggle} to="/contact-us">
+              Contact
             </NavLink>
           </li>
         </ul>

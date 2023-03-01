@@ -104,7 +104,12 @@ const GlobeComponent = () => {
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
         <p className="absolute bottom-12 left-16 z-40">
-          <img src={logo} className="md:h-32 mr-44 h-20" alt="Aura Logo" />
+          <img
+            src={logo}
+            className="md:h-32 mr-44 h-20"
+            alt="Aura Logo"
+            draggable={false}
+          />
         </p>
         <div id="globeViz" className="w-[100vw] z-10" ref={mapRef}></div>
         {!loading && (
@@ -112,7 +117,7 @@ const GlobeComponent = () => {
             ref={detRef}
             className="w-[25vw] h-[60vh] absolute right-20 top-[20vh] rounded-lg"
           >
-            <img src={legend} alt="legend" />
+            <img src={legend} alt="legend" draggable={false} />
           </div>
         )}
       </div>

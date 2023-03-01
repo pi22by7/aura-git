@@ -4,8 +4,8 @@ import Vinayak from "../../Assets/Team/Vinayak.jpg";
 import Raj from "../../Assets/Team/Raj.heic";
 import Vaishnavi from "../../Assets/Team/VK.jpg";
 import Sanjitha from "../../Assets/Team/S3.jpg";
-import Tejaswith from "../../Assets/Team/VK.jpg";
-import Jeetendra from "../../Assets/Team/VK.jpg";
+import Tejaswith from "../../Assets/Team/Vinayak.jpg";
+import Jeetendra from "../../Assets/Team/π.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
@@ -80,8 +80,8 @@ const council = [
 const Contact = () => {
   return (
     <div className="my-10">
-      <h2 className="text-2xl font-bold text-center">Dev Team</h2>
-      <div className="grid md:grid-cols-3 grid-cols-1 my-5">
+      <h2 className="text-2xl font-bold text-center">Contact Us</h2>
+      <div className="grid md:grid-cols-4 grid-cols-1 my-5">
         {council.map((member) => (
           <div className="flex flex-col items-center py-3" key={member.name}>
             <img

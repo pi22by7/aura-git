@@ -77,13 +77,14 @@ const DevTeam = () => {
   return (
     <div className="my-10">
       <h2 className="text-2xl font-bold text-center">Dev Team</h2>
-      <div className="grid md:grid-cols-3 grid-cols-1 my-5">
+      <div className="grid md:grid-cols-4 grid-cols-1 my-5">
         {team.map((member) => (
           <div className="flex flex-col items-center py-3" key={member.name}>
             <img
               src={member.image}
               alt="avatar"
               className="rounded-full h-52 w-52 object-cover"
+              draggable={false}
             />
             <h3 className="text-xl font-bold my-2">{member.name}</h3>
             <p className="text-lg font-semibold">{member.role}</p>
