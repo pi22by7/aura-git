@@ -1,98 +1,113 @@
-import { useState } from "react";
+import Venki from "../../Assets/Team/Venki.jpg";
+import π from "../../Assets/Team/π.jpg";
+import Vinayak from "../../Assets/Team/Vinayak.jpg";
+import Raj from "../../Assets/Team/Raj.heic";
+import Vaishnavi from "../../Assets/Team/VK.jpg";
+import Sanjitha from "../../Assets/Team/S3.jpg";
+import Tejaswith from "../../Assets/Team/VK.jpg";
+import Jeetendra from "../../Assets/Team/VK.jpg";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+
+const council = [
+  {
+    name: "Vaishnavi Kulkarni",
+    role: "General Secretary",
+    image: Vaishnavi,
+    instagram: "https://www.instagram.com/vaishnavi_k2310/",
+    phone: 9243221195,
+    handle: "vaishnavi_k2310",
+  },
+  {
+    name: "Vinayak Biswagar",
+    role: "General Secretary",
+    image: Vinayak,
+    instagram: "https://www.instagram.com/null/",
+    phone: 7022683215,
+    handle: "null",
+  },
+  {
+    name: "Sanjitha Bhat",
+    role: "General Secretary",
+    image: Sanjitha,
+    instagram: "https://www.instagram.com/Sanjitha_bhat/",
+    phone: 8431642248,
+    handle: "Sanjitha_bhat",
+  },
+  {
+    name: "Raj Bichu",
+    role: "General Secretary",
+    image: Raj,
+    instagram: "https://www.instagram.com/rawwwj/",
+    phone: 7899570999,
+    handle: "rawwwj",
+  },
+  {
+    name: "Venkatesh Dhongadi",
+    role: "Co-Ordinator",
+    image: Venki,
+    instagram: "https://www.instagram.com/flick_23/",
+    phone: 0,
+    handle: "flick_23",
+  },
+  {
+    name: "Piyush Airani",
+    role: "Co-Ordinator",
+    image: π,
+    instagram: "https://www.instagram.com/pi_22by7/",
+    phone: 9545100233,
+    handle: "pi22by7",
+  },
+  {
+    name: "Jeetendra Kumar Garag",
+    role: "Co-Ordinator",
+    image: Jeetendra,
+    instagram: "https://www.instagram.com/jeetendrakumargarag/",
+    phone: 0,
+    handle: "jeetendrakumargarag",
+  },
+  {
+    name: "Tejaswith Shigihalli",
+    role: "Co-Ordinator",
+    image: Tejaswith,
+    instagram: "https://www.instagram.com/tejaswith_/",
+    phone: 0,
+    handle: "tejaswith",
+  },
+];
 
 const Contact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !email || !message) {
-      setError("Please enter all fields");
-      return;
-    }
-    console.log(name, email, message);
-    setLoading(true);
-    setError("");
-    setName("");
-    setEmail("");
-    setMessage("");
-  };
-
   return (
-    <div className="form-container bg-contactc bg-contact">
-      <div className="form-box">
-        <h1 className="font-bold text-xl text-center m-2">Contact Us</h1>
-        <p className="font-semibold text-md text-center m-2">
-          We are here to help you
-        </p>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
-        <div>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="name">
-                Name
-              </label>
-              <input
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="text"
-                name="name"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Your Name"
-              />
+    <div className="my-10">
+      <h2 className="text-2xl font-bold text-center">Dev Team</h2>
+      <div className="grid md:grid-cols-3 grid-cols-1 my-5">
+        {council.map((member) => (
+          <div className="flex flex-col items-center py-3" key={member.name}>
+            <img
+              src={member.image}
+              alt="avatar"
+              className="rounded-full h-52 w-52 object-cover"
+            />
+            <h3 className="text-xl font-bold my-2">{member.name}</h3>
+            <p className="text-lg font-semibold">{member.role}</p>
+            <div className="grid mt-5">
+              <a
+                href={member.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="justify-self-center"
+              >
+                <FontAwesomeIcon
+                  icon={faInstagram}
+                  className="text-2xl text-red-600 justify-self-center"
+                />
+                <text> {member.handle}</text>
+              </a>
+              <p className="justify-self-center">{member.phone}</p>
             </div>
-            <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="email">
-                Email
-              </label>
-              <input
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="email"
-                name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Your Email"
-              />
-            </div>
-            <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="message">
-                Message
-              </label>
-              <textarea
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="text"
-                name="message"
-                id="message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-                placeholder="Your Message"
-              />
-            </div>
-            <div className="mt-8 mb-5">
-              {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" type="submit">
-                Send Reset Link
-              </button>
-            </div>
-          </form>
-          {/* <div className="grid grid-cols-2">
-            <Link className="col-span-1 justify-self-start" to="/signup">
-              Signup
-            </Link>
-            <Link className="col-span-1 justify-self-end" to="/login">
-              Login
-            </Link>
-          </div> */}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -58,8 +58,8 @@ const GlobeComponent = () => {
       </svg>`;
 
     const gData = data.features.map((feature) => {
-      const lat = feature.geometry.coordinates[1] - 7;
-      const lng = feature.geometry.coordinates[0] - 6;
+      const lat = feature.geometry.coordinates[1] - 7.162;
+      const lng = feature.geometry.coordinates[0] - 5.072;
       const size = 30;
       const url = feature.properties.url;
       const color = ["red", "white", "blue", "green"][
@@ -90,7 +90,7 @@ const GlobeComponent = () => {
         return el;
       })(document.getElementById("globeViz"));
 
-    world.controls().enableZoom = false;
+    world.controls().enableZoom = true;
     world.controls().autoRotate = true;
     world.controls().autoRotateSpeed = 1.0;
     // world.controls().minDistance = 100;
@@ -98,7 +98,7 @@ const GlobeComponent = () => {
   }, [navigate]);
   return (
     <>
-      {loading == true && <PreLoader type="welcome" />}
+      {loading === true && <PreLoader type="welcome" />}
       {console.log(loading)}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
         <p className="absolute bottom-12 left-16 z-50">

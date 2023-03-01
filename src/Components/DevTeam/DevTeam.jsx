@@ -3,6 +3,8 @@ import π from "../../Assets/Team/π.jpg";
 import SBT from "../../Assets/Team/SBT.jpg";
 import Parishkar from "../../Assets/Team/Parishkar.jpg";
 import Kishor_Balgi from "../../Assets/Team/Kishor_Balgi.jpg";
+import Samyak from "../../Assets/Team/Samyak.jpg";
+import Ganesh from "../../Assets/Team/Ganesh_Margale.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -52,6 +54,22 @@ const team = [
     linkedin: "https://www.linkedin.com/in/parishkar-singh-831a211b5/",
     instagram: "https://www.instagram.com/parishkar_singh_/",
     github: "https://github.com/parishkar-9790",
+  },
+  {
+    name: "Samyak H",
+    role: "Graphic Designer",
+    image: Samyak,
+    linkedin: "",
+    instagram: "",
+    github: "",
+  },
+  {
+    name: "Ganesh Margale",
+    role: "Graphic Designer",
+    image: Ganesh,
+    linkedin: "",
+    instagram: "",
+    github: "",
   },
 ];
 

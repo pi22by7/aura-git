@@ -22,6 +22,7 @@ import Changed from "./Components/ForgotPassword/Changed";
 
 function App() {
   const { setUser } = useUser();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ function App() {
         });
     };
     fetchData();
-  }, []);
+  });
   return (
     <div className="App">
       <NavBar />

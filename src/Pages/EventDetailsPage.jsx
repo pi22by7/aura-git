@@ -61,7 +61,7 @@ const EventsDetailsPage = () => {
             Register
           </button>
         </div>
-        {event.event_coordinators.length != 0 && (
+        {event.event_coordinators.length !== 0 && (
           <EventCoordinators eventCoordinators={event.event_coordinators} />
         )}
         <p className="text-xl text-center font-bold my-5">

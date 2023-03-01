@@ -4,6 +4,7 @@ import api from "../../Utils/axios.config";
 import { useUser } from "../../Contexts/userContext";
 
 const Signup = () => {
+  // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
   const [name, setName] = useState("");
   const [usn, setUsn] = useState("");

@@ -31,7 +31,7 @@ const EventsPage = () => {
 
   return (
     <div className="h-fit bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-fixed bg-eventc">
-      <h1 className="text-3xl font-bold text-center pt-5">Events</h1>
+      <h1 className="text-3xl font-bold text-center pt-5">Competitions</h1>
       {/* Tabs for each club in events */}
       <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-3 md:gap-x-3 gap-x-1 lg:w-3/4 w-11/12 mx-auto my-8">
         {events.map((club) => (

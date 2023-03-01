@@ -9,18 +9,10 @@
         "Name": "India"
       },
       "geometry": {
-        "coordinates": [74.50342658528442, 15.869407619709492],
-        "type": "Point"
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Events",
-        "url": "/events"
-      },
-      "geometry": {
-        "coordinates": [52.50146879372639, 23.10004031296934],
+        "coordinates": [
+          74.50342658528442,
+          15.869407619709492
+        ],
         "type": "Point"
       }
     },
@@ -31,7 +23,10 @@
         "url": "/contact-us"
       },
       "geometry": {
-        "coordinates": [-99.2817672192599, 19.689393402605006],
+        "coordinates": [
+          -99.2817672192599,
+          19.689393402605006
+        ],
         "type": "Point"
       }
     },
@@ -42,7 +37,10 @@
         "url": "/schedule"
       },
       "geometry": {
-        "coordinates": [-48.52644099578319, -10.765994515212427],
+        "coordinates": [
+          -48.52644099578319,
+          -10.765994515212427
+        ],
         "type": "Point"
       }
     },
@@ -53,9 +51,57 @@
         "url": "/profile"
       },
       "geometry": {
-        "coordinates": [139.5281976666639, 35.86784613904213],
+        "coordinates": [
+          139.5281976666639,
+          35.86784613904213
+        ],
         "type": "Point"
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Events",
+        "url": "/events"
+      },
+      "geometry": {
+        "coordinates": [
+          46.57282296750401,
+          24.650062654107472
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title ": "RuleBook",
+        "url": "/rulebook"
+      },
+      "geometry": {
+        "coordinates": [
+          140.64379040900536,
+          -27.72048742515306
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "DevTeam",
+        "url": "/dev-team"
+      },
+      "geometry": {
+        "coordinates": [
+          23.445164095024893,
+          -31.017658964647623
+        ],
+        "type": "Point"
+      },
+      "id": 6
     }
   ]
 }
