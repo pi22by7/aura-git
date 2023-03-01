@@ -1,5 +1,6 @@
 import logo from "../../Assets/logo.png";
 import welcome from "../../Assets/welcome.png";
+
 const PreLoader = ({ type }) => {
   return (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center bg-white absolute top-0 z-50">

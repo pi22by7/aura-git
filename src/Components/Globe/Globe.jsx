@@ -16,7 +16,9 @@ const GlobeComponent = () => {
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      setLoading(false);
+      // set laoding after 3 seconds
+      setTimeout(() => setLoading(false), 3000);
+      // setLoading(false);
     });
 
     observer.observe(mapRef.current, {
@@ -98,19 +100,21 @@ const GlobeComponent = () => {
   }, [navigate]);
   return (
     <>
-      {loading === true && <PreLoader type="welcome" />}
       {console.log(loading)}
-      <div className="w-[100vw] h-[100vh] absolute top-0 z-50">
-        <p className="absolute bottom-12 left-16 z-50">
+      {loading === true && <PreLoader type="welcome" />}
+      <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
+        <p className="absolute bottom-12 left-16 z-40">
           <img src={logo} className="md:h-32 mr-44 h-20" alt="Aura Logo" />
         </p>
         <div id="globeViz" className="w-[100vw] z-10" ref={mapRef}></div>
-        <div
-          ref={detRef}
-          className="w-[25vw] h-[60vh] absolute right-20 top-[20vh] rounded-lg"
-        >
-          <img src={legend} alt="legend" />
-        </div>
+        {!loading && (
+          <div
+            ref={detRef}
+            className="w-[25vw] h-[60vh] absolute right-20 top-[20vh] rounded-lg"
+          >
+            <img src={legend} alt="legend" />
+          </div>
+        )}
       </div>
     </>
   );
