@@ -32,7 +32,8 @@
     "orderIdRequired": "400-orderIdRequired",
     "paymentIdRequired": "400-paymentIdRequired",
     "paymentSignatureRequired": "400-paymentSignatureRequired",
-    "invalidKind": "400-invalidKind"
+    "invalidKind": "400-invalidKind",
+    "idRequired": "400-idRequired"
   },
   "401": {
     "authRequired": "401-authRequired",

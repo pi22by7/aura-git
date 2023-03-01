@@ -71,7 +71,7 @@ userSchema.methods.createNewTicket = async function (purpose, data = null) {
   // Validate purpose
   if (!Object.values(ticketConfig.purposes).includes(purpose))
     throw Error(errors[500]);
-  
+
   // Check if email is already verified (in case of email verification)
   if (purpose === ticketConfig.purposes.EMAIL_VERIFICATION && this.email_verified)
     return 0;
@@ -80,7 +80,7 @@ userSchema.methods.createNewTicket = async function (purpose, data = null) {
   const ticketId = this.tickets[ticketConfig.user_tickets_fields[purpose]];
   if (ticketId && await Ticket.findById(ticketId))
     return 1;
-    
+
   // Create ticket
   const ticket = await Ticket.create({
     user_id: this._id,
@@ -103,10 +103,10 @@ userSchema.methods.createNewTicket = async function (purpose, data = null) {
   else if (purpose === ticketConfig.purposes.PASSWORD_RESET)
     html = await choosePasswordResetDarkTemplate({
       user_name: this.name,
-      dismiss_uri: `${meta.host}${meta.endpoints.password_reset}?dismiss=true&token=${token}`,
-      redirect_uri: `${meta.host}${meta.endpoints.password_reset}?token=${token}`,
+      dismiss_uri: `${meta.host}${meta.endpoints.password_reset}?target=${this._id}&dismiss=true&token=${token}`,
+      redirect_uri: `${meta.host}${meta.endpoints.password_reset}?target=${this._id}&token=${token}`,
     });
-    
+
   const emailObj = nodemailerCreateMail({ to: this.email, subject: purposeData.get(purpose).subject, html });
   await nodemailerSendMail(emailObj);
 
@@ -133,7 +133,7 @@ userSchema.statics.login = async function (email, password) {
   // Validate password
   if (!(await bcryptCompare(user.password, password)))
     throw Error(errors[403].passwordMismatch);
-  
+
   return user;
 };
 

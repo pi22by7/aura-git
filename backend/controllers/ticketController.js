@@ -2,6 +2,7 @@
 const errors = require("../configs/error.codes.json");
 const ticketConfig = require("../configs/ticket.config.json");
 const Ticket = require("../models/Ticket");
+const User = require("../models/User");
 const Response = require("../models/standard.response.model");
 const { jwtDecoded, bcryptHash, errorHandler } = require("../utils/utils");
 
@@ -10,21 +11,21 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 	try {
 		if (!res.locals.user)
 			return res.status(401).send(Response(errors[401].authRequired));
-		
+
 		const code = await res.locals.user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
 
 		// Email is already verified
 		if (code === 0)
 			return res.status(400).send(Response(errors[400].alreadyVerified));
-		
+
 		// Email is already sent
 		if (code === 1)
 			return res.status(400).send(Response(errors[400].emailAlreadySent));
-		
+
 		// Handle unknown errors
 		if (code !== 2)
 			return res.status(500).send(Response(errors[500]));
-		
+
 		// Email ticket created
 		res.locals.status = 201;
 	} catch (error) {
@@ -39,9 +40,9 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 	try {
 		if (!res.locals.user)
 			return res.status(401).send(Response(errors[401].authRequired));
-		
+
 		const { query } = req;
-		
+
 		// `token`
 		if (!("token" in query))
 			return res.status(400).send(Response(errors[400].tokenRequired));
@@ -54,7 +55,7 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 			return res.status(400).send(Response(errors[400].alreadyVerified));
 		if (String(res.locals.user.tickets[ticketConfig.user_tickets_fields.email_verification]) !== id)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
-		
+
 		// Fetch ticket
 		const ticket = await Ticket.findOne({ _id: id, user_id: res.locals.user._id, purpose: ticketConfig.purposes.EMAIL_VERIFICATION });
 		if (!ticket)
@@ -70,33 +71,37 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
 	}
-	
+
 	return next();
 }
 
 async function ticketCreatePasswordResetController(req, res, next) {
 	try {
-		if (!res.locals.user)
-			return res.status(401).send(Response(errors[401].authRequired));
-		
-		const { body } = req;
-		if (!("new_password" in body))
-			return res.status(400).send(Response(errors[400].newPasswordRequired));
-		const { new_password } = body;
+		const { body, query } = req;
 
+		const { email = undefined } = query;
+		if (!email)
+			return res.status(400).send(Response(errors[400].emailRequired));
+
+		const { new_password = undefined } = body;
+		if (!new_password)
+			return res.status(400).send(Response(errors[400].newPasswordRequired));
 		if (new_password.length < 6)
 			return res.status(400).send(Response(errors[400].shortPassword));
-		
-		const code = await res.locals.user.createNewTicket(ticketConfig.purposes.PASSWORD_RESET, { new_password: await bcryptHash(new_password) });
-		
+
+		const user = await User.findOne({ email });
+		if (!user)
+			return res.status(404).send(Response(errors[404].userNotFound));
+		const code = await user.createNewTicket(ticketConfig.purposes.PASSWORD_RESET, { new_password: await bcryptHash(new_password) });
+
 		// Email is already sent
 		if (code === 1)
 			return res.status(400).send(Response(errors[400].emailAlreadySent));
-		
+
 		// Handle unknown errors
 		if (code !== 2)
 			return res.status(500).send(Response(errors[500]));
-		
+
 		// Password reset ticket created
 		res.locals.status = 201;
 	} catch (error) {
@@ -109,50 +114,60 @@ async function ticketCreatePasswordResetController(req, res, next) {
 
 async function ticketResolvePasswordResetController(req, res, next) {
 	try {
-		if (!res.locals.user)
-			return res.status(401).send(Response(errors[401].authRequired));
-		
 		const { query } = req;
-		
+
+		// `target`
+		const { target = undefined } = query;
+		if (!target)
+			return res.status(400).send(Response(errors[400].idRequired));
+
 		// `token`
-		if (!("token" in query))
+		const { token = undefined } = query;
+		if (!token)
 			return res.status(400).send(Response(errors[400].tokenRequired));
-		const { id, user_id } = await jwtDecoded(query.token);
+		const { id, user_id } = await jwtDecoded(token);
+
+		if (target !== user_id)
+			return res.status(400).send(Response(errors[400].invalidRequest));
 
 		// `dismiss`
 		let dismiss = false;
 		if ("dismiss" in query && query.dismiss === "true")
 			dismiss = true;
 
+		// Fetch user
+		const user = await User.findOne({ _id: target });
+		if (!user)
+			return res.status(404).send(Response(errors[404].userNotFound));
+
 		// Validate user
-		if (String(res.locals.user._id) !== user_id)
+		if (String(user._id) !== user_id)
 			return res.status(400).send(Response(errors[400].invalidRequest));
-		if (String(res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset]) !== id)
+		if (String(user.tickets[ticketConfig.user_tickets_fields.password_reset]) !== id)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
-		
+
 		// Fetch ticket
-		const ticket = await Ticket.findOne({ _id: id, user_id: res.locals.user._id, purpose: ticketConfig.purposes.PASSWORD_RESET });
+		const ticket = await Ticket.findOne({ _id: id, user_id: user._id, purpose: ticketConfig.purposes.PASSWORD_RESET });
 		if (!ticket)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
-		
+
 		// If dismissed, remove the ticket
 		if (dismiss) {
-			res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
-			await res.locals.user.save();
+			user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
+			await user.save();
 			await Ticket.deleteOne({ _id: ticket._id });
 
-			return res.status(200).send(Response(false));
+			return next();
 		}
-		
+
 		// Else, continue with password reset
 		const { new_password } = ticket.data;
 
 		// Resolve ticket
-		res.locals.user.password = new_password;
-		res.locals.user._profile_information.last_password_reset = Date.now();
-		res.locals.user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
-		await res.locals.user.save();
-		await res.locals.refreshProfile();
+		user.password = new_password;
+		user._profile_information.last_password_reset = Date.now();
+		user.tickets[ticketConfig.user_tickets_fields.password_reset] = null;
+		await user.save();
 		await Ticket.deleteOne({ _id: ticket._id });
 	} catch (error) {
 		const { status, message } = errorHandler(error);

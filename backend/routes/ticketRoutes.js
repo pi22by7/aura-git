@@ -16,7 +16,7 @@ const Router = express.Router();
 Router.get("/verification/email", requireAuth, ticketCreateEmailVerificationController, complete);
 Router.get("/verification/email/resolve", requireAuth, ticketResolveEmailVerificationController, complete);
 
-Router.post("/verification/password", requireAuth, ticketCreatePasswordResetController, complete);
-Router.get("/verification/password/resolve", requireAuth, ticketResolvePasswordResetController, complete);
+Router.post("/verification/password", ticketCreatePasswordResetController, complete);
+Router.get("/verification/password/resolve", ticketResolvePasswordResetController, complete);
 
 module.exports = Router;
