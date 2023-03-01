@@ -42,7 +42,7 @@ const GlobeComponent = () => {
       world.controls().update();
     });
     globeEl.addEventListener("touchstart", () => {
-      console.log("touch");
+      // console.log("touch");
       world.controls().autoRotate = false;
     });
     globeEl.addEventListener("touchend", () => {
@@ -100,7 +100,7 @@ const GlobeComponent = () => {
   }, [navigate]);
   return (
     <>
-      {console.log(loading)}
+      {/* {console.log(loading)} */}
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
         <p className="absolute bottom-12 left-16 z-40">

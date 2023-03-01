@@ -15,7 +15,7 @@ import SignUp from "./Components/Signup/Signup";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import Contact from "./Components/Contact/Contact";
 import UserPage from "./Pages/UserPage";
-import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
+// import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 import DevTeam from "./Components/DevTeam/DevTeam";
 import Changed from "./Components/ForgotPassword/Changed";
 // import PaymentForm from "./Components/PaymentForm/PaymentForm";
@@ -69,7 +69,6 @@ function App() {
             }
           />
           <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="forgot-password/change" element={<PasswordEnter />} />
           <Route path="contact-us" element={<Contact />} />
           <Route
             path="profile"

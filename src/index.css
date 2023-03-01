@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 /* :root {
   --clr-primary: #7286d3;
   --clr-secondary: #8ea7e9;
@@ -18,7 +19,7 @@ body {
     sans-serif; */
   /* font-family: "Acme", sans-serif; */
   /* font-family: "Tilt Warp", cursive; */
-  font-family: "Righteous", cursive;
+  font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-y: scroll;

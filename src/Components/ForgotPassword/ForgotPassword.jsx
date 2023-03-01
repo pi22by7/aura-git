@@ -1,31 +1,53 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-const ForgotPassword = () => {
+import api from "../../Utils/axios.config";
+const PasswordEnter = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confPass, setconfPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email) {
+    if (!password | !confPass) {
       setError("Please enter all fields");
       return;
     }
+    if (password !== confPass) {
+      setError("Passwords do not match");
+      return;
+    }
     setLoading(true);
-    setError("");
-    setEmail("");
+    handleReset();
+    // setError("");
+    // setPassword("");
+    // setconfPassword("");
   };
+  async function handleReset() {
+    try {
+      const response = await api.post(
+        `/tickets/verification/password?email=${email}`,
+        {
+          new_password: password,
+        }
+      );
+      console.log(response.data.msg);
+    } catch (error) {
+      console.log("Error Resetting Password.", error);
+    }
+  }
 
   return (
     <div className="grid form-container bg-signin bg-signinc w-screen">
       <div className="glass align-middle lg:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl">
         <h1 className="font-bold text-xl text-center m-2">Reset Password</h1>
         <p className="font-semibold text-md text-center m-2">
-          We will send you a reset link to your registered email
+          Please enter your email and new password:
         </p>
         {error && <p className="text-red-500 text-center">{error}</p>}
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
-        <div className="grid">
+        {loading && <p className="text-green-500 text-center">Link Sent</p>}
+        <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="email">
@@ -42,15 +64,47 @@ const ForgotPassword = () => {
                 placeholder="Your Email"
               />
             </div>
-            <div className="grid mt-8 mb-5 justify-center">
+            <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="email">
+                Enter New Password
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                minLength="8"
+                required
+                placeholder="New Password"
+              />
+            </div>
+            <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="email">
+                Confirm Password
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="password"
+                name="password"
+                id="password"
+                value={confPass}
+                onChange={(e) => setconfPassword(e.target.value)}
+                minLength="8"
+                required
+                placeholder="Confirm Password"
+              />
+            </div>
+            <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <Link
-                to="/forgot-password/change"
+              <button
                 className="btn btn-primary w-full"
                 type="submit"
+                onClick={handleSubmit}
               >
-                Set a New Password
-              </Link>
+                Send Email Verification Link
+              </button>
             </div>
           </form>
           <div className="grid grid-cols-2">
@@ -66,4 +120,4 @@ const ForgotPassword = () => {
     </div>
   );
 };
-export default ForgotPassword;
+export default PasswordEnter;
