@@ -95,13 +95,149 @@ module.exports.createTeam = async (req, res, next) => {
 };
 
 // Fetch all teams under the a specific event
-module.exports.fetchTeams = async (req, res, next) => {
+module.exports.fetchByEvent = async (req, res, next) => {
 	try {
-		const { id } = req.params;
+		const { params, query } = req;
+
+		const { id } = params;
+		const { user_id = undefined } = query;
 
 		if (!res.locals.data)
 			res.locals.data = {};
-		res.locals.data.teams = await Team.find({ "event_participated.event_id": id });
+		res.locals.data.teams = await Team.find({
+			"event_participated.event_id": id,
+			...(user_id !== undefined ? {
+				$or: [
+					{
+						"team_leader.id": user_id,
+					},
+				],
+			} : {})
+		});
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+};
+module.exports.fetchByUser = async (req, res, next) => {
+	try {
+		const { params } = req;
+
+		const { id } = params;
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.teams = await Team.find({
+			$or: [
+				{
+					"team_leader.id": id,
+				},
+				{
+					team_members: { $elemMatch: { id } },
+				},
+			],
+		});
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+};
+
+module.exports.modifyTeam = async (req, res, next) => {
+	if (!res.locals.user)
+		return res.status(401).send(Response(errors[401].authRequired));
+
+	try {
+		const { params, body } = req;
+
+		const { id } = params;
+		const team = await Team.findById(id);
+		if (!team)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+		if (String(team.team_leader.id) !== String(res.locals.user._id))
+			return res.status(403).send(Response(errors[403].invalidOperation));
+
+		const old_team_members = team.team_members.map(member => String(member.id));
+		let {
+			team_name = undefined,
+			team_members = undefined,
+		} = body;
+
+		if (team_members !== undefined && Array.isArray(team_members)) {
+			// Check if team members contains leader
+			if (team_members.find(id => id === String(res.locals.user._id)))
+				return res.status(403).send(Response(errors[403].invalidOperation));
+
+			team_members = await Promise.all(team_members.map(id => User.findById(id)));
+			if (team_members.length > 0 && team_members.find(member => !member))
+				return res.status(404).send(Response(errors[404].userNotFound));
+
+			// Check if any new team member is already registered for the event
+			const orFields = [];
+			team_members
+				.filter(member => !old_team_members.includes(String(member._id)))
+				.forEach(member => {
+					orFields.push({
+						"team_leader.id": member._id,
+					});
+					orFields.push({
+						team_members: { $elemMatch: { email: member.email } },
+					});
+				});
+			if (orFields.length > 0) {
+				// Check if at least one team member has already registered
+				const results = await Team.find({
+					"event_participated.event_id": team.event_participated.event_id,
+					$or: orFields,
+				});
+				if (results.length > 0)
+					// Already registered for the event
+					return res.status(403).send(Response(errors[403].teamMemberAlreadyRegistered));
+			}
+
+			team.team_members = team_members.map(member => ({
+				id: member._id,
+				email: member.email,
+				usn: member.usn,
+				name: member.name,
+			}));
+		}
+
+		if (team_name !== undefined)
+			team.team_name = team_name;
+
+		await team.save();
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.team = team;
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+};
+
+module.exports.deleteTeam = async (req, res, next) => {
+	if (!res.locals.user)
+		return res.status(401).send(Response(errors[401].authRequired));
+
+	try {
+		const { params } = req;
+
+		const { id } = params;
+		const team = await Team.findById(id);
+		if (!team)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+		if (String(team.team_leader.id) !== String(res.locals.user._id))
+			return res.status(403).send(Response(errors[403].invalidOperation));
+
+		await Team.deleteOne({ _id: team._id });
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));

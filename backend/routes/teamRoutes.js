@@ -8,7 +8,13 @@ const { checkUser, requireVerifiedAuth } = require("../middleware/authMiddleware
 const router = Router();
 
 // Body
-router.get("/event/:id", checkUser, teamController.fetchTeams, complete);
+router.get("/event/:id", checkUser, teamController.fetchByEvent, complete);
+router.get("/user/:id", checkUser, teamController.fetchByUser, complete);
+
 router.post("/createteam", requireVerifiedAuth, teamController.createTeam, complete);
+
+router.patch("/:id", requireVerifiedAuth, teamController.modifyTeam, complete);
+
+router.delete("/:id", requireVerifiedAuth, teamController.deleteTeam, complete);
 
 module.exports = router;
