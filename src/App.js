@@ -1,10 +1,10 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import api from "./Utils/axios.config";
 import { useUser } from "./Contexts/userContext";
 import { NavBar } from "./Components/Navbar/NavBar";
 import { Footer } from "./Components/Footer/Footer";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AuthAvailabel, AuthRequired } from "./Utils/AuthCheck/AuthCheck";
 import HomePage from "./Pages/HomePage";
 import EventsPage from "./Pages/EventsPage";
@@ -22,12 +22,11 @@ import Changed from "./Components/ForgotPassword/Changed";
 
 function App() {
   const { setUser } = useUser();
-  // eslint-disable-next-line no-unused-vars
-  const [loading, setLoading] = useState(true);
+  const path = useLocation().pathname;
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!localStorage.getItem("uid")) return setLoading(false);
+      if (!localStorage.getItem("uid")) return;
       await api
         .get(
           `${
@@ -36,17 +35,16 @@ function App() {
         )
         .then((res) => {
           setUser(res.data.data.user);
-          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
         });
     };
     fetchData();
-  });
+  }, []);
   return (
     <div className="App">
-      <NavBar />
+      {path !== "/" && <NavBar />}
       <section>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -88,7 +86,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>
-      <Footer />
+      {path !== "/" && <Footer />}
     </div>
   );
 }

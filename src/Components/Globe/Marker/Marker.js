@@ -1,10 +1,11 @@
-const Marker = ({ marker, url, navigate, detRef }) => {
+const Marker = ({ marker, url, title, navigate, detRef }) => {
   const ele = document.createElement("a");
   ele.style["pointer-events"] = "auto";
   ele.style.cursor = "pointer";
   ele.style.color = "red";
   ele.innerHTML = marker;
   ele.style.width = "30px";
+  ele.title = title;
 
   // on click, navigate to the url
   ele.addEventListener("click", () => {
