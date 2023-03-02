@@ -7,25 +7,32 @@ const meta = require("../configs/meta.json");
 const errors = require("../configs/error.codes.json");
 const Ticket = require("../models/Ticket");
 const { chooseEmailVerificationDarkTemplate, choosePasswordResetDarkTemplate } = require("../utils/templates.util");
-const { nodemailerCreateMail, nodemailerSendMail, jwtCreate, bcryptCompare } = require("../utils/utils");
+const { nodemailerCreateMail, nodemailerSendMail, jwtCreate, bcryptCompare, genAuraId } = require("../utils/utils");
 
 // Constants
 const purposeData = new Map([
   [ticketConfig.purposes.EMAIL_VERIFICATION, {
-    // field: "email_verification",
     subject: "Email verification required",
   }],
   [ticketConfig.purposes.PASSWORD_RESET, {
-    // field: "password_reset",
     subject: "Reset your account password",
   }],
 ]);
 const userSchema = new mongoose.Schema({
+  aura_id: {
+    type: String,
+    required: true,
+    trim: true,
+    default: function () {
+      if (!this.name) return null;
+      return genAuraId(this.name);
+    },
+  },
   name: {
     type: String,
     required: [true, errors[400].nameRequired],
     trim: true,
-    minlength: [6, errors[400].shortName],
+    minlength: [1, errors[400].shortName],
   },
   email: {
     type: String,
@@ -138,5 +145,4 @@ userSchema.statics.login = async function (email, password) {
 };
 
 const User = mongoose.model("user", userSchema);
-
 module.exports = User;

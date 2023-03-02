@@ -1,11 +1,10 @@
 // Imports
 const nodemailer = require("nodemailer");
-const randexp = require("randexp");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const meta = require("../configs/meta.json");
 const errors = require("../configs/error.codes.json");
-const { bcrypt: bcryptConfig } = require("../configs/utils.config.json");
+const { bcrypt: bcryptConfig, "aura.id": auraIdConfig } = require("../configs/utils.config.json");
 const { JsonWebTokenError } = require("jsonwebtoken");
 
 // - `nodemailer`
@@ -27,10 +26,18 @@ const nodemailerCreateMail = ({ from = meta.name, to, subject, text = undefined,
 const nodemailerSendMail = async (mail) => transporter.sendMail(mail);
 //
 
-// - `randexp`
-const otpRandExp = new randexp(/^\d{6}$/);
+// - Aura Id generator
+const pad = (num, padLength) => (new Array(padLength).join("0") + num).slice(-padLength);
 
-const randexpGenerateOtp = otpRandExp.gen;
+const {
+	prefix,
+	delimiter,
+	"name.length": nameLength,
+	"suffix.digits.length": suffixLength,
+} = auraIdConfig;
+
+// prefix delimiter name delimiter suffix
+const genAuraId = (name) => `${prefix}${delimiter}${name.replace(/[^a-z]/gi, "").toUpperCase().substring(0, nameLength)}${delimiter}${pad(Math.floor(Math.random() * Math.pow(10, suffixLength)), suffixLength)}`;
 //
 
 // - `jwt`
@@ -53,17 +60,17 @@ const jwtDecoded = async function (token) {
 
 // `bcrypt`
 async function bcryptHash(s) {
-    return bcrypt.hash(s, bcryptConfig["salt.rounds"]);
+	return bcrypt.hash(s, bcryptConfig["salt.rounds"]);
 }
 async function bcryptCompare(hash, s) {
-    return bcrypt.compare(s, hash);
+	return bcrypt.compare(s, hash);
 }
 //
 
 module.exports = {
 	nodemailerCreateMail,
 	nodemailerSendMail,
-	randexpGenerateOtp,
+	genAuraId,
 	jwtCreate,
 	jwtDecoded,
 	bcryptHash,
@@ -92,7 +99,7 @@ module.exports = {
 					status: 400,
 					message: error.message,
 				};
-			
+
 			return {
 				status: 500,
 				message: errors[500],

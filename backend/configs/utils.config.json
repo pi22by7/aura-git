@@ -14,5 +14,11 @@
         "amount": 100
       }
     }
+  },
+  "aura.id": {
+    "prefix": "AURA23",
+    "delimiter": "-",
+    "name.length": 3,
+    "suffix.digits.length": 4
   }
 }
