@@ -15,9 +15,9 @@ export const NavBar = () => {
   // Handle menu toggle
   const handleMenuToggle = () => {
     if (menu) {
-      navMenuRef.current.classList.add("hidden");
+      navMenuRef.current.classList.add("invisible");
     } else {
-      navMenuRef.current.classList.remove("hidden");
+      navMenuRef.current.classList.remove("invisible");
     }
     setToggleMenu((prev) => !prev);
   };
@@ -25,13 +25,13 @@ export const NavBar = () => {
   // Hide menu on navigation
   const handleMenuHide = () => {
     if (menu) {
-      navMenuRef.current.classList.add("hidden");
+      navMenuRef.current.classList.add("invisible");
       setToggleMenu(false);
     }
   };
 
   return (
-    <nav className="md:grid md:grid-cols-3 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border-1px bg-opacity-20 z-40 ">
+    <nav className="md:grid md:grid-cols-4 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border-1px bg-opacity-20 z-40 ">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           <img
@@ -42,9 +42,13 @@ export const NavBar = () => {
           />
         </Link>
       </div>
-      <div
+      {/* <div
         ref={navMenuRef}
         className="nav-menu md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:contents hidden bg-white"
+      > */}
+      <div
+        ref={navMenuRef}
+        className="nav-menu col-span-2 md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:visible invisible md:bg-transparent bg-white"
       >
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
           <li className="md:px-5 px-3">
