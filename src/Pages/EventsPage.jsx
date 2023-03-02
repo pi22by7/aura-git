@@ -30,7 +30,7 @@ const EventsPage = () => {
   }
 
   return (
-    <div className="h-fit grid md:grid-cols-3 grid-cols-1 bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-fixed bg-eventc">
+    <div className="h-[100vh] grid md:grid-cols-3 grid-cols-1 bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-scroll bg-eventc overflow-scroll [&::-webkit-scrollbar]:hidden">
       <div className="lg:col-start-2 lg:col-span-2 md:col-span-3 col-span-1">
         <h1 className="text-3xl font-bold text-center pt-5">Competitions</h1>
         {/* Tabs for each club in events */}
