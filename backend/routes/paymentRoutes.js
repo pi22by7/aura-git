@@ -1,3 +1,7 @@
+/**
+ * Not in use
+ */
+
 // Imports
 const express = require("express");
 const { requireVerifiedAuth } = require("../middleware/authMiddleware");
