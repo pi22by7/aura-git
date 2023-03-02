@@ -20,16 +20,20 @@ module.exports.createTeam = async (req, res, next) => {
 
 		let { event_participated, team_name, team_members = [] } = req.body;
 
+		if (!("event_id" in event_participated))
+			return res.status(400).send(Response(errors[400].eventDetailsRequired));
+
 		// Check if team members contains leader
 		if (team_members.find(id => id === String(res.locals.user._id)))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
 		team_members = await Promise.all(team_members.map(id => User.findById(id)));
-		if (team_members.length > 0 && team_members.find(member => !member))
+		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
 		// Check if the user is already registered for the current event
 		let results = await Team.find({
+			"event_participated.event_id": event_participated.event_id,
 			$or: [{
 				"team_leader.id": res.locals.user._id,
 			}, {
@@ -52,6 +56,7 @@ module.exports.createTeam = async (req, res, next) => {
 		if (team_members.length > 0) {
 			// Check if at least one team member has already registered
 			results = await Team.find({
+				"event_participated.event_id": event_participated.event_id,
 				$or: orFields,
 			});
 			if (results.length > 0)
