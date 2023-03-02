@@ -36,13 +36,13 @@ const EventsDetailsPage = () => {
 
   return (
     <div className="flex flex-col items-center w-[90%] mx-auto pt-5">
-      <div className="w-full">
+      {/* <div className="w-full">
         <img
           className="w-full h-1/4 object-cover rounded-lg shadow-2xl"
           src="https://cdn.pastemagazine.com/www/articles/best-of-festival-posters.jpg"
           alt={`${event.title}-banner`}
         />
-      </div>
+      </div> */}
       <div className="mt-10">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>

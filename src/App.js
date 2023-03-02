@@ -50,8 +50,11 @@ function App() {
       <section>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="events" element={<EventsPage />} />
-          <Route path="events/:club/:title" element={<EventsDetailsPage />} />
+          <Route path="competitions" element={<EventsPage />} />
+          <Route
+            path="competitions/:club/:title"
+            element={<EventsDetailsPage />}
+          />
           <Route
             path="login"
             element={

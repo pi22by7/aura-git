@@ -53,7 +53,7 @@ export const NavBar = () => {
             </NavLink>
           </li>
           <li className="md:px-5 px-3">
-            <NavLink onClick={handleMenuToggle} to="/events">
+            <NavLink onClick={handleMenuToggle} to="/competitions">
               COMPETITIONS
             </NavLink>
           </li>

@@ -79,36 +79,38 @@ const council = [
 
 const Contact = () => {
   return (
-    <div className="my-10 bg-contactus bg-contain bg-no-repeat bg-left">
-      <h2 className="text-2xl font-bold text-center">Contact Us</h2>
-      <div className="grid md:grid-cols-4 grid-cols-1 my-5">
-        {council.map((member) => (
-          <div className="flex flex-col items-center py-3" key={member.name}>
-            <img
-              src={member.image}
-              alt="avatar"
-              className="rounded-full h-52 w-52 object-cover"
-            />
-            <h3 className="text-xl font-bold my-2">{member.name}</h3>
-            <p className="text-lg font-semibold">{member.role}</p>
-            <div className="grid mt-4">
-              <p className="justify-self-center">+91 {member.phone}</p>
+    <div className="grid grid-col-3 h-[100vh] bg-signinc w-screen user-none bg-contact bg-contain bg-no-repeat bg-left bg-fixed overflow-scroll [&::-webkit-scrollbar]:hidden">
+      <div className="col-start-2">
+        <h2 className="text-2xl font-bold text-center">Contact Us</h2>
+        <div className="grid md:grid-cols-2 grid-cols-1 my-5">
+          {council.map((member) => (
+            <div className="flex flex-col items-center py-3" key={member.name}>
+              <img
+                src={member.image}
+                alt="avatar"
+                className="rounded-full h-52 w-52 object-cover"
+              />
+              <h3 className="text-xl font-bold my-2">{member.name}</h3>
+              <p className="text-lg font-semibold">{member.role}</p>
+              <div className="grid mt-4">
+                <p className="justify-self-center">+91 {member.phone}</p>
 
-              <a
-                href={member.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="justify-self-center"
-              >
-                <FontAwesomeIcon
-                  icon={faInstagram}
-                  className="text-2xl text-red-600 justify-self-center"
-                />
-                <text> {member.handle}</text>
-              </a>
+                <a
+                  href={member.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="justify-self-center"
+                >
+                  <FontAwesomeIcon
+                    icon={faInstagram}
+                    className="text-2xl text-red-600 justify-self-center"
+                  />
+                  <text> {member.handle}</text>
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
