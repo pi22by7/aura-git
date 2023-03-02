@@ -34,7 +34,6 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.1",
     "nodemailer": "^6.9.1",
-    "randexp": "^0.5.3",
     "razorpay": "^2.8.6",
     "validator": "^13.9.0"
   },
