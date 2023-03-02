@@ -66,7 +66,30 @@ async function userSearchController(req, res, next) {
 	return next();
 }
 
+async function userUpdateController(req, res, next) {
+	if (!res.locals.user)
+		return res.status(401).send(Response(errors[401].authRequired));
+
+	try {
+		const { body } = req;
+
+		const { usn = undefined } = body;
+
+		if (usn !== undefined)
+			res.locals.user.usn = usn;
+
+		await res.locals.user.save();
+		await res.locals.refreshProfile();
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+}
+
 module.exports = {
 	userGetController,
 	userSearchController,
+	userUpdateController,
 };
