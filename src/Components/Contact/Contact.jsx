@@ -79,7 +79,7 @@ const council = [
 
 const Contact = () => {
   return (
-    <div className="my-10">
+    <div className="my-10 bg-contactus bg-contain bg-no-repeat bg-left">
       <h2 className="text-2xl font-bold text-center">Contact Us</h2>
       <div className="grid md:grid-cols-4 grid-cols-1 my-5">
         {council.map((member) => (
@@ -91,7 +91,9 @@ const Contact = () => {
             />
             <h3 className="text-xl font-bold my-2">{member.name}</h3>
             <p className="text-lg font-semibold">{member.role}</p>
-            <div className="grid mt-5">
+            <div className="grid mt-4">
+              <p className="justify-self-center">+91 {member.phone}</p>
+
               <a
                 href={member.instagram}
                 target="_blank"
@@ -104,7 +106,6 @@ const Contact = () => {
                 />
                 <text> {member.handle}</text>
               </a>
-              <p className="justify-self-center">{member.phone}</p>
             </div>
           </div>
         ))}

@@ -49,22 +49,22 @@ export const NavBar = () => {
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/">
-              Home
+              HOME
             </NavLink>
           </li>
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/events">
-              Competitions
+              COMPETITIONS
             </NavLink>
           </li>
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/rule-book">
-              Rule Book
+              RULE BOOK
             </NavLink>
           </li>
           <li className="md:px-5 px-3">
             <NavLink onClick={handleMenuToggle} to="/contact-us">
-              Contact
+              CONTACT US
             </NavLink>
           </li>
         </ul>
@@ -72,8 +72,8 @@ export const NavBar = () => {
       <div className="md:place-self-end md:my-auto">
         {!user && (
           <>
-            <NavLink onClick={handleMenuHide} to="/login">
-              <button className="nav-btn bg-quaternary mx-1">Login</button>
+            <NavLink onClick={handleMenuHide} to="/signup">
+              <button className="nav-btn bg-quaternary mx-1">REGISTER</button>
             </NavLink>
             {/* <NavLink onClick={handleMenuHide} to="/signup">
               <button className="nav-btn bg-quaternary mx-1">Signup</button>

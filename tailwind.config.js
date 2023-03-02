@@ -28,6 +28,7 @@ module.exports = {
         schedule: "url('./Assets/schedule.png')",
         contact: "url('./Assets/contact.png')",
         profile: "url('./Assets/prof.png')",
+        contactus: "url('./Assets/contactus.png')",
       },
     },
   },

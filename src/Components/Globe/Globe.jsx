@@ -103,10 +103,10 @@ const GlobeComponent = () => {
       {/* {console.log(loading)} */}
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
-        <p className="absolute bottom-12 left-16 z-40">
+        <p className="absolute bottom-12 right-16 z-40">
           <img
             src={logo}
-            className="md:h-32 mr-44 h-20"
+            className="md:h-28 mr-28 h-28"
             alt="Aura Logo"
             draggable={false}
           />
@@ -115,7 +115,7 @@ const GlobeComponent = () => {
         {!loading && (
           <div
             ref={detRef}
-            className="w-[25vw] h-[60vh] absolute right-20 top-[20vh] rounded-lg"
+            className="w-[15vw] h-[45vh] absolute right-20 bottom-[20vh] rounded-lg"
           >
             <img src={legend} alt="legend" draggable={false} />
           </div>
