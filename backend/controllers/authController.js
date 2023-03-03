@@ -36,8 +36,7 @@ module.exports.signup_post = async (req, res, next) => {
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
 
     if (!res.locals.data) res.locals.data = {};
-    res.locals.data.user = user._id;
-    res.locals.data.name = name;
+    res.locals.data.user = await User.findById(user._id, "-password");
     res.locals.status = 201;
   } catch (error) {
     const { status, message } = getError(error);
@@ -57,7 +56,7 @@ module.exports.login_post = async (req, res, next) => {
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
     if (!res.locals.data)
       res.locals.data = {};
-    res.locals.data.user = user._id;
+    res.locals.data.user = await User.findById(user._id, "-password");
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).json(Response(message));
