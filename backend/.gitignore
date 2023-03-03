@@ -1,6 +1,13 @@
 # Node modules
 node_modules
 
-# env vars
-*.env
+# Env vars
 .env
+
+# Secure configs
+configs/*.secure.js
+configs/*.secure.json
+
+# Misc
+.DS_Store
+*.mongodb

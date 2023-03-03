@@ -1,0 +1,11 @@
+{
+  "search.options": {
+    "email": "^{email}",
+    "name": "^{name}",
+    "usn": "^{usn}"
+  },
+  "search.pagination": {
+    "page.size": 20,
+    "page.max.size": 20
+  }
+}
