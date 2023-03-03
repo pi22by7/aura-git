@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
@@ -14,13 +14,14 @@ const UserPage = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       await api
         .get(`/auth/user/status/`)
         .then((res) => {
-          if (!res.data.profile) return redirect("/login");
+          if (!res.data.data.authenticated) return navigate("/login");
           setUser(res.data.profile);
           setLoading(false);
         })

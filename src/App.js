@@ -29,7 +29,7 @@ function App() {
       await api
         .get("/auth/user/status")
         .then((res) => {
-          console.log(res.data.profile);
+          if (!res.data.data.authenticated) setUser(null);
           setUser(res.data.profile);
         })
         .catch((err) => {

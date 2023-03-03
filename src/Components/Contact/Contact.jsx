@@ -105,7 +105,7 @@ const Contact = () => {
                     icon={faInstagram}
                     className="text-2xl text-red-600 justify-self-center"
                   />
-                  <text> {member.handle}</text>
+                  <> {member.handle}</>
                 </a>
               </div>
             </div>
