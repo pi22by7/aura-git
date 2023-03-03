@@ -31,10 +31,13 @@ async function userSearchController(req, res, next) {
 			name = undefined,
 			usn = undefined,
 			email_verified = undefined,
+			pageSize = queryConfig["search.pagination"]["page.size"],
+			paginationTs = Date.now(),
 		} = req.query;
 
-		if (!email && !name && !usn && (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
-			return res.status(400).send(Response(errors[400].searchQueryRequired));
+		// Uncomment if the query is strictly required
+		// if (!email && !name && !usn && (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
+		// 	return res.status(400).send(Response(errors[400].searchQueryRequired));
 
 		if (email)
 			email = quoteRegExp(email);
@@ -55,9 +58,19 @@ async function userSearchController(req, res, next) {
 		if (typeof email_verified === "boolean")
 			query.email_verified = email_verified;
 
+		const users = await User.find({
+			...query,
+			"_profile_information.account_creation_timestamp": { $lte: paginationTs },
+		}, "-password")
+			.sort({ "_profile_information.account_creation_timestamp": -1 })
+			.limit(pageSize + 1);
+
 		if (!res.locals.data)
 			res.locals.data = {};
-		res.locals.data.results = await User.find(query, "-password");
+		res.locals.data.pageSize = pageSize;
+		res.locals.data.resultsSize = (users.length === pageSize + 1 ? pageSize : users.length);
+		res.locals.data.paginationTs = (users.length - 1 === pageSize ? users[users.length - 1]._profile_information.account_creation_timestamp : null);
+		res.locals.data.results = users.copyWithin(0, 0, users.length - 1);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
