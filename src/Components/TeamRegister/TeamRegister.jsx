@@ -2,9 +2,22 @@
 import { useState } from "react";
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
+  const [Mem, setMem] = useState("");
+
+  const handleInputChange = (e) => {
+    setMem(e.target.value);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    setTeam([...team, team]);
+    setMem("");
+    return null;
+  };
   // eslint-disable-next-line no-unused-vars
   //   const { setUser } = useUser();
   const n = props.size;
+  console.log(n);
   const times = [...Array(n).keys()];
   return (
     <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
@@ -23,14 +36,25 @@ const TeamRegister = (props) => {
                   type={`tm${i + 1}`}
                   name={`tm${i + 1}`}
                   id={`tm${i + 1}`}
-                  onChange={(e) => setTeam((arr) => [...arr, e.target.value])}
+                  value={Mem}
+                  onChange={handleInputChange}
+                  onBlur={handleRegister}
+                  // onBlur={(e) => setTeam((arr) => [...arr, e.target.value])}
                   required
                   placeholder="Enter Teammate's UserID"
                 />
               </div>
             );
           })}
-          {console.log(team)}
+          <div className="grid justify-center my-8">
+            <button
+              className="btn btn-primary row-start-2 justify-self-center"
+              onClick={handleRegister}
+            >
+              Register
+            </button>
+          </div>
+          {console.log(team, Mem)}
         </form>
       </div>
     </div>

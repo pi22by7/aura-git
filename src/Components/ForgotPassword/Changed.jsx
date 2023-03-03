@@ -1,4 +1,5 @@
-import axios from "axios";
+import api from "../../Utils/axios.config";
+
 // import { useEffect } from "react";
 
 const Changed = () => {
@@ -10,14 +11,14 @@ const Changed = () => {
   async function onSuccess() {
     try {
       if (slug === "verifyPass") {
-        const response = await axios.get(
-          `http://localhost:3001/tickets/verification/password/resolve${params}`
+        const response = await api.get(
+          `/tickets/verification/password/resolve${params}`
         );
         console.log(response.data.msg);
         console.log(params);
       } else if (slug === "verifyEmail") {
-        const response = await axios.get(
-          `http://localhost:3001/tickets/verification/email/resolve?token=${params}`
+        const response = await api.get(
+          `/tickets/verification/email/resolve?token=${params}`
         );
         console.log(response.data.msg);
       }

@@ -31,10 +31,7 @@ const EventsDetailsPage = () => {
         });
     }
     fetchEvent();
-  }, [club, title]);
-  const handleRegister = () => {
-    return null;
-  };
+  }, [club, title, navigate]);
 
   if (!event) {
     return <PreLoader type="loading" />;
@@ -53,20 +50,7 @@ const EventsDetailsPage = () => {
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
-        <div className="grid justify-center my-8">
-          {teamSize > 1 && (
-            <TeamRegister
-              size={teamSize}
-              className="row-start-1 justify-center"
-            />
-          )}
-          <button
-            className="btn btn-primary row-start-2 justify-self-center"
-            onClick={handleRegister}
-          >
-            Register
-          </button>
-        </div>
+        <TeamRegister size={teamSize} className="row-start-1 justify-center" />
         {event.event_coordinators.length !== 0 && (
           <EventCoordinators eventCoordinators={event.event_coordinators} />
         )}
