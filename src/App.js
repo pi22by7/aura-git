@@ -5,7 +5,7 @@ import { useUser } from "./Contexts/userContext";
 import { NavBar } from "./Components/Navbar/NavBar";
 import { Footer } from "./Components/Footer/Footer";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { AuthAvailabel, AuthRequired } from "./Utils/AuthCheck/AuthCheck";
+import { AuthAvailabel } from "./Utils/AuthCheck/AuthCheck";
 import HomePage from "./Pages/HomePage";
 import EventsPage from "./Pages/EventsPage";
 import EventsDetailsPage from "./Pages/EventDetailsPage";
@@ -26,15 +26,11 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!localStorage.getItem("uid")) return;
       await api
-        .get(
-          `${process.env.REACT_APP_BACKEND_HOST}/users/${localStorage.getItem(
-            "uid"
-          )}`
-        )
+        .get("/auth/user/status")
         .then((res) => {
-          setUser(res.data.data.user);
+          console.log(res.data.profile);
+          setUser(res.data.profile);
         })
         .catch((err) => {
           console.log(err);
@@ -71,14 +67,7 @@ function App() {
           />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="contact-us" element={<Contact />} />
-          <Route
-            path="profile"
-            element={
-              <AuthRequired>
-                <UserPage />
-              </AuthRequired>
-            }
-          />
+          <Route path="profile" element={<UserPage />} />
           <Route path="dev-team" element={<DevTeam />} />
           <Route path="verifyPass" element={<Changed />} />
           <Route path="verifyEmail" element={<Changed />} />

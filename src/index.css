@@ -54,7 +54,7 @@ code {
 }
 /* Styles for form pages */
 .form-container {
-  @apply h-[100vh] grid lg:grid-cols-2 grid-cols-1 place-items-center md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right;
+  @apply min-h-[100vh] max-h-fit grid lg:grid-cols-2 grid-cols-1 place-items-center md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right py-5;
 }
 
 .form-box {

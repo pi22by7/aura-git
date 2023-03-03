@@ -3,6 +3,11 @@ import { Link, redirect } from "react-router-dom";
 import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
+import colleges from "../Dataset/collegesKar.json";
+
+const collegesList = colleges.map((college) => (
+  <option value={college.college}>{college.college}</option>
+));
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
@@ -12,13 +17,11 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!localStorage.getItem("uid")) {
-        return redirect("/login");
-      }
       await api
-        .get(`/users/${localStorage.getItem("uid")}`)
+        .get(`/auth/user/status/`)
         .then((res) => {
-          setUser(res.data.data.user);
+          if (!res.data.profile) return redirect("/login");
+          setUser(res.data.profile);
           setLoading(false);
         })
         .catch((err) => {
@@ -31,14 +34,12 @@ const UserPage = () => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
   // Handle form submit
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setUpdating(true);
-    console.log(user);
-    api
+    await api
       .patch(`/users/`, user)
       .then((res) => {
-        console.log(res);
         setUser(res.data.profile);
         setUpdating(false);
         setError(null);
@@ -65,6 +66,9 @@ const UserPage = () => {
             alt="Profile"
             className="w-32 h-32 md:w-44 md:h-44 rounded-full m-4 max-w-none max-h-none"
           />
+          <h3>
+            Aura ID: <span className="font-bold">{user.aura_id}</span>
+          </h3>
         </div>
         <div className="info lg:col-span-2 col-span-1 w-full">
           <h1 className="text-3xl">Your Profile</h1>
@@ -128,8 +132,10 @@ const UserPage = () => {
                 value={user.college}
                 onChange={handleInputChange}
                 required
-                placeholder="Your College"
+                placeholder="Your College Name"
+                list="colleges"
               />
+              <datalist id="colleges">{collegesList}</datalist>
             </div>
             <button className="w-full mt-4 py-2 btn btn-primary" type="submit">
               Save

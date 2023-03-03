@@ -2,6 +2,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import api from "../../Utils/axios.config";
 import { useUser } from "../../Contexts/userContext";
+import colleges from "../../Dataset/collegesKar.json";
+
+const collegesList = colleges.map((college) => (
+  <option value={college.college}>
+    {college.college.length < 30
+      ? college.college
+      : college.college.substring(0, 30) + "..."}
+  </option>
+));
 
 const Signup = () => {
   // eslint-disable-next-line no-unused-vars
@@ -25,7 +34,7 @@ const Signup = () => {
 
   const handleSignUp = async () => {
     try {
-      const response = await api
+      await api
         .post("/auth/user/signup", {
           name,
           email,
@@ -34,9 +43,7 @@ const Signup = () => {
           college,
         })
         .then((res) => {
-          console.log(res.data);
-          localStorage.setItem("uid", res.data.data.user);
-          setUser({ id: res.data.data.user, email, password });
+          setUser(res.data.data.user);
           setLoading(false);
           setError("");
           setEmail("");
@@ -44,7 +51,6 @@ const Signup = () => {
           setName("");
           setUsn("");
         });
-      console.log(response.data);
     } catch (error) {
       setLoading(false);
       setError("Invalid Credentials");
@@ -117,8 +123,25 @@ const Signup = () => {
                 onChange={(e) => setCollege(e.target.value)}
                 required
                 placeholder="Your College Name"
+                list="colleges"
               />
+              <datalist id="colleges">{collegesList}</datalist>
             </div>
+            {/* <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="college">
+                College
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="text"
+                name="college"
+                id="college"
+                value={college}
+                onChange={(e) => setCollege(e.target.value)}
+                required
+                placeholder="Your College Name"
+              />
+            </div> */}
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="password">
                 Password
