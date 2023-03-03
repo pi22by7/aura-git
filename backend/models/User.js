@@ -46,6 +46,11 @@ const userSchema = new mongoose.Schema({
     required: [true, errors[400].usnRequired],
     trim: true,
   },
+  college: {
+    type: String,
+    required: [true, errors[400].collegeRequired],
+    trim: true,
+  },
   email_verified: {
     type: Boolean,
     default: false,

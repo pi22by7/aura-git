@@ -73,10 +73,15 @@ async function userUpdateController(req, res, next) {
 	try {
 		const { body } = req;
 
-		const { usn = undefined } = body;
+		const { name = undefined, usn = undefined, college = undefined } = body;
 
+		const user = res.locals.user;
+		if (name !== undefined)
+			user.name = name;
 		if (usn !== undefined)
-			res.locals.user.usn = usn;
+			user.usn = usn;
+		if (college !== undefined)
+			user.college = college;
 
 		await res.locals.user.save();
 		await res.locals.refreshProfile();

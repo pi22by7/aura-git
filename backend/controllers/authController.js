@@ -27,10 +27,27 @@ const getError = (error) => {
 
 // Body
 module.exports.signup_post = async (req, res, next) => {
-  const { name, email, usn, password } = req.body;
-
   try {
-    const user = await User.create({ name, email, usn, password: await bcryptHash(password) });
+    const { name = undefined, email = undefined, usn = undefined, college = undefined, password = undefined } = req.body;
+
+    if (name === undefined)
+      return res.status(400).send(Response(errors[400].nameRequired));
+    if (email === undefined)
+      return res.status(400).send(Response(errors[400].emailRequired));
+    if (usn === undefined)
+      return res.status(400).send(Response(errors[400].usnRequired));
+    if (college === undefined)
+      return res.status(400).send(Response(errors[400].collegeRequired));
+    if (password === undefined)
+      return res.status(400).send(Response(errors[400].passwordRequired));
+
+    const user = await User.create({
+      name,
+      email,
+      usn,
+      college,
+      password: await bcryptHash(password),
+    });
     const token = user.createToken();
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
