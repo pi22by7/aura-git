@@ -44,7 +44,7 @@ export const EventCard = ({ event }) => {
           </div>
           <Link
             to={`/competitions/${_slugs.club}/${_slugs.title}`}
-            className="my-auto place-self-end"
+            className="my-auto md:place-self-end"
           >
             <button className="btn btn-primary">View Details</button>
           </Link>

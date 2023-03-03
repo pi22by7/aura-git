@@ -15,21 +15,20 @@ const EventsDetailsPage = () => {
 
   useEffect(() => {
     async function fetchEvent() {
-      try {
-        const response = await api
-          .get(`/events/${club}/${title}`)
-          .then((res) => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            setTeamSize(parseInt(response.data.data.event.team_size));
-            setEvent(response.data.data.event);
-          });
-      } catch (error) {
-        if (error.response.status === 404) {
-          navigate("/404");
-        } else {
-          navigate("/events");
-        }
-      }
+      await api
+        .get(`/events/${club}/${title}`)
+        .then((res) => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          setTeamSize(parseInt(res.data.data.event.team_size));
+          setEvent(res.data.data.event);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            navigate("/404");
+          } else {
+            navigate("/events");
+          }
+        });
     }
     fetchEvent();
   }, [club, title]);
