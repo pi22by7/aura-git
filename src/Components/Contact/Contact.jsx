@@ -81,7 +81,7 @@ const Contact = () => {
   return (
     <div className="grid grid-col-3 h-[100vh] bg-signinc w-screen user-none bg-contact bg-contain bg-no-repeat bg-left bg-scroll overflow-scroll [&::-webkit-scrollbar]:hidden">
       <div className="col-start-2">
-        <h2 className="text-2xl font-bold text-center">Contact Us</h2>
+        <h2 className="text-2xl font-bold text-center mt-12">Contact Us</h2>
         <div className="grid md:grid-cols-2 grid-cols-1 my-5">
           {council.map((member) => (
             <div className="flex flex-col items-center py-3" key={member.name}>
