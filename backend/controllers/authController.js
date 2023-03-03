@@ -71,3 +71,9 @@ module.exports.logout_get = (req, res, next) => {
 
   return next();
 };
+
+module.exports.authStatusController = (req, res, next) => {
+  return res.status(200).send(Response(false, {
+    authenticated: !!res.locals.user,
+  }));
+};
