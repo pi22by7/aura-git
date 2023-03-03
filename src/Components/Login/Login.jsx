@@ -20,6 +20,7 @@ const Login = () => {
       setError("Please enter all fields");
       return;
     }
+    setError("");
     setLoading(true);
     handleLogin();
   };
@@ -40,9 +41,15 @@ const Login = () => {
           setPassword("");
         });
     } catch (error) {
-      console.error(error);
       setLoading(false);
-      setError("Invalid Credentials");
+      if (
+        error.response.status === 400 &&
+        error.response.data.error === "404-userNotFound"
+      ) {
+        setError("E-mail Not Registered");
+      } else {
+        setError("Invalid Credentials");
+      }
     }
   };
 

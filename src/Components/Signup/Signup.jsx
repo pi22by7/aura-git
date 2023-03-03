@@ -28,6 +28,7 @@ const Signup = () => {
       setError("Please enter all fields");
       return;
     }
+    setError("");
     setLoading(true);
     handleSignUp();
   };
@@ -53,7 +54,19 @@ const Signup = () => {
         });
     } catch (error) {
       setLoading(false);
-      setError("Invalid Credentials");
+      if (
+        error.response.status === 400 &&
+        error.response.data.error === "400-invalidEmail"
+      ) {
+        setError("Invalid Email");
+      } else if (
+        error.response.status === 403 &&
+        error.response.data.error === "403-emailAlreadyInUse"
+      ) {
+        setError("Email Already In Use");
+      } else {
+        setError("Something Went Wrong");
+      }
     }
   };
 

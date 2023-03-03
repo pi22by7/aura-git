@@ -38,6 +38,10 @@ const UserPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setUpdating(true);
+    if (!user.name || !user.college || !user.usn) {
+      return setError("Please enter all fields");
+    }
+
     await api
       .patch(`/users/`, user)
       .then((res) => {
@@ -46,8 +50,12 @@ const UserPage = () => {
         setError(null);
       })
       .catch((err) => {
-        setError(err);
         setUpdating(false);
+        if (err.response.status === 401) {
+          return navigate("/login");
+        } else if (err.response.status === 400) {
+          setError("Invalid Fields");
+        }
       });
   };
   if (loading) {
@@ -104,6 +112,7 @@ const UserPage = () => {
                 onChange={handleInputChange}
                 required
                 placeholder="Your Email"
+                disabled
               />
             </div>
             <div className="grid grid-cols-1 my-1">

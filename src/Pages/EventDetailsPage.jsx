@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../Utils/axios.config";
 import EventDetails from "../Components/EventDetails/EventDetails";
 import EventCoordinators from "../Components/EventCoords/EventCoords";
@@ -11,17 +11,24 @@ const EventsDetailsPage = () => {
   const { club, title } = useParams();
   const [teamSize, setTeamSize] = useState(0);
   const [event, setEvent] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchEvent() {
       try {
-        const response = await api.get(`/events/${club}/${title}`);
-        console.log(response.data.data);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        setTeamSize(parseInt(response.data.data.event.team_size));
-        setEvent(response.data.data.event);
+        const response = await api
+          .get(`/events/${club}/${title}`)
+          .then((res) => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            setTeamSize(parseInt(response.data.data.event.team_size));
+            setEvent(response.data.data.event);
+          });
       } catch (error) {
-        console.error(error);
+        if (error.response.status === 404) {
+          navigate("/404");
+        } else {
+          navigate("/events");
+        }
       }
     }
     fetchEvent();
