@@ -62,5 +62,8 @@
     "sessionExpired": "440-sessionExpired",
     "sessionInvalidated": "440-sessionInvalidated"
   },
-  "500": "500-internalError"
+  "500": "500-internalError",
+  "503": {
+    "serviceUnavailable": "503-serviceUnavailable"
+  }
 }
