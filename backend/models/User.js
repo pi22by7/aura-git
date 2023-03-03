@@ -75,6 +75,10 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
+    account_creation_timestamp: {
+      type: Number,
+      default: Date.now,
+    },
   },
 });
 
