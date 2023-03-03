@@ -7,6 +7,8 @@ import PreLoader from "../Components/PreLoader/PreLoader";
 const UserPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +33,20 @@ const UserPage = () => {
   // Handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
+    setUpdating(true);
+    console.log(user);
+    api
+      .patch(`/users/`, user)
+      .then((res) => {
+        console.log(res);
+        setUser(res.data.profile);
+        setUpdating(false);
+        setError(null);
+      })
+      .catch((err) => {
+        setError(err);
+        setUpdating(false);
+      });
   };
   if (loading) {
     return <PreLoader type="loading" />;
@@ -52,6 +68,8 @@ const UserPage = () => {
         </div>
         <div className="info lg:col-span-2 col-span-1 w-full">
           <h1 className="text-3xl">Your Profile</h1>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          {updating && <p className="text-green-500 text-center">Updating</p>}
           <form className="mt-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="name">
