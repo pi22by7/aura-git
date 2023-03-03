@@ -29,9 +29,9 @@ function App() {
       if (!localStorage.getItem("uid")) return;
       await api
         .get(
-          `${
-            process.env.REACT_APP_BACKEND_HOST
-          }/auth/user/${localStorage.getItem("uid")}`
+          `${process.env.REACT_APP_BACKEND_HOST}/users/${localStorage.getItem(
+            "uid"
+          )}`
         )
         .then((res) => {
           setUser(res.data.data.user);
