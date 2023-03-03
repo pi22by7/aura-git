@@ -57,19 +57,18 @@ const team = [
   },
   {
     name: "Samyak H",
-    role: "Graphic Designer",
+    role: "Design",
     image: Samyak,
-    linkedin: "",
-    instagram: "",
-    github: "",
+    linkedin: "https://www.linkedin.com/in/samyak-h-2974001b5",
+    instagram: "https://www.instagram.com/samyakkk._/",
   },
   {
     name: "Ganesh Margale",
-    role: "Graphic Designer",
+    role: "Design",
     image: Ganesh,
-    linkedin: "",
-    instagram: "",
-    github: "",
+    linkedin: "https://www.linkedin.com/in/ganesh-s-margale-4069a122b/",
+    instagram: "https://www.instagram.com/ganesh_026/",
+    github: "https://github.com/GaneshMargale",
   },
 ];
 
@@ -101,12 +100,14 @@ const DevTeam = () => {
                   className="text-2xl text-red-600 mx-2"
                 />
               </a>
-              <a href={member.github} target="_blank" rel="noreferrer">
-                <FontAwesomeIcon
-                  icon={faGithub}
-                  className="text-2xl text-black-600 mx-2"
-                />
-              </a>
+              {member.linkedin && (
+                <a href={member.github} target="_blank" rel="noreferrer">
+                  <FontAwesomeIcon
+                    icon={faGithub}
+                    className="text-2xl text-black-600 mx-2"
+                  />
+                </a>
+              )}
             </div>
           </div>
         ))}
