@@ -1,0 +1,44 @@
+[
+  {
+    "lat": 8.707407619709493,
+    "lng": 69.43142658528441,
+    "url": "/login",
+    "title": "Login or Register"
+  },
+  {
+    "lat": 12.527393402605007,
+    "lng": -104.35376721925991,
+    "url": "/contact-us",
+    "title": "Contact"
+  },
+  {
+    "lat": -17.927994515212426,
+    "lng": -53.59844099578319,
+    "url": "/schedule",
+    "title": "Schedule"
+  },
+  {
+    "lat": 29.031201180116845,
+    "lng": 131.5679624438938,
+    "url": "/profile",
+    "title": "Profile"
+  },
+  {
+    "lat": 17.488062654107473,
+    "lng": 41.50082296750401,
+    "url": "/competitions",
+    "title": "Events"
+  },
+  {
+    "lat": -27.781971610839932,
+    "lng": 127.74853840358307,
+    "url": "/rulebook",
+    "title": "Rule Book"
+  },
+  {
+    "lat": -32.96240669039982,
+    "lng": 18.357933072399362,
+    "url": "/dev-team",
+    "title": "Dev Team"
+  }
+]

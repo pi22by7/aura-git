@@ -1,7 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 /* :root {
   --clr-primary: #7286d3;
   --clr-secondary: #8ea7e9;
@@ -11,12 +14,16 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif; */
+  /* font-family: "Acme", sans-serif; */
+  /* font-family: "Tilt Warp", cursive; */
+  font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 code {
@@ -39,5 +46,32 @@ code {
 
 /* Tailwind Buttons */
 .btn {
-  @apply text-white bg-primary rounded-full px-4 py-2 hover:bg-tertiary font-semibold duration-700;
+  @apply text-white rounded-full px-4 py-2 hover:bg-tertiary font-semibold duration-700;
+}
+
+.btn-primary {
+  @apply bg-primary;
+}
+/* Styles for form pages */
+.form-container {
+  @apply min-h-[100vh] max-h-fit grid lg:grid-cols-2 grid-cols-1 place-items-center md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right py-5;
+}
+
+.form-box {
+  @apply align-middle md:col-start-2 rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl;
+}
+
+/* Glass Morphism */
+
+.glass {
+  @apply bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20;
+}
+
+.selector {
+  /* user-drag: none; */
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
