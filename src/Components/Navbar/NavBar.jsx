@@ -48,7 +48,7 @@ export const NavBar = () => {
       > */}
       <div
         ref={navMenuRef}
-        className="nav-menu col-span-2 md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:visible invisible md:bg-transparent"
+        className="nav-menu col-span-2 md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:visible invisible md:bg-transparent bg-white"
       >
         <ul className="flex md:flex-row flex-col md:items-center gap-3">
           <li className="md:px-5 px-3">
