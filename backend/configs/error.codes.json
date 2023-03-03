@@ -47,7 +47,8 @@
     "eventAlreadyRegistered": "403-eventAlreadyRegistered",
     "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
     "invalidOperation": "403-invalidOperation",
-    "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed"
+    "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed",
+    "teamMemberEmailUnverified": "403-teamMemberEmailUnverified"
   },
   "404": {
     "userNotFound": "404-userNotFound",

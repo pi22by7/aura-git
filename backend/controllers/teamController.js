@@ -31,6 +31,10 @@ module.exports.createTeam = async (req, res, next) => {
 		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
+		// Check if all team members have their email addresses verified
+		if (team_members.find(member => member.email_verified === false))
+			return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
+
 		// Check if the user is already registered for the current event
 		let results = await Team.find({
 			"event_participated.event_id": event_participated.event_id,
@@ -175,6 +179,10 @@ module.exports.modifyTeam = async (req, res, next) => {
 			team_members = await Promise.all(team_members.map(id => User.findById(id)));
 			if (team_members.length > 0 && team_members.find(member => !member))
 				return res.status(404).send(Response(errors[404].userNotFound));
+
+			// Check if all team members have their email addresses verified
+			if (team_members.find(member => member.email_verified === false))
+				return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
 
 			// Check if any new team member is already registered for the event
 			const orFields = [];
