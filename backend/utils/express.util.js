@@ -15,10 +15,11 @@ const { PORT } = process.env;
 // Body
 expressApp.use(express.json());
 expressApp.use(
-  cors({
-    origin: meta.dev_host,
-    credentials: true,
-  })
+  // cors({
+  //   origin: meta.dev_host,
+  //   credentials: true,
+  // })
+  cors(),
 );
 expressApp.use(cookieParser());
 
