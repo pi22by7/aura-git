@@ -14,7 +14,7 @@ const UserPage = () => {
         return redirect("/login");
       }
       await api
-        .get(`/auth/user/${localStorage.getItem("uid")}`)
+        .get(`/users/${localStorage.getItem("uid")}`)
         .then((res) => {
           setUser(res.data.data.user);
           setLoading(false);
@@ -116,7 +116,7 @@ const UserPage = () => {
             <button className="w-full mt-4 py-2 btn btn-primary" type="submit">
               Save
             </button>
-            <Link to="/forgot-password/change">
+            <Link to="/forgot-password">
               <button
                 className="w-full mt-4 py-2 btn btn-primary"
                 type="submit"
