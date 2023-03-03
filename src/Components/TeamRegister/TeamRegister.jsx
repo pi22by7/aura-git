@@ -16,6 +16,8 @@ const TeamRegister = (props) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    let ele = document.getElementById("msg");
+    ele.innerHTML = "Registrations will start on March 5th! :)";
   };
   // eslint-disable-next-line no-unused-vars
   //   const { setUser } = useUser();
@@ -42,6 +44,7 @@ const TeamRegister = (props) => {
                   key={i.id}
                   onChange={handleInputChange}
                   onBlur={handleRegister}
+                  disabled={true}
                   // onBlur={(e) => setTeam((arr) => [...arr, e.target.value])}
                   required
                   placeholder="Enter Teammate's UserID"
@@ -50,6 +53,7 @@ const TeamRegister = (props) => {
             );
           })}
           <div className="grid justify-center my-8">
+            <p id="msg" className="my-2"></p>
             <button
               className="btn btn-primary row-start-2 justify-self-center"
               onClick={handleSubmit}

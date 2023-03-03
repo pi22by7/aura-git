@@ -50,7 +50,10 @@ const EventsDetailsPage = () => {
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
-        <TeamRegister size={teamSize} className="row-start-1 justify-center" />
+        <TeamRegister
+          size={teamSize}
+          className="justify-center justify-self-center w-4 mb-12"
+        />
         {event.event_coordinators.length !== 0 && (
           <EventCoordinators eventCoordinators={event.event_coordinators} />
         )}
