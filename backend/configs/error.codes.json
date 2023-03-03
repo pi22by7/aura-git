@@ -1,0 +1,66 @@
+{
+  "400": {
+    "authRequired": "400-authRequired",
+    "alreadyVerified": "400-emailAlreadyVerified",
+    "emailAlreadySent": "400-emailAlreadySent",
+    "tokenRequired": "400-tokenRequired",
+    "invalidRequest": "400-invalidRequest",
+    "newPasswordRequired": "400-newPasswordRequired",
+    "shortPassword": "400-shortPassword",
+    "nameRequired": "400-nameRequired",
+    "emailRequired": "400-emailRequired",
+    "invalidEmail": "400-invalidEmail",
+    "passwordRequired": "400-passwordRequired",
+    "usnRequired": "400-usnRequired",
+    "participationEventIdRequired": "400-participationEventIdRequired",
+    "participationEventTitleRequired": "400-participationEventTitleRequired",
+    "teamNameRequired": "400-teamNameRequired",
+    "teamLeaderIdRequired": "400-teamLeaderIdRequired",
+    "teamLeaderUsnRequired": "400-teamLeaderUsnRequired",
+    "teamLeaderNameRequired": "400-teamLeaderNameRequired",
+    "teamLeaderEmailRequired": "400-teamLeaderEmailRequired",
+    "teamMemberIdRequired": "400-teamMemberIdRequired",
+    "teamMemberUsnRequired": "400-teamMemberUsnRequired",
+    "teamMemberNameRequired": "400-teamMemberNameRequired",
+    "teamMemberEmailRequired": "400-teamMemberEmailRequired",
+    "eventDetailsRequired": "400-eventDetailsRequired",
+    "teamLeaderDetailsRequired": "400-teamLeaderDetailsRequired",
+    "shortName": "400-shortName",
+    "searchQueryRequired": "400-searchQueryRequired",
+    "schemeRequired": "400-schemeRequired",
+    "invalidScheme": "400-invalidScheme",
+    "orderIdRequired": "400-orderIdRequired",
+    "paymentIdRequired": "400-paymentIdRequired",
+    "paymentSignatureRequired": "400-paymentSignatureRequired",
+    "invalidKind": "400-invalidKind",
+    "idRequired": "400-idRequired",
+    "collegeRequired": "400-collegeRequired"
+  },
+  "401": {
+    "authRequired": "401-authRequired",
+    "invalidOrExpiredToken": "401-invalidOrExpiredToken"
+  },
+  "403": {
+    "passwordMismatch": "403-passwordMismatch",
+    "emailAlreadyInUse": "403-emailAlreadyInUse",
+    "emailUnverified": "403-emailUnverified",
+    "eventAlreadyRegistered": "403-eventAlreadyRegistered",
+    "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
+    "invalidOperation": "403-invalidOperation",
+    "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed"
+  },
+  "404": {
+    "userNotFound": "404-userNotFound",
+    "ticketNotFound": "404-ticketNotFound",
+    "eventNotFound": "404-eventNotFound",
+    "emailNotFound": "404-emailNotFound",
+    "orderNotFound": "404-orderNotFound",
+    "clubNotFound": "404-clubNotFound",
+    "teamNotFound": "404-teamNotFound"
+  },
+  "440": {
+    "sessionExpired": "440-sessionExpired",
+    "sessionInvalidated": "440-sessionInvalidated"
+  },
+  "500": "500-internalError"
+}

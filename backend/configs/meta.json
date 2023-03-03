@@ -1,0 +1,13 @@
+{
+  "host": "https://aura.git.edu",
+  "dev_host": "http://localhost:3000",
+  "name": "Aura 23",
+  "emails": {
+    "primary": "aura23.klsgit@gmail.com",
+    "reply_email": "aura23.klsgit@gmail.com"
+  },
+  "endpoints": {
+    "email_verification": "/verifyEmail",
+    "password_reset": "/verifyPass"
+  }
+}

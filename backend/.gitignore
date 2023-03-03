@@ -1,0 +1,13 @@
+# Node modules
+node_modules
+
+# Env vars
+.env
+
+# Secure configs
+configs/*.secure.js
+configs/*.secure.json
+
+# Misc
+.DS_Store
+*.mongodb
