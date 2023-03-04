@@ -13,6 +13,7 @@ module.exports = {
         schedulec: "#fff6d5ff",
         profilec: "#e6e6e6ff",
         contactc: "#ffd5d5ff",
+        rulebookc: "#afc6e9ff",
       },
       height: (theme) => ({
         "screen/90": "90vh",
@@ -29,6 +30,7 @@ module.exports = {
         contact: "url('./Assets/contact.png')",
         profile: "url('./Assets/prof.png')",
         contactus: "url('./Assets/contactus.png')",
+        rulebook: "url('./Assets/rule.png')",
       },
     },
   },
