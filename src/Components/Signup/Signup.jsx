@@ -4,8 +4,8 @@ import api from "../../Utils/axios.config";
 import { useUser } from "../../Contexts/userContext";
 import colleges from "../../Dataset/collegesKar.json";
 
-const collegesList = colleges.map((college) => (
-  <option value={college.college}>
+const collegesList = colleges.map((college, index) => (
+  <option key={index} value={college.college}>
     {college.college.length < 30
       ? college.college
       : college.college.substring(0, 30) + "..."}

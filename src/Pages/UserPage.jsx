@@ -130,7 +130,6 @@ const UserPage = () => {
                   name="email"
                   id="email"
                   value={user.email}
-                  onChange={handleInputChange}
                   required
                   placeholder="Your Email"
                   disabled
@@ -158,7 +157,6 @@ const UserPage = () => {
                 onChange={handleInputChange}
                 required
                 placeholder="Your Phone Number"
-                disabled
               />
             </div>
             <div className="grid grid-cols-1 my-1">
