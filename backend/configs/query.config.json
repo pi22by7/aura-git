@@ -2,7 +2,8 @@
   "search.options": {
     "email": "^{email}",
     "name": "^{name}",
-    "usn": "^{usn}"
+    "usn": "^{usn}",
+    "phone": "^{phone}"
   },
   "search.pagination": {
     "page.size": 20,
