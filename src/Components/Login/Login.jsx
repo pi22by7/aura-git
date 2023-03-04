@@ -25,7 +25,7 @@ const Login = () => {
     handleLogin();
   };
 
-  const handleLogin = async (loginData) => {
+  const handleLogin = async () => {
     try {
       await api
         .post("/auth/user/login", {
@@ -33,8 +33,7 @@ const Login = () => {
           password,
         })
         .then((res) => {
-          localStorage.setItem("uid", res.data.data.user);
-          setUser({ id: res.data.user, email, password });
+          setUser(res.data.data.user);
           setLoading(false);
           setError("");
           setEmail("");

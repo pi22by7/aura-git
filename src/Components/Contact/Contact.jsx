@@ -1,10 +1,10 @@
 import Venki from "../../Assets/Team/Venki.jpg";
 import π from "../../Assets/Team/π.jpg";
 import Vinayak from "../../Assets/Team/Vinayak.jpg";
-import Raj from "../../Assets/Team/Raj.heic";
+import Raj from "../../Assets/Team/Raj.jpg";
 import Vaishnavi from "../../Assets/Team/VK.jpg";
 import Sanjitha from "../../Assets/Team/S3.jpg";
-import Tejaswith from "../../Assets/Team/Vinayak.jpg";
+import Tejaswith from "../../Assets/Team/Tejas.jpg";
 import Jeetendra from "../../Assets/Team/π.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,9 +23,7 @@ const council = [
     name: "Vinayak Biswagar",
     role: "General Secretary",
     image: Vinayak,
-    instagram: "https://www.instagram.com/null/",
     phone: 7022683215,
-    handle: "null",
   },
   {
     name: "Sanjitha Bhat",
@@ -48,7 +46,7 @@ const council = [
     role: "Co-Ordinator",
     image: Venki,
     instagram: "https://www.instagram.com/flick_23/",
-    phone: 0,
+    phone: 9972287030,
     handle: "flick_23",
   },
   {
@@ -64,7 +62,7 @@ const council = [
     role: "Co-Ordinator",
     image: Jeetendra,
     instagram: "https://www.instagram.com/jeetendrakumargarag/",
-    phone: 0,
+    phone: 9343184895,
     handle: "jeetendrakumargarag",
   },
   {
@@ -72,8 +70,8 @@ const council = [
     role: "Co-Ordinator",
     image: Tejaswith,
     instagram: "https://www.instagram.com/tejaswith_/",
-    phone: 0,
-    handle: "tejaswith",
+    phone: 9535457747,
+    handle: "_tejas_x_5",
   },
 ];
 
@@ -82,7 +80,7 @@ const Contact = () => {
     <div className="grid md:grid-cols-3 grid-cols-1 h-[100vh] bg-signinc w-screen user-none bg-contact md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-scroll overflow-scroll [&::-webkit-scrollbar]:hidden">
       <div className="md:col-start-2 col-span-2">
         <h2 className="text-2xl font-bold text-center mt-12">Contact Us</h2>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 my-5">
+        <div className="grid md:grid-cols-2 grid-cols-1 my-5">
           {council.map((member) => (
             <div
               className="flex flex-col items-center py-3 glass m-5"
@@ -97,19 +95,21 @@ const Contact = () => {
               <p className="text-lg font-semibold">{member.role}</p>
               <div className="grid mt-4">
                 <p className="justify-self-center">+91 {member.phone}</p>
+                {member.instagram && (
+                  <a
+                    href={member.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="justify-self-center"
+                  >
+                    <FontAwesomeIcon
+                      icon={faInstagram}
+                      className="text-2xl text-red-600 justify-self-center"
+                    />
 
-                <a
-                  href={member.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="justify-self-center"
-                >
-                  <FontAwesomeIcon
-                    icon={faInstagram}
-                    className="text-2xl text-red-600 justify-self-center"
-                  />
-                  <> {member.handle}</>
-                </a>
+                    <> {member.handle}</>
+                  </a>
+                )}
               </div>
             </div>
           ))}

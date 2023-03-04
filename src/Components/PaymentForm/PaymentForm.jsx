@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import logo from "../../Assets/logo.png";
-import axios from "axios";
+import api from "../../Utils/axios.config";
 
 const PaymentForm = () => {
   const [loading, setLoading] = useState(false);
 
   async function createOrder() {
     try {
-      const { data } = await axios.post("http://localhost:3001/payments/order");
+      const { data } = await api.post(`/payments/order`);
       console.log("posted");
       return data;
     } catch (error) {
@@ -24,10 +24,7 @@ const PaymentForm = () => {
         razorpayOrderId: paymentData.razorpay_order_id,
         razorpaySignature: paymentData.razorpay_signature,
       };
-      const response = await axios.post(
-        "http://localhost:3001/payments/order/:orderId",
-        data
-      );
+      const response = await api.post(`/payments/order/:orderId`, data);
       alert(response.data.msg);
     } catch (error) {
       console.log("Error processing payment:", error);

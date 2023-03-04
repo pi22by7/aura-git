@@ -5,14 +5,15 @@ import {
   faTwitter,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
+import logo from "../../Assets/logo.png";
 
 export const Footer = () => {
   return (
     <footer>
       <div className="bg-gray-100 pt-5">
         <div className="max-w-screen-lg px-4 sm:px-6 text-gray-800 sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
-          <div className="p-5">
-            <h3 className="font-bold text-xl text-indigo-600">Aura</h3>
+          <div>
+            <img src={logo} alt="logo" className="w-36" />
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
@@ -21,8 +22,8 @@ export const Footer = () => {
             <a className="my-3 block" href="/">
               Home
             </a>
-            <a className="my-3 block" href="/events">
-              Events
+            <a className="my-3 block" href="/competitions">
+              Competitions
             </a>
             <a className="my-3 block" href="/rule-book">
               Rule Book
@@ -38,9 +39,9 @@ export const Footer = () => {
             <a className="my-3 block" href="/dev-team">
               Dev Team
             </a>
-            <a className="my-3 block" href="/#">
+            {/* <a className="my-3 block" href="/#">
               Conditions
-            </a>
+            </a> */}
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
@@ -54,7 +55,7 @@ export const Footer = () => {
             >
               Udyambag Industrial Area, Udyambag, Belagavi, Karnataka 590006
             </a>
-            <a className="my-3 block" href="mailto: aura@git.edu">
+            <a className="my-3 block" href="mailto:aura@git.edu">
               aura@git.edu
             </a>
           </div>
@@ -66,19 +67,27 @@ export const Footer = () => {
           className="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
       max-w-screen-lg items-center"
         >
-          <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
-            <a href="/#" className="w-6 mx-1">
+          <div className="md:flex-auto md:flex-row mt-2 flex-row flex">
+            <a
+              href="https://www.instagram.com/aura_git/"
+              target="_blank"
+              className="w-6 mx-1"
+            >
               <FontAwesomeIcon icon={faInstagram} className="text-xl" />
             </a>
-            <a href="/#" className="w-6 mx-1">
+            <a
+              href="https://www.facebook.com/klsgitaura/"
+              target="_blank"
+              className="w-6 mx-1"
+            >
               <FontAwesomeIcon icon={faFacebook} className="text-xl" />
             </a>
-            <a href="/#" className="w-6 mx-1">
+            {/* <a href="/#" target="_blank" className="w-6 mx-1">
               <FontAwesomeIcon icon={faTwitter} className="text-xl" />
-            </a>
-            <a href="/#" className="w-6 mx-1">
+            </a> */}
+            {/* <a href="/#" target="_blank" className="w-6 mx-1">
               <FontAwesomeIcon icon={faLinkedin} className="text-xl" />
-            </a>
+            </a> */}
           </div>
           <div className="my-5">© Copyright 2023. All Rights Reserved.</div>
         </div>

@@ -1,4 +1,4 @@
-const Marker = ({ marker, url, title, navigate, detRef }) => {
+const Marker = ({ marker, url, title, navigate }) => {
   const ele = document.createElement("a");
   ele.style["pointer-events"] = "auto";
   ele.style.cursor = "pointer";
