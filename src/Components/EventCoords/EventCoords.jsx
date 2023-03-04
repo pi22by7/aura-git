@@ -18,7 +18,7 @@ const EventCoordinators = ({ eventCoordinators }) => {
               src={eventCoordinator.image}
               alt={eventCoordinator.name}
             />
-            {console.log(eventCoordinator.image)}
+            {/* {console.log(eventCoordinator.image)} */}
             <p className="font-semibold text-xl my-2">
               {eventCoordinator.name}
             </p>

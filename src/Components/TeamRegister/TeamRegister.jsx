@@ -33,7 +33,11 @@ const TeamRegister = (props) => {
           {times.map((i) => {
             return (
               <div className="grid grid-cols-1 my-1">
-                <label className="py-3 col-span-1" htmlFor={`tm${i + 1}`}>
+                <label
+                  className="py-3 col-span-1"
+                  htmlFor={`tm${i + 1}`}
+                  key={i}
+                >
                   Team Mate {i + 1}
                 </label>
                 <input
@@ -44,7 +48,7 @@ const TeamRegister = (props) => {
                   key={i.id}
                   onChange={handleInputChange}
                   onBlur={handleRegister}
-                  disabled={true}
+                  disabled={false}
                   // onBlur={(e) => setTeam((arr) => [...arr, e.target.value])}
                   required
                   placeholder="Enter Teammate's UserID"
@@ -52,16 +56,18 @@ const TeamRegister = (props) => {
               </div>
             );
           })}
-          <div className="grid justify-center my-8">
-            <p id="msg" className="my-2"></p>
-            <button
-              className="btn btn-primary row-start-2 justify-self-center"
-              onClick={handleSubmit}
-            >
-              Register
-            </button>
-          </div>
-          {console.log(team, Mem)}
+          {n > 0 && (
+            <div className="grid justify-center my-8">
+              <p id="msg" className="my-2"></p>
+              <button
+                className="btn btn-primary row-start-2 justify-self-center"
+                onClick={handleSubmit}
+              >
+                Register
+              </button>
+            </div>
+          )}
+          {/* {console.log(team, Mem)} */}
         </form>
       </div>
     </div>
