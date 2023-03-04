@@ -34,7 +34,9 @@
     "paymentSignatureRequired": "400-paymentSignatureRequired",
     "invalidKind": "400-invalidKind",
     "idRequired": "400-idRequired",
-    "collegeRequired": "400-collegeRequired"
+    "collegeRequired": "400-collegeRequired",
+    "phoneRequired": "400-phoneRequired",
+    "invalidPhone": "400-invalidPhone"
   },
   "401": {
     "authRequired": "401-authRequired",
