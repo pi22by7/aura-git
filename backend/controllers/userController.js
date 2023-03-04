@@ -30,14 +30,14 @@ async function userSearchController(req, res, next) {
 			email = undefined,
 			name = undefined,
 			usn = undefined,
+			phone = undefined,
 			email_verified = undefined,
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = req.query;
 
-		// Uncomment if the query is strictly required
-		// if (!email && !name && !usn && (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
-		// 	return res.status(400).send(Response(errors[400].searchQueryRequired));
+		if (!email && !name && !usn && (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
+			return res.status(400).send(Response(errors[400].searchQueryRequired));
 
 		if (email)
 			email = quoteRegExp(email);
@@ -45,6 +45,8 @@ async function userSearchController(req, res, next) {
 			name = quoteRegExp(name);
 		if (usn)
 			usn = quoteRegExp(usn);
+		if (phone)
+			phone = quoteRegExp(phone);
 		if (typeof email_verified === "string")
 			email_verified = email_verified.toLowerCase() === "true";
 
@@ -55,6 +57,8 @@ async function userSearchController(req, res, next) {
 			query.name = { $regex: queryConfig["search.options"].name.replace("{name}", name), $options: "i" };
 		if (usn)
 			query.usn = { $regex: queryConfig["search.options"].usn.replace("{usn}", usn), $options: "i" };
+		if (phone)
+			query.phone = { $regex: queryConfig["search.options"].phone.replace("{phone}", phone), $options: "i" };
 		if (typeof email_verified === "boolean")
 			query.email_verified = email_verified;
 
@@ -86,7 +90,7 @@ async function userUpdateController(req, res, next) {
 	try {
 		const { body } = req;
 
-		const { name = undefined, usn = undefined, college = undefined } = body;
+		const { name = undefined, usn = undefined, college = undefined, phone = undefined } = body;
 
 		const user = res.locals.user;
 		if (name !== undefined)
@@ -95,6 +99,8 @@ async function userUpdateController(req, res, next) {
 			user.usn = usn;
 		if (college !== undefined)
 			user.college = college;
+		if (phone !== undefined)
+			user.phone = phone;
 
 		await res.locals.user.save();
 		await res.locals.refreshProfile();
