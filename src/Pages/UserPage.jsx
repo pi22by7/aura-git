@@ -13,6 +13,7 @@ const UserPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -58,6 +59,20 @@ const UserPage = () => {
         }
       });
   };
+
+  // Handle email verification:
+  const handleVerifyEmail = async () => {
+    await api
+      .get("/tickets/verification/email/")
+      .then((res) => {
+        if (res.data.status === "success")
+          setMessage("Email sent successfully");
+        res.setError(null);
+      })
+      .catch((err) => {
+        setError("Error sending email. Please try again later.");
+      });
+  };
   if (loading) {
     return <PreLoader type="loading" />;
   }
@@ -83,6 +98,7 @@ const UserPage = () => {
           <h1 className="text-3xl">Your Profile</h1>
           {error && <p className="text-red-500 text-center">{error}</p>}
           {updating && <p className="text-green-500 text-center">Updating</p>}
+          {message && <p className="text-green-500 text-center">{message}</p>}
           <form className="mt-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="name">
@@ -103,17 +119,31 @@ const UserPage = () => {
               <label className="py-3 col-span-1" htmlFor="email">
                 Email
               </label>
-              <input
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="email"
-                name="email"
-                id="email"
-                value={user.email}
-                onChange={handleInputChange}
-                required
-                placeholder="Your Email"
-                disabled
-              />
+              <div className="grid md:grid-cols-5 grid-cols-1">
+                <input
+                  className={
+                    user.tickets.email_verification
+                      ? "bg-gray-100 rounded-lg p-2 md:col-span-5 outline-none"
+                      : "bg-gray-100 rounded-lg p-2 md:col-span-3 outline-none"
+                  }
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={user.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Your Email"
+                  disabled
+                />
+                {!user.tickets.email_verification && (
+                  <button
+                    className="btn btn-primary md:col-span-2 md:mx-3 md:mt-0 mt-3"
+                    onClick={handleVerifyEmail}
+                  >
+                    Verify Email
+                  </button>
+                )}
+              </div>
             </div>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="usn">
