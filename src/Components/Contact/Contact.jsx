@@ -5,7 +5,7 @@ import Raj from "../../Assets/Team/Raj.jpg";
 import Vaishnavi from "../../Assets/Team/VK.jpg";
 import Sanjitha from "../../Assets/Team/S3.jpg";
 import Tejaswith from "../../Assets/Team/Tejas.jpg";
-import Jeetendra from "../../Assets/Team/π.jpg";
+import Jeetendra from "../../Assets/Team/Jeetendra.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
