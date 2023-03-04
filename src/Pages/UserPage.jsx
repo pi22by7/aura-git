@@ -39,7 +39,7 @@ const UserPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setUpdating(true);
-    if (!user.name || !user.college || !user.usn) {
+    if (!user.name || !user.college || !user.usn || !user.phone) {
       return setError("Please enter all fields");
     }
 
@@ -78,7 +78,7 @@ const UserPage = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 lg:h-[100vh] h-fit place-items-center justify-items-center bg-profile lg:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-profilec py-5">
+    <div className="grid lg:grid-cols-3 grid-cols-1 min-h-[100vh] h-fit place-items-center justify-items-center bg-profile lg:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-profilec py-5">
       <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
         <div className="col-span-1">
           <img
@@ -144,6 +144,22 @@ const UserPage = () => {
                   </button>
                 )}
               </div>
+            </div>
+            <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="phone">
+                Phone
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="tel"
+                name="phone"
+                id="phone"
+                value={user.phone}
+                onChange={handleInputChange}
+                required
+                placeholder="Your Phone Number"
+                disabled
+              />
             </div>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="usn">
