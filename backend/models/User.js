@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [isEmail, errors[400].invalidEmail],
   },
+  phone: {
+    type: String,
+    required: [true, errors[400].phoneRequired],
+    trim: true,
+    validate: [(phone) => /^[0-9 ]+$/.test(phone), errors[400].invalidPhone],
+  },
   usn: {
     type: String,
     required: [true, errors[400].usnRequired],
