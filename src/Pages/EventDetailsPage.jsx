@@ -6,6 +6,7 @@ import EventDetails from "../Components/EventDetails/EventDetails";
 import EventCoordinators from "../Components/EventCoords/EventCoords";
 import PreLoader from "../Components/PreLoader/PreLoader";
 import TeamRegister from "../Components/TeamRegister/TeamRegister";
+import Submission from "../Components/TeamRegister/Submissions";
 
 const EventsDetailsPage = () => {
   const { club, title } = useParams();
@@ -55,6 +56,7 @@ const EventsDetailsPage = () => {
             size={teamSize}
             className="justify-center justify-self-center w-4 mb-12"
           />
+          <Submission />
         </div>
         {event.event_coordinators.length !== 0 && (
           <EventCoordinators eventCoordinators={event.event_coordinators} />

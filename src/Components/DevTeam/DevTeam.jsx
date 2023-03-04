@@ -1,10 +1,12 @@
 import Venki from "../../Assets/Team/Venki.jpg";
-import π from "../../Assets/Team/π.jpg";
+import Piyush from "../../Assets/Team/π.jpg";
 import SBT from "../../Assets/Team/SBT.jpg";
 import Parishkar from "../../Assets/Team/Parishkar.jpg";
 import Kishor_Balgi from "../../Assets/Team/Kishor_Balgi.jpg";
 import Samyak from "../../Assets/Team/Samyak.jpg";
 import Ganesh from "../../Assets/Team/Ganesh_Margale.jpg";
+import Omkar from "../../Assets/Team/omkar.jpg";
+import Philbert from "../../Assets/Team/philbert.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,7 +27,7 @@ const team = [
   {
     name: "Piyush Airani",
     role: "Co-Ordinator",
-    image: π,
+    image: Piyush,
     linkedin: "https://in.linkedin.com/in/piyush-airani",
     instagram: "https://www.instagram.com/pi_22by7/",
     github: "https://github.com/pi22by7",
@@ -57,14 +59,28 @@ const team = [
   },
   {
     name: "Samyak H",
-    role: "Designer",
+    role: "Graphic Designer",
     image: Samyak,
     linkedin: "https://www.linkedin.com/in/samyak-h-2974001b5",
     instagram: "https://www.instagram.com/samyakkk._/",
   },
   {
+    name: "Philbert D'Souza",
+    role: "Graphic Designer",
+    image: Philbert,
+    linkedin: "https://www.linkedin.com/in/philbert-d-souza-5702a1262/",
+    instagram: "https://www.instagram.com/_philbert23_/",
+  },
+  {
+    name: "Omkar Umadi",
+    role: "Graphic Designer",
+    image: Omkar,
+    linkedin: "https://www.linkedin.com/in/omkar-umadi-321b70261/",
+    instagram: "https://www.instagram.com/omkarumadi/",
+  },
+  {
     name: "Ganesh Margale",
-    role: "Designer",
+    role: "Graphic Designer",
     image: Ganesh,
     linkedin: "https://www.linkedin.com/in/ganesh-s-margale-4069a122b/",
     instagram: "https://www.instagram.com/ganesh_026/",
