@@ -28,10 +28,19 @@ const getError = (error) => {
 // Body
 module.exports.signup_post = async (req, res, next) => {
   try {
-    const { name = undefined, email = undefined, usn = undefined, college = undefined, password = undefined } = req.body;
+    const {
+      name = undefined,
+      phone = undefined,
+      email = undefined,
+      usn = undefined,
+      college = undefined,
+      password = undefined,
+    } = req.body;
 
     if (name === undefined)
       return res.status(400).send(Response(errors[400].nameRequired));
+    if (phone === undefined)
+      return res.status(400).send(Response(errors[400].phoneRequired));
     if (email === undefined)
       return res.status(400).send(Response(errors[400].emailRequired));
     if (usn === undefined)
@@ -43,6 +52,7 @@ module.exports.signup_post = async (req, res, next) => {
 
     const user = await User.create({
       name,
+      phone,
       email,
       usn,
       college,

@@ -24,12 +24,16 @@ module.exports.createTeam = async (req, res, next) => {
 			return res.status(400).send(Response(errors[400].eventDetailsRequired));
 
 		// Check if team members contains leader
-		if (team_members.find(id => id === String(res.locals.user._id)))
+		if (team_members.find(email => email === res.locals.user.email))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
-		team_members = await Promise.all(team_members.map(id => User.findById(id)));
+		team_members = await Promise.all(team_members.map(email => User.findOne({ email })));
 		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
+
+		// Check if all team members have their email addresses verified
+		if (team_members.find(member => member.email_verified === false))
+			return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
 
 		// Check if the user is already registered for the current event
 		let results = await Team.find({
@@ -161,7 +165,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 		if (String(team.team_leader.id) !== String(res.locals.user._id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
-		const old_team_members = team.team_members.map(member => String(member.id));
+		const old_team_members = team.team_members.map(member => String(member.email));
 		let {
 			team_name = undefined,
 			team_members = undefined,
@@ -169,17 +173,21 @@ module.exports.modifyTeam = async (req, res, next) => {
 
 		if (team_members !== undefined && Array.isArray(team_members)) {
 			// Check if team members contains leader
-			if (team_members.find(id => id === String(res.locals.user._id)))
+			if (team_members.find(email => email === res.locals.user.email))
 				return res.status(403).send(Response(errors[403].invalidOperation));
 
-			team_members = await Promise.all(team_members.map(id => User.findById(id)));
+			team_members = await Promise.all(team_members.map(email => User.findOne({ email })));
 			if (team_members.length > 0 && team_members.find(member => !member))
 				return res.status(404).send(Response(errors[404].userNotFound));
+
+			// Check if all team members have their email addresses verified
+			if (team_members.find(member => member.email_verified === false))
+				return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
 
 			// Check if any new team member is already registered for the event
 			const orFields = [];
 			team_members
-				.filter(member => !old_team_members.includes(String(member._id)))
+				.filter(member => !old_team_members.includes(member.email))
 				.forEach(member => {
 					orFields.push({
 						"team_leader.id": member._id,

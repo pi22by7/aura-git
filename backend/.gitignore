@@ -8,6 +8,9 @@ node_modules
 configs/*.secure.js
 configs/*.secure.json
 
+# SSL files
+*.pem
+
 # Misc
 .DS_Store
 *.mongodb
