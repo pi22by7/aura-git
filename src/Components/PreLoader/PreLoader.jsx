@@ -7,7 +7,7 @@ const PreLoader = ({ type }) => {
       {type === "welcome" && (
         <img
           src={welcome}
-          className="mr-3 md:h-64 h-40"
+          className="mr-3 md:h-96 h-64"
           alt="Aura Logo"
           draggable={false}
         />
