@@ -38,11 +38,11 @@ const EventDetails = ({ event }) => {
           </p>
         </div>
       </div>
-      <div>
-        <h2 className="text-2xl font-bold text-center">Rules</h2>
-        <ul className="flex flex-col items-center mb-5">
+      <div className="py-5 md:w-4/5 w-11/12 mx-auto">
+        <h2 className="text-2xl font-bold text-center mb-5">Rules</h2>
+        <ul className="flex flex-col items-start mb-5">
           {event.rules.map((rule, index) => (
-            <li key={index} className="my-2 text-center">
+            <li key={index} className="my-2 text-justify">
               <FontAwesomeIcon icon={faCube} className="mx-3" />
               {rule}
             </li>
