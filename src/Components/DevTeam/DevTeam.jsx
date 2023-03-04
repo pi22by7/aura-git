@@ -60,7 +60,7 @@ const team = [
     role: "Graphic Designer",
     image: Samyak,
     linkedin: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/samyakkk._/",
     github: "",
   },
   {
