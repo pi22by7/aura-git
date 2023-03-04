@@ -20,11 +20,12 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [college, setCollege] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password || !name || !usn || !college) {
+    if (!email || !password || !name || !usn || !college || !phone) {
       setError("Please enter all fields");
       return;
     }
@@ -38,6 +39,7 @@ const Signup = () => {
       await api
         .post("/auth/user/signup", {
           name,
+          phone,
           email,
           password,
           usn,
@@ -106,6 +108,22 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Your Email"
+              />
+            </div>
+            {/* Phone */}
+            <div className="grid grid-cols-1 my-1">
+              <label className="py-3 col-span-1" htmlFor="phone">
+                Phone
+              </label>
+              <input
+                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                type="tel"
+                name="phone"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                placeholder="Your Phone Number"
               />
             </div>
             <div className="grid grid-cols-1 my-1">
