@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, isRouteErrorResponse } from "react-router-dom";
 import api from "../Utils/axios.config";
 import EventDetails from "../Components/EventDetails/EventDetails";
 import EventCoordinators from "../Components/EventCoords/EventCoords";
@@ -12,6 +12,8 @@ const EventsDetailsPage = () => {
   const { club, title } = useParams();
   const [teamSize, setTeamSize] = useState(0);
   const [event, setEvent] = useState(null);
+  const [special, setSpecial] = useState();
+  const [url, setUrl] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,9 +21,13 @@ const EventsDetailsPage = () => {
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
+          // console.log(res);
+
           // eslint-disable-next-line react-hooks/exhaustive-deps
           setTeamSize(parseInt(res.data.data.event.team_size));
           setEvent(res.data.data.event);
+          setSpecial(Boolean(res.data.data.event.link));
+          setUrl(res.data.data.event.url);
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -32,7 +38,7 @@ const EventsDetailsPage = () => {
         });
     }
     fetchEvent();
-  }, [club, title, navigate]);
+  }, [club, title, navigate, special, url]);
 
   if (!event) {
     return <PreLoader type="loading" />;
@@ -56,13 +62,24 @@ const EventsDetailsPage = () => {
             size={teamSize}
             className="justify-center justify-self-center w-4 mb-12"
           />
-          <Submission />
+          {console.log(url, special)}
+          {special && <Submission />}
+          {url && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 underline text-blue-500"
+            >
+              Pre-pitch round form.
+            </a>
+          )}
         </div>
         {event.event_coordinators.length !== 0 && (
           <EventCoordinators eventCoordinators={event.event_coordinators} />
         )}
         <p className="text-xl text-center font-bold my-5">
-          Orgainzed By: {event.club}
+          Organized By: {event.club}
         </p>
       </div>
     </div>

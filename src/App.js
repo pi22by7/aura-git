@@ -40,7 +40,7 @@ function App() {
     fetchData();
   }, []);
   return (
-    <div className="App">
+    <div className="App select-none">
       {path !== "/" && <NavBar />}
       <section>
         <Routes>
