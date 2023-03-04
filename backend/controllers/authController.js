@@ -60,7 +60,7 @@ module.exports.signup_post = async (req, res, next) => {
     });
     const token = user.createToken();
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
+    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none", maxAge: jwtConfig.ages.login * 1000 });
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");
@@ -80,7 +80,7 @@ module.exports.login_post = async (req, res, next) => {
     const user = await User.login(email, password);
     const token = user.createToken();
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: jwtConfig.ages.login * 1000 });
+    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none", maxAge: jwtConfig.ages.login * 1000 });
     if (!res.locals.data)
       res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");
