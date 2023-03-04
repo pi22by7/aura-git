@@ -55,7 +55,7 @@ export const Footer = () => {
             >
               Udyambag Industrial Area, Udyambag, Belagavi, Karnataka 590006
             </a>
-            <a className="my-3 block" href="mailto: aura@git.edu">
+            <a className="my-3 block" href="mailto:aura@git.edu">
               aura@git.edu
             </a>
           </div>

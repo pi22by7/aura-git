@@ -6,6 +6,7 @@ import PreLoader from "../PreLoader/PreLoader";
 import gData from "./gData.json";
 import art_map from "./map.png";
 import legend from "./legend_.png";
+import legend_mob from "./legend.png";
 import logo from "../../Assets/logo.png";
 
 const GlobeComponent = () => {
@@ -89,7 +90,7 @@ const GlobeComponent = () => {
     <>
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
-        <p className="absolute md:invisible visible bottom-6 right-1/2 transform translate-x-1/2 z-40">
+        <p className="absolute md:invisible visible bottom-8 right-1/2 transform translate-x-1/2 z-40">
           <img
             src={logo}
             className="lg:h-40 h-28 mr-28"
@@ -103,9 +104,14 @@ const GlobeComponent = () => {
           ref={mapRef}
         ></div>
         {!loading && (
-          <div className="lg:w-52 w-28 absolute bottom-10 right-10 rounded-lg md:visible invisible">
-            <img src={legend} alt="legend" draggable={false} />
-          </div>
+          <>
+            <div className="lg:w-52 w-28 absolute top-1/2 transfrom -translate-y-1/2 right-14 rounded-lg md:visible invisible">
+              <img src={legend} alt="legend" draggable={false} />
+            </div>
+            <div className="lg:w-52 w-28 absolute top-5 right-5 rounded-lg md:invisible visible">
+              <img src={legend_mob} alt="legend" draggable={false} />
+            </div>
+          </>
         )}
       </div>
     </>
