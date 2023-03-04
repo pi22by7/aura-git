@@ -57,14 +57,14 @@ const team = [
   },
   {
     name: "Samyak H",
-    role: "Design",
+    role: "Designer",
     image: Samyak,
     linkedin: "https://www.linkedin.com/in/samyak-h-2974001b5",
     instagram: "https://www.instagram.com/samyakkk._/",
   },
   {
     name: "Ganesh Margale",
-    role: "Design",
+    role: "Designer",
     image: Ganesh,
     linkedin: "https://www.linkedin.com/in/ganesh-s-margale-4069a122b/",
     instagram: "https://www.instagram.com/ganesh_026/",
