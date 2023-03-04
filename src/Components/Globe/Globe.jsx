@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Marker from "./Marker/Marker";
 import Globe from "globe.gl";
 import PreLoader from "../PreLoader/PreLoader";
-// import data from "./geo.json";
 import gData from "./gData.json";
 import art_map from "./map.png";
-import legend from "./legend.png";
+import legend from "./legend_.png";
 import logo from "../../Assets/logo.png";
 
 const GlobeComponent = () => {
   const [loading, setLoading] = useState(true);
-  const detRef = useRef(null);
   const mapRef = useRef(null);
   const navigate = useNavigate();
 
@@ -23,25 +21,10 @@ const GlobeComponent = () => {
         <circle fill="black" cx="14" cy="14" r="7"></circle>
       </svg>`;
 
-  //   const nData = data.features.map((feature) => {
-  //     const lat = feature.geometry.coordinates[1] - 7.162;
-  //     const lng = feature.geometry.coordinates[0] - 5.072;
-  //     const url = feature.properties.url;
-  //     const title = feature.properties.title;
-
-  //     return {
-  //       lat,
-  //       lng,
-  //       url,
-  //       title,
-  //     };
-  //   });
-  //   console.log(nData);
-
   useEffect(() => {
     const observer = new MutationObserver(() => {
       // set laoding after 3 seconds
-      setTimeout(() => setLoading(false), 3000);
+      setTimeout(() => setLoading(false), 2000);
       // setLoading(false);
     });
 
@@ -87,7 +70,6 @@ const GlobeComponent = () => {
           url: d.url,
           title: d.title,
           navigate,
-          detRef,
         });
         return el;
       })(document.getElementById("globeViz"));
@@ -107,7 +89,7 @@ const GlobeComponent = () => {
     <>
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
-        <p className="absolute lg:bottom-6 bottom-2 lg:right-1 right-1/2 transform md:-translate-x-0 translate-x-1/2 z-40">
+        <p className="absolute md:invisible visible bottom-6 right-1/2 transform translate-x-1/2 z-40">
           <img
             src={logo}
             className="lg:h-40 h-28 mr-28"
@@ -121,10 +103,7 @@ const GlobeComponent = () => {
           ref={mapRef}
         ></div>
         {!loading && (
-          <div
-            ref={detRef}
-            className="lg:w-52 w-28 absolute lg:top-1/2 top-5 transform lg:-translate-y-1/2 lg:right-20 right-5 rounded-lg"
-          >
+          <div className="lg:w-52 w-28 absolute bottom-10 right-10 rounded-lg md:visible invisible">
             <img src={legend} alt="legend" draggable={false} />
           </div>
         )}

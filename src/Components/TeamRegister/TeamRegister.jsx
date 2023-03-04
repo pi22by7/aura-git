@@ -25,7 +25,7 @@ const TeamRegister = (props) => {
   console.log(n);
   const times = [...Array(n).keys()];
   return (
-    <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
+    <div className="lign-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
       <h1 className="font-bold text-xl text-center m-2">Register your team</h1>
       <div>
         <form>
