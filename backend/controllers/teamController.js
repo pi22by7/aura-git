@@ -2,6 +2,7 @@
 const Team = require("../models/Team");
 const User = require("../models/User");
 const errors = require("../configs/error.codes.json");
+const queryConfig = require("../configs/query.config.json");
 const Response = require("../models/standard.response.model");
 const { errorHandler } = require("../utils/utils");
 
@@ -98,26 +99,27 @@ module.exports.createTeam = async (req, res, next) => {
 	return next();
 };
 
-// Fetch all teams under the a specific event
-module.exports.fetchByEvent = async (req, res, next) => {
+// Fetch all teams
+module.exports.fetchAll = async (req, res, next) => {
 	try {
-		const { params, query } = req;
+		const { query } = req;
 
-		const { id } = params;
-		const { user_id = undefined } = query;
+		let {
+			pageSize = queryConfig["search.pagination"]["page.size"],
+			paginationTs = Date.now(),
+		} = query;
+
+		const teams = await Team.find({
+			updatedAt: { $lte: paginationTs },
+		})
+			.sort({ updatedAt: -1 })
+			.limit(pageSize + 1);
 
 		if (!res.locals.data)
 			res.locals.data = {};
-		res.locals.data.teams = await Team.find({
-			"event_participated.event_id": id,
-			...(user_id !== undefined ? {
-				$or: [
-					{
-						"team_leader.id": user_id,
-					},
-				],
-			} : {})
-		});
+		res.locals.data.pageSize = pageSize;
+		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
+		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -125,15 +127,56 @@ module.exports.fetchByEvent = async (req, res, next) => {
 
 	return next();
 };
-module.exports.fetchByUser = async (req, res, next) => {
+
+// Fetch all teams under the a specific event
+module.exports.fetchByEvent = async (req, res, next) => {
 	try {
-		const { params } = req;
+		const { params, query } = req;
 
 		const { id } = params;
+		let {
+			user_id = undefined,
+			pageSize = queryConfig["search.pagination"]["page.size"],
+			paginationTs = Date.now(),
+		} = query;
+
+		const teams = await Team.find({
+			"event_participated.event_id": id,
+			...(user_id !== undefined ? {
+				"team_leader.id": user_id,
+			} : {}),
+			updatedAt: { $lte: paginationTs },
+		})
+			.sort({ updatedAt: -1 })
+			.limit(pageSize + 1);
 
 		if (!res.locals.data)
 			res.locals.data = {};
-		res.locals.data.teams = await Team.find({
+		res.locals.data.pageSize = pageSize;
+		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
+		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+};
+
+// Fetch all teams containing a user (either as the team leader or a team member)
+module.exports.fetchByUser = async (req, res, next) => {
+
+	try {
+		const { params, query } = req;
+
+		const { id } = params;
+		let {
+			event_id = undefined,
+			pageSize = queryConfig["search.pagination"]["page.size"],
+			paginationTs = Date.now(),
+		} = query;
+
+		const teams = await Team.find({
 			$or: [
 				{
 					"team_leader.id": id,
@@ -142,7 +185,19 @@ module.exports.fetchByUser = async (req, res, next) => {
 					team_members: { $elemMatch: { id } },
 				},
 			],
-		});
+			...(event_id !== undefined ? {
+				"event_participated.event_id": event_id,
+			} : {}),
+			updatedAt: { $lte: paginationTs },
+		})
+			.sort({ updatedAt: -1 })
+			.limit(pageSize + 1);
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.pageSize = pageSize;
+		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
+		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));

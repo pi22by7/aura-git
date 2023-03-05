@@ -8,6 +8,7 @@ const { checkUser, requireVerifiedAuth } = require("../middleware/authMiddleware
 const router = Router();
 
 // Body
+router.get("/", teamController.fetchAll, complete);
 router.get("/event/:id", checkUser, teamController.fetchByEvent, complete);
 router.get("/user/:id", checkUser, teamController.fetchByUser, complete);
 
