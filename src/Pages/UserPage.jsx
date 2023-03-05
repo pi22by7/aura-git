@@ -31,7 +31,7 @@ const UserPage = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [navigate]);
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };

@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInstagram,
   faFacebook,
-  faTwitter,
-  faLinkedin,
+  // faTwitter,
+  // faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import logo from "../../Assets/logo.png";
 
@@ -71,6 +71,7 @@ export const Footer = () => {
             <a
               href="https://www.instagram.com/aura_git/"
               target="_blank"
+              rel="noreferrer"
               className="w-6 mx-1"
             >
               <FontAwesomeIcon icon={faInstagram} className="text-xl" />
@@ -78,6 +79,7 @@ export const Footer = () => {
             <a
               href="https://www.facebook.com/klsgitaura/"
               target="_blank"
+              rel="noreferrer"
               className="w-6 mx-1"
             >
               <FontAwesomeIcon icon={faFacebook} className="text-xl" />

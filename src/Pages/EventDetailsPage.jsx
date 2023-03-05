@@ -22,7 +22,6 @@ const EventsDetailsPage = () => {
         .get(`/events/${club}/${title}`)
         .then((res) => {
           // console.log(res);
-
           // eslint-disable-next-line react-hooks/exhaustive-deps
           setTeamSize(parseInt(res.data.data.event.team_size));
           setEvent(res.data.data.event);
@@ -60,9 +59,11 @@ const EventsDetailsPage = () => {
         <div className="grid grid-cols-1 place-items-center my-10">
           <TeamRegister
             size={teamSize}
+            title={event.title}
+            id={event._id}
             className="justify-center justify-self-center w-4 mb-12"
           />
-          {console.log(url, special)}
+          {/* {console.log(url, special)} */}
           {special && <Submission />}
           {url && (
             <a
