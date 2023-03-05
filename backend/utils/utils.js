@@ -75,7 +75,7 @@ module.exports = {
 	jwtDecoded,
 	bcryptHash,
 	bcryptCompare,
-	errorHandler: function (error) {
+	errorHandler: function (error, unique_error = errors[400].duplicateError) {
 		if (typeof error === "string")
 			return { status: 500, message: error };
 
@@ -94,6 +94,14 @@ module.exports = {
 					status: 400,
 					message: Object.values(error.errors).find(_error => _error.properties).message,
 				};
+
+			// Mongoose unique key invalidation error?
+			if (error.code === 11000)
+				return {
+					status: 400,
+					message: unique_error,
+				};
+
 			if ("message" in error)
 				return {
 					status: 400,

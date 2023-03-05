@@ -15,6 +15,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
 
 // Route Middlewares
 expressApp.get("*", checkUser);
@@ -24,3 +25,4 @@ expressApp.use("/events", eventRoutes);
 expressApp.use("/teams", teamRoutes);
 expressApp.use("/tickets", ticketRoutes);
 expressApp.use("/payments", paymentRoutes);
+expressApp.use("/submissions", submissionRoutes);

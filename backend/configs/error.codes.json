@@ -36,7 +36,13 @@
     "idRequired": "400-idRequired",
     "collegeRequired": "400-collegeRequired",
     "phoneRequired": "400-phoneRequired",
-    "invalidPhone": "400-invalidPhone"
+    "invalidPhone": "400-invalidPhone",
+    "invalidLinksBody": "400-invalidLinksBody",
+    "linkRequired": "400-linkRequired",
+    "linksBodyRequired": "400-linksBodyRequired",
+    "eventIdRequired": "400-eventIdRequired",
+    "duplicateError": "400-duplicateError",
+    "submissionAlreadyExists": "400-submissionAlreadyExists"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -59,7 +65,8 @@
     "emailNotFound": "404-emailNotFound",
     "orderNotFound": "404-orderNotFound",
     "clubNotFound": "404-clubNotFound",
-    "teamNotFound": "404-teamNotFound"
+    "teamNotFound": "404-teamNotFound",
+    "submissionNotFound": "404-submissionNotFound"
   },
   "440": {
     "sessionExpired": "440-sessionExpired",
