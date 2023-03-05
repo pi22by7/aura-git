@@ -28,6 +28,7 @@ async function userSearchController(req, res, next) {
 	try {
 		let {
 			email = undefined,
+			college = undefined,
 			name = undefined,
 			usn = undefined,
 			phone = undefined,
@@ -41,6 +42,8 @@ async function userSearchController(req, res, next) {
 
 		if (email)
 			email = quoteRegExp(email);
+		if (college)
+			college = quoteRegExp(college);
 		if (name)
 			name = quoteRegExp(name);
 		if (usn)
@@ -53,6 +56,8 @@ async function userSearchController(req, res, next) {
 		const query = {};
 		if (email)
 			query.email = { $regex: queryConfig["search.options"].email.replace("{email}", email), $options: "i" };
+		if (college)
+			query.college = { $regex: queryConfig["search.options"].college.replace("{college}", college), $options: "i" };
 		if (name)
 			query.name = { $regex: queryConfig["search.options"].name.replace("{name}", name), $options: "i" };
 		if (usn)
