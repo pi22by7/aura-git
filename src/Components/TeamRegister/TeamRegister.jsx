@@ -71,7 +71,7 @@ const TeamRegister = (props) => {
     const { amount, id: orderId, currency } = order;
 
     const options = {
-      key: "rzp_test_vHqEp7rceoarGn", // Enter the Key ID generated from the Dashboard
+      key: process.env.RZRKEY, // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
       name: "KLS GIT, Belagavi",
