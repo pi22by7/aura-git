@@ -14,9 +14,7 @@ const userRoutes = require("./routes/userRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const teamRoutes = require("./routes/teamRoutes");
-
-// Not in use
-// const paymentRoutes = require("./routes/paymentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 // Route Middlewares
 expressApp.get("*", checkUser);
@@ -25,6 +23,4 @@ expressApp.use("/users", userRoutes);
 expressApp.use("/events", eventRoutes);
 expressApp.use("/teams", teamRoutes);
 expressApp.use("/tickets", ticketRoutes);
-
-// Not in use
-// expressApp.use("/payments", paymentRoutes);
+expressApp.use("/payments", paymentRoutes);

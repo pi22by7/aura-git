@@ -10,8 +10,11 @@
   "razorpay": {
     "currency": "INR",
     "schemes": {
-      "event_registration": {
-        "amount": 100
+      "solo_event_registration": {
+        "amount": 50
+      },
+      "team_event_registration": {
+        "amount": 250
       }
     }
   },
