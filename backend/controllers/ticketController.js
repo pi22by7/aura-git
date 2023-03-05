@@ -1,4 +1,5 @@
 // Imports
+const { isEmail } = require("validator");
 const errors = require("../configs/error.codes.json");
 const ticketConfig = require("../configs/ticket.config.json");
 const Ticket = require("../models/Ticket");
@@ -9,10 +10,20 @@ const { jwtDecoded, bcryptHash, errorHandler } = require("../utils/utils");
 // Body
 async function ticketCreateEmailVerificationController(req, res, next) {
 	try {
-		if (!res.locals.user)
-			return res.status(401).send(Response(errors[401].authRequired));
+		const { query } = req;
 
-		const code = await res.locals.user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
+		const { email = undefined } = query;
+
+		if (email === undefined)
+			return res.status(400).send(Response(errors[400].emailRequired));
+		if (!isEmail(email))
+			return res.status(400).send(Response(errors[400].invalidEmail));
+
+		const user = await User.findOne({ email });
+		if (!user)
+			return res.status(400).send(Response(errors[404].userNotFound));
+
+		const code = await user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
 
 		// Email is already verified
 		if (code === 0)
@@ -38,9 +49,6 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 
 async function ticketResolveEmailVerificationController(req, res, next) {
 	try {
-		if (!res.locals.user)
-			return res.status(401).send(Response(errors[401].authRequired));
-
 		const { query } = req;
 
 		// `token`
@@ -48,25 +56,28 @@ async function ticketResolveEmailVerificationController(req, res, next) {
 			return res.status(400).send(Response(errors[400].tokenRequired));
 		const { id, user_id } = await jwtDecoded(query.token);
 
+		// Get user
+		const user = await User.findById(user_id);
+		if (!user)
+			return res.status(404).send(Response(errors[404].userNotFound));
+
 		// Validate user
-		if (String(res.locals.user._id) !== user_id)
-			return res.status(400).send(Response(errors[400].invalidRequest));
-		if (res.locals.user.email_verified)
+		if (user.email_verified)
 			return res.status(400).send(Response(errors[400].alreadyVerified));
-		if (String(res.locals.user.tickets[ticketConfig.user_tickets_fields.email_verification]) !== id)
+		if (String(user.tickets[ticketConfig.user_tickets_fields.email_verification]) !== id)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
 
 		// Fetch ticket
-		const ticket = await Ticket.findOne({ _id: id, user_id: res.locals.user._id, purpose: ticketConfig.purposes.EMAIL_VERIFICATION });
+		const ticket = await Ticket.findOne({ _id: id, user_id: user_id, purpose: ticketConfig.purposes.EMAIL_VERIFICATION });
 		if (!ticket)
 			return res.status(404).send(Response(errors[404].ticketNotFound));
 
 		// Resolve ticket
 		await Ticket.deleteOne({ _id: ticket._id });
-		res.locals.user.email_verified = true;
-		res.locals.user.tickets[ticketConfig.user_tickets_fields.email_verification] = null;
-		await res.locals.user.save();
-		await res.locals.refreshProfile();
+
+		user.email_verified = true;
+		user.tickets[ticketConfig.user_tickets_fields.email_verification] = null;
+		await user.save();
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));

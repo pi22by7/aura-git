@@ -156,6 +156,10 @@ userSchema.statics.login = async function (email, password) {
   if (!(await bcryptCompare(user.password, password)))
     throw Error(errors[403].passwordMismatch);
 
+  // Check if the email is verified
+  if (!user.email_verified)
+    throw Error(errors[403].emailUnverified);
+
   return user;
 };
 

@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireVerifiedAuth } = require("../middleware/authMiddleware");
 const { complete } = require("../controllers/controllers");
 const {
 	userGetController,
@@ -15,6 +15,6 @@ const Router = express.Router();
 Router.get("/search", userSearchController, complete);
 Router.get("/:id", userGetController, complete);
 
-Router.patch("/", requireAuth, userUpdateController, complete);
+Router.patch("/", requireVerifiedAuth, userUpdateController, complete);
 
 module.exports = Router;
