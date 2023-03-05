@@ -1,6 +1,8 @@
 import { useUser } from "../../Contexts/userContext";
 import { useEffect, useState } from "react";
 import api from "../../Utils/axios.config";
+import logo from "../../Assets/logo.png";
+
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
   const [name, setName] = useState("");
@@ -8,6 +10,9 @@ const TeamRegister = (props) => {
   const evPart = `{${props.id}, ${props.title}}`;
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
+  const { paid, setPaid } = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     console.log(user);
     if (user !== null) {
@@ -28,11 +33,75 @@ const TeamRegister = (props) => {
     setTeam(newInputs);
     // console.log(team);
   };
+
+  const createOrder = async () => {
+    try {
+      const { data } = await api.post(`/payments/order`);
+      return data;
+    } catch (error) {
+      console.log("Error creating order:", error);
+      return null;
+    }
+  };
+
+  const handlePaymentSuccess = async (orderId, paymentData) => {
+    try {
+      const data = {
+        orderCreationId: orderId,
+        razorpayPaymentId: paymentData.razorpay_payment_id,
+        razorpayOrderId: paymentData.razorpay_order_id,
+        razorpaySignature: paymentData.razorpay_signature,
+      };
+      await api.post(`/payments/order/${orderId}/receipt`, data);
+      setPaid(true);
+    } catch (error) {
+      console.log("Error processing payment:", error);
+      setPaid(false);
+    }
+  };
+
+  const paymentModal = async () => {
+    setLoading(true);
+    const order = await createOrder();
+    if (!order) {
+      setLoading(false);
+      alert("Unable to create payment order. Please try again later.");
+      return;
+    }
+    const { amount, id: orderId, currency } = order;
+
+    const options = {
+      key: "rzp_test_vHqEp7rceoarGn", // Enter the Key ID generated from the Dashboard
+      amount: amount.toString(),
+      currency: currency,
+      name: "KLS GIT, Belagavi",
+      description: "Test Transaction",
+      image: logo,
+      order_id: orderId,
+      handler: (response) => handlePaymentSuccess(orderId, response),
+      prefill: {
+        name: "Piyush",
+        email: "pi@example.com",
+        contact: "6969696969",
+      },
+      notes: {
+        address: "KLSGIT of Belagavi",
+      },
+      theme: {
+        color: "#61dafb",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+    setLoading(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    paymentModal();
     let ele = document.getElementById("msg");
 
-    if (isNull === true) {
+    if (isNull === true && paid === true) {
       ele.innerHTML = "You need to have an account to register for an event!";
     } else {
       ele.innerHTML = "Registrations will start on March 5th! :)";
@@ -102,6 +171,7 @@ const TeamRegister = (props) => {
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
                 onClick={handleSubmit}
+                disabled={loading}
               >
                 Register
               </button>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
 import colleges from "../Dataset/collegesKar.json";
@@ -203,7 +202,6 @@ const UserPage = () => {
               </button>
             </Link>
           </form>
-          <PaymentForm />
         </div>
       </div>
     </div>
