@@ -40,7 +40,7 @@ async function ticketCreateEmailVerificationController(req, res, next) {
 		// Email ticket created
 		res.locals.status = 201;
 	} catch (error) {
-		const { status, message } = errorHandler(error);
+		const { status, message } = errorHandler(error, errors[400].ticketAlreadyExists);
 		return res.status(status).send(Response(message));
 	}
 
@@ -116,7 +116,7 @@ async function ticketCreatePasswordResetController(req, res, next) {
 		// Password reset ticket created
 		res.locals.status = 201;
 	} catch (error) {
-		const { status, message } = errorHandler(error);
+		const { status, message } = errorHandler(error, errors[400].ticketAlreadyExists);
 		return res.status(status).send(Response(message));
 	}
 

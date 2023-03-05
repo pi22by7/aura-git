@@ -42,7 +42,9 @@
     "linksBodyRequired": "400-linksBodyRequired",
     "eventIdRequired": "400-eventIdRequired",
     "duplicateError": "400-duplicateError",
-    "submissionAlreadyExists": "400-submissionAlreadyExists"
+    "submissionAlreadyExists": "400-submissionAlreadyExists",
+    "teamAlreadyExists": "400-teamAlreadyExists",
+    "ticketAlreadyExists": "400-ticketAlreadyExists"
   },
   "401": {
     "authRequired": "401-authRequired",

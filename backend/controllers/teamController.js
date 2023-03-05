@@ -91,7 +91,7 @@ module.exports.createTeam = async (req, res, next) => {
 		res.locals.data.team = newTeam;
 		res.locals.status = 201;
 	} catch (error) {
-		const { status, message } = errorHandler(error);
+		const { status, message } = errorHandler(error, errors[400].teamAlreadyExists);
 		return res.status(status).send(Response(message));
 	}
 

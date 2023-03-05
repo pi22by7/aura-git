@@ -8,11 +8,13 @@ const schema = new mongoose.Schema({
 	user_id: {
 		type: mongoose.Types.ObjectId,
 		required: true,
+		index: true,
 	},
 	purpose: {
 		type: String,
 		enum: Object.values(ticketConfig.purposes),
 		required: true,
+		index: true,
 	},
 	data: {
 		type: Object,
@@ -24,6 +26,7 @@ const schema = new mongoose.Schema({
 		expires: ticketConfig.expiration,
 	},
 });
+schema.index({ user_id: 1, purpose: 1 }, { unique: true });
 
 // Methods
 schema.methods.getReferenceToken = function () {
