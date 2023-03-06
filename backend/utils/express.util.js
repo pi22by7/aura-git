@@ -16,7 +16,7 @@ const options = { // TODO: Uncomment when we get certificate
   key: fs.readFileSync(path.join(__dirname, "..", "key.pem")),
 };
 
-const serve = serveStatic("../build/", { index: ["index.html"] });
+const serve = serveStatic("../build2/", { index: ["index.html"] });
 
 const expressApp = express();
 const httpsApp = https.createServer(options, expressApp); // TODO: Uncomment when we get certificate
