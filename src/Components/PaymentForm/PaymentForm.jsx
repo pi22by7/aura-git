@@ -8,7 +8,6 @@ const PaymentForm = () => {
   async function createOrder() {
     try {
       const { data } = await api.post(`/payments/order`);
-      console.log("posted");
       return data;
     } catch (error) {
       console.log("Error creating order:", error);
@@ -39,7 +38,8 @@ const PaymentForm = () => {
       alert("Unable to create payment order. Please try again later.");
       return;
     }
-    const { amount, id: orderId, currency } = order;
+    const { amount, orderId: id, currency } = order;
+    console.log(amount, orderId, currency);
 
     const options = {
       key: "rzp_test_vHqEp7rceoarGn", // Enter the Key ID generated from the Dashboard
