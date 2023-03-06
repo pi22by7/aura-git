@@ -55,6 +55,10 @@ module.exports.createTeam = async (req, res, next) => {
 		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
+		// Trim length to max. allowed team size
+		if (team_members.length > event.team_size)
+			team_members = team_members.copyWithin(0, 0, event.team_size);
+
 		// Check if all team members have their email addresses verified
 		if (team_members.find(member => member.email_verified === false))
 			return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
