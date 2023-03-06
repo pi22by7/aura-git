@@ -6,6 +6,7 @@ const PasswordEnter = () => {
   const [password, setPassword] = useState("");
   const [confPass, setconfPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const handleSubmit = (e) => {
@@ -20,22 +21,29 @@ const PasswordEnter = () => {
     }
     setLoading(true);
     handleReset();
-    // setError("");
-    // setPassword("");
-    // setconfPassword("");
+    setError("");
+    setEmail("");
+    setPassword("");
+    setconfPassword("");
   };
   async function handleReset() {
-    try {
-      const response = await api.post(
-        `/tickets/verification/password?email=${email}`,
-        {
-          new_password: password,
-        }
-      );
-      console.log(response.data.msg);
-    } catch (error) {
-      console.log("Error Resetting Password.", error);
-    }
+    await api
+      .post(`/tickets/verification/password?email=${email}`, {
+        new_password: password,
+      })
+      .then((res) => {
+        setMessage("Verification link sent to your mail.");
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (
+          error.response.status === 400 &&
+          error.response.data.error === "400-emailAlreadySent"
+        )
+          setMessage("Email already sent. Please check your mail.");
+        else setError("Something went wrong. Please try again later.");
+      });
   }
 
   return (
@@ -46,7 +54,12 @@ const PasswordEnter = () => {
           Please enter your email and new password:
         </p>
         {error && <p className="text-red-500 text-center">{error}</p>}
-        {loading && <p className="text-green-500 text-center">Link Sent</p>}
+        {message && <p className="text-green-500 text-center">{message}</p>}
+        {loading && (
+          <p className="text-green-500 text-center">
+            Sending Verification link...
+          </p>
+        )}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">

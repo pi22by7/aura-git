@@ -14,13 +14,12 @@ const collegesList = colleges.map((college, index) => (
 
 const Signup = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user, setUser } = useUser();
-  const [name, setName] = useState("Kishor Balgi");
-  const [usn, setUsn] = useState("2GI20CS001");
-  const [email, setEmail] = useState("2gi20cs050@students.git.edu");
-  const [college, setCollege] = useState("GIT");
-  const [password, setPassword] = useState("asdfasdf");
-  const [phone, setPhone] = useState("9999999999");
+  const [name, setName] = useState("");
+  const [usn, setUsn] = useState("");
+  const [email, setEmail] = useState("");
+  const [college, setCollege] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -168,21 +167,6 @@ const Signup = () => {
               />
               <datalist id="colleges">{collegesList}</datalist>
             </div>
-            {/* <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="college">
-                College
-              </label>
-              <input
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="text"
-                name="college"
-                id="college"
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-                required
-                placeholder="Your College Name"
-              />
-            </div> */}
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="password">
                 Password
@@ -199,8 +183,13 @@ const Signup = () => {
                 placeholder="Your Password"
               />
             </div>
+
             <div className="mt-8 mb-5">
-              {/* <Link to="/user">Login</Link> */}
+              <p className="text-blue-600 text-center text-sm pb-2">
+                A verification E-mail will be sent on signup. Please verify to
+                login.
+              </p>
+
               <button className="btn btn-primary w-full" type="submit">
                 Signup
               </button>

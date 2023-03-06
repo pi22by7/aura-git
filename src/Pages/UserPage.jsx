@@ -169,7 +169,7 @@ const UserPage = () => {
             <button className="w-full mt-4 py-2 btn btn-primary" type="submit">
               Save
             </button>
-            <Link to="/forgot-password">
+            <Link to="/reset-password">
               <button
                 className="w-full mt-4 py-2 btn btn-primary"
                 type="submit"
