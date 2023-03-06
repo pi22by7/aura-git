@@ -15,12 +15,12 @@ const collegesList = colleges.map((college, index) => (
 const Signup = () => {
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
-  const [name, setName] = useState("Kishor Balgi");
-  const [usn, setUsn] = useState("2GI20CS001");
-  const [email, setEmail] = useState("2gi20cs050@students.git.edu");
-  const [college, setCollege] = useState("GIT");
-  const [password, setPassword] = useState("asdfasdf");
-  const [phone, setPhone] = useState("9999999999");
+  const [name, setName] = useState("");
+  const [usn, setUsn] = useState("");
+  const [email, setEmail] = useState("");
+  const [college, setCollege] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
