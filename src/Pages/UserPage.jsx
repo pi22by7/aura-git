@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../Utils/axios.config";
+import QRCode from "react-qr-code";
 import PreLoader from "../Components/PreLoader/PreLoader";
 import colleges from "../Dataset/collegesKar.json";
 
@@ -68,8 +69,12 @@ const UserPage = () => {
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 min-h-[100vh] h-fit place-items-center justify-items-center bg-profile lg:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-profilec py-5">
       <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
-        <div className="col-span-1">
-          <img
+        <div className="col-span-1 grid">
+          <QRCode
+            value={user}
+            className="w-32 h-32 md:w-44 md:h-44 m-4 max-w-none max-h-none bg-white p-2 justify-self-center"
+          />
+          {/* <img
             src={
               user.profileImage
                 ? user.profileImage
@@ -77,7 +82,7 @@ const UserPage = () => {
             }
             alt="Profile"
             className="w-32 h-32 md:w-44 md:h-44 rounded-full m-4 max-w-none max-h-none"
-          />
+          /> */}
           <h3>
             Aura ID: <span className="font-bold">{user.aura_id}</span>
           </h3>

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
+import { useUser } from "../Contexts/userContext";
 import { useParams, useNavigate, isRouteErrorResponse } from "react-router-dom";
 import api from "../Utils/axios.config";
 import EventDetails from "../Components/EventDetails/EventDetails";
@@ -14,6 +15,7 @@ const EventsDetailsPage = () => {
   const [event, setEvent] = useState(null);
   const [special, setSpecial] = useState();
   const [url, setUrl] = useState();
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const EventsDetailsPage = () => {
             className="justify-center justify-self-center w-4 mb-12"
           />
           {/* {console.log(url, special)} */}
-          {special && <Submission />}
+          {special && <Submission event={event._id} user={user.id} />}
           {url && (
             <a
               href={url}

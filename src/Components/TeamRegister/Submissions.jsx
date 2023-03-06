@@ -1,12 +1,20 @@
 // import { useUser } from "../../Contexts/userContext";
+
+import api from "../../Utils/axios.config";
+
 // import { useState } from "react";
 const Submission = (props) => {
   const handleInputChange = (e) => {
     e.preventDefault();
   };
-
-  const handleSubmit = (e) => {
+  const user = props.user;
+  const event = props.event;
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await api.post("/submissions", {
+      user,
+      event,
+    });
   };
 
   return (
