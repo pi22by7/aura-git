@@ -66,6 +66,21 @@ const userSchema = new mongoose.Schema({
     required: [true, errors[400].passwordRequired],
     minlength: [6, errors[400].shortPassword],
   },
+  paid_for: {
+    type: [{
+      event_id: {
+        type: mongoose.Types.ObjectId,
+        required: [true, errors[400].eventIdRequired],
+        ref: "event",
+      },
+      receipt_id: {
+        type: mongoose.Types.ObjectId,
+        required: [true, errors[500]],
+        ref: "receipt",
+      },
+    }],
+    default: [],
+  },
   tickets: {
     email_verification: {
       type: mongoose.Types.ObjectId,

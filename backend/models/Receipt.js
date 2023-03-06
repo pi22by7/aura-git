@@ -40,7 +40,15 @@ const schema = new mongoose.Schema({
 		type: mongoose.Types.ObjectId,
 		required: [true, errors[500]],
 		ref: "user",
+		index: true,
+	},
+	event_id: {
+		type: mongoose.Types.ObjectId,
+		required: [true, errors[500]],
+		ref: "event",
+		index: true,
 	},
 });
+schema.index({ user_id: 1, event_id: 1 }, { unique: true });
 
 module.exports = mongoose.model("receipt", schema);
