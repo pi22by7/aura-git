@@ -15,14 +15,15 @@ const collegesList = colleges.map((college, index) => (
 const Signup = () => {
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
-  const [name, setName] = useState("");
-  const [usn, setUsn] = useState("");
-  const [email, setEmail] = useState("");
-  const [college, setCollege] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
+  const [name, setName] = useState("Kishor Balgi");
+  const [usn, setUsn] = useState("2GI20CS001");
+  const [email, setEmail] = useState("2gi20cs050@students.git.edu");
+  const [college, setCollege] = useState("GIT");
+  const [password, setPassword] = useState("asdfasdf");
+  const [phone, setPhone] = useState("9999999999");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password || !name || !usn || !college || !phone) {
@@ -46,13 +47,21 @@ const Signup = () => {
           college,
         })
         .then((res) => {
-          setUser(res.data.data.user);
-          setLoading(false);
-          setError("");
-          setEmail("");
-          setPassword("");
-          setName("");
-          setUsn("");
+          if (res.data.data.user) {
+            setMessage("A verification E-mail has been sent to your mail.");
+            window.scrollTo(0, 0);
+            setLoading(false);
+            setError("");
+            setEmail("");
+            setPhone("");
+            setPassword("");
+            setName("");
+            setCollege("");
+            setUsn("");
+          } else {
+            setLoading(false);
+            setError("Something Went Wrong");
+          }
         });
     } catch (error) {
       setLoading(false);
@@ -76,8 +85,9 @@ const Signup = () => {
     <div className="form-container bg-signin bg-signinc w-screen">
       <div className="form-box bg-slate-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 border border-black-100 overflow-hidden md:mr-64 place-self-center">
         <h1 className="font-bold text-xl text-center m-2">Signup</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {message && <p className="text-green-500 text-center">{message}</p>}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
