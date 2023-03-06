@@ -5,8 +5,6 @@ import Globe from "globe.gl";
 import PreLoader from "../PreLoader/PreLoader";
 import gData from "./gData.json";
 import art_map from "./map.png";
-import legend from "./legend_.png";
-import legend_mob from "./legend.png";
 import logo from "../../Assets/logo.png";
 import one from "./legend/11.png";
 import two from "./legend/Registration.png";
