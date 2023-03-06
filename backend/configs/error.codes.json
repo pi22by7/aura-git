@@ -46,7 +46,9 @@
     "teamAlreadyExists": "400-teamAlreadyExists",
     "ticketAlreadyExists": "400-ticketAlreadyExists",
     "auraIdRequired": "400-auraIdRequired",
-    "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired"
+    "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
+    "alreadyPaid": "400-alreadyPaid",
+    "receiptOrderMismatch": "400-receiptOrderMismatch"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -60,7 +62,8 @@
     "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
     "invalidOperation": "403-invalidOperation",
     "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed",
-    "teamMemberEmailUnverified": "403-teamMemberEmailUnverified"
+    "teamMemberEmailUnverified": "403-teamMemberEmailUnverified",
+    "incompletePayment": "403-incompletePayment"
   },
   "404": {
     "userNotFound": "404-userNotFound",
