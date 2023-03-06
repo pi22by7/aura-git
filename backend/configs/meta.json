@@ -1,5 +1,5 @@
 {
-  "host": "http://aura.git.edu",
+  "host": "http://localhost:3001",
   "dev_host": "http://localhost:3000",
   "name": "Aura 23",
   "emails": {
