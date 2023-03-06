@@ -7,7 +7,7 @@
     "reply_email": "aura23.klsgit@gmail.com"
   },
   "endpoints": {
-    "email_verification": "/verifyEmail",
-    "password_reset": "/verifyPass"
+    "email_verification": "/#/verifyEmail",
+    "password_reset": "/#/verifyPass"
   }
 }
