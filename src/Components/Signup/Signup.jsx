@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import api from "../../Utils/axios.config";
-import { useUser } from "../../Contexts/userContext";
 import colleges from "../../Dataset/collegesKar.json";
 
 const collegesList = colleges.map((college, index) => (
@@ -14,7 +13,6 @@ const collegesList = colleges.map((college, index) => (
 
 const Signup = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user, setUser } = useUser();
   const [name, setName] = useState("");
   const [usn, setUsn] = useState("");
   const [email, setEmail] = useState("");
@@ -168,21 +166,6 @@ const Signup = () => {
               />
               <datalist id="colleges">{collegesList}</datalist>
             </div>
-            {/* <div className="grid grid-cols-1 my-1">
-              <label className="py-3 col-span-1" htmlFor="college">
-                College
-              </label>
-              <input
-                className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-                type="text"
-                name="college"
-                id="college"
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-                required
-                placeholder="Your College Name"
-              />
-            </div> */}
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="password">
                 Password
@@ -199,8 +182,13 @@ const Signup = () => {
                 placeholder="Your Password"
               />
             </div>
+
             <div className="mt-8 mb-5">
-              {/* <Link to="/user">Login</Link> */}
+              <p className="text-blue-600 text-center text-sm pb-2">
+                A verification E-mail will be sent on signup. Please verify to
+                login.
+              </p>
+
               <button className="btn btn-primary w-full" type="submit">
                 Signup
               </button>
