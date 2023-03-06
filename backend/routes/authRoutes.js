@@ -1,6 +1,6 @@
 // Imports
 const { Router } = require("express");
-const { complete, outOfOrder } = require("../controllers/controllers");
+const { complete } = require("../controllers/controllers");
 const { checkUser } = require("../middleware/authMiddleware");
 const authController = require("../controllers/authController");
 
@@ -8,8 +8,7 @@ const authController = require("../controllers/authController");
 const router = Router();
 
 // Body
-// router.post("/signup", authController.signup_post, complete);
-router.post("/signup", outOfOrder);
+router.post("/signup", authController.signup_post, complete);
 router.post("/login", authController.login_post, complete);
 router.get("/logout", authController.logout_get, complete);
 
