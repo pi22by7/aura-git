@@ -4,18 +4,18 @@ import "./index.css";
 import App from "./App";
 import { CookiesProvider } from "react-cookie";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import { UserProvider } from "./Contexts/userContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <CookiesProvider>
-      <BrowserRouter>
+      <HashRouter>
         <UserProvider>
           <App />
         </UserProvider>
-      </BrowserRouter>
+      </HashRouter>
     </CookiesProvider>
   </React.StrictMode>
 );
