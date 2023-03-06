@@ -91,7 +91,6 @@ const TeamRegister = (props) => {
       return;
     }
     const order = await createOrder();
-    console.log(order);
     // console.log(process.env.REACT_APP_RZRKEY);
     if (!order) {
       setLoading(false);
@@ -102,7 +101,6 @@ const TeamRegister = (props) => {
     const orderId = order.id;
     const currency = order.currency;
     const key = process.env.REACT_APP_RZRKEY;
-    // console.log(key);
 
     const options = {
       key: key,
@@ -128,8 +126,7 @@ const TeamRegister = (props) => {
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-
-    handleSubmit();
+    // handleSubmit();
     setLoading(false);
   };
   const handleSubmit = async () => {

@@ -56,19 +56,16 @@ const GlobeComponent = () => {
       world.controls().update();
     });
     globeEl.addEventListener("touchstart", () => {
-      // console.log("touch");
       world.controls().autoRotate = false;
     });
     globeEl.addEventListener("touchend", () => {
       setTimeout(150000);
-      // console.log("end");
       world.controls().autoRotate = true;
       world.controls().update();
     });
 
     let world = Globe({ animateIn: true, waitForGlobeReady: false })
       .globeImageUrl(art_map)
-      // .pointOfView(74.50342658528442, 15.869407619709492)
       .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
       .htmlElementsData(gData)
       .htmlElement((d) => {
@@ -84,11 +81,7 @@ const GlobeComponent = () => {
     world.controls().enableZoom = true;
     world.controls().autoRotate = true;
     world.controls().autoRotateSpeed = 1.0;
-    // lat:8.707407619709493, lng: 69.43142658528441
     world.controls().update();
-    // world.controls().minDistance = 100;
-    // world.controls().maxDistance = 10;
-
     // useEffect cleanup:
     return () => {
       world.controls().dispose();
