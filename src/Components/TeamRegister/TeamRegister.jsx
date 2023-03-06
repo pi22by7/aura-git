@@ -6,31 +6,27 @@ import logo from "../../Assets/logo.png";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
-  const [name, setName] = useState("Solo");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [isNull, setNull] = useState(true);
-  const event_participated = JSON.stringify({
+  const event_participated = {
     event_id: props.id,
     event_title: props.title,
-  });
-  console.log(event_participated);
+  };
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
   const { paid, setPaid } = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // console.log(user);
     if (user !== null) {
       setNull(false);
-      team[0] = user.aura_id;
     } else {
       setNull(true);
     }
-  }, [setNull, team, user]);
-
-  const handleName = (e) => {
-    setName(e);
-  };
+  }, [team, user]);
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -129,22 +125,35 @@ const TeamRegister = (props) => {
     // handleSubmit();
     setLoading(false);
   };
-  const handleSubmit = async () => {
+  const registerTeam = async () => {
     // e.preventDefault();
-    let ele = document.getElementById("msg");
-
-    if (isNull === true && paid === true) {
-      ele.innerHTML = "You need to have an account to register for an event!";
-    } else {
-      ele.innerHTML = "Registrations will start on March 5th! :)";
-      const team_name = JSON.stringify({ name });
-      const team_members = JSON.stringify({ team });
-      await api.post("/teams/createteam", {
-        event_participated,
-        team_name,
-        team_members,
+    const team_name = name;
+    const team_members = team;
+    const data = {
+      event_participated,
+      team_name,
+      team_members,
+    };
+    console.log(data);
+    await api
+      .post("/teams/createteam", data)
+      .then((res) => {
+        setMessage("Team Registered Successfully!");
+        props.setRegistered(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (
+          err.response.status === 403 &&
+          err.response.data.error === "403-teamMemberEmailUnverified"
+        ) {
+          setError(
+            "One or more team members have not verified their email address. Please ask them to verify their email address and try again."
+          );
+        } else {
+          setError("Team Registration Failed!");
+        }
       });
-    }
   };
   // eslint-disable-next-line no-unused-vars
   //   const { setUser } = useUser();
@@ -154,15 +163,16 @@ const TeamRegister = (props) => {
   const renderInputForms = (x) => {
     const inputForms = [];
 
-    for (let i = 1; i < x; i++) {
+    for (let i = 0; i < x - 1; i++) {
       inputForms.push(
         <>
           <label className="py-3 col-span-1" htmlFor={`tm${i}`} key={i + 20}>
-            Team Mate {i}
+            Team Mate {i + 1}
           </label>
           <input
             className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-            key={i}
+            id={`tm${i}`}
+            key={i + 1}
             value={team[i] || ""}
             onChange={(e) => handleInputChange(i, e)}
             disabled={false}
@@ -178,42 +188,68 @@ const TeamRegister = (props) => {
 
   return (
     <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
-      {n > 1 && (
+      {error && <p className="text-red-500 text-center">{error}</p>}
+      {message && <p className="text-green-500 text-center">{message}</p>}
+      {loading && <p className="text-green-500 text-center">Processing...</p>}
+      {!props.registered && (
         <>
           <h1 className="font-bold text-xl text-center m-2">
-            Register your team
+            {n > 1 ? "Register your team" : "Register yourself"}
           </h1>
           <label className="py-3 col-span-1">Team Name</label>
           <input
             className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-            onChange={(e) => handleName(e)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             disabled={false}
             required
             placeholder="Enter Team Name"
           />
+          <div>
+            <form>
+              <div className="grid grid-cols-1 my-1">{renderInputForms(n)}</div>
+              {n > 0 && (
+                <div className="grid justify-center my-8">
+                  <button
+                    className="btn btn-primary row-start-2 justify-self-center"
+                    onClick={registerTeam}
+                    disabled={loading}
+                  >
+                    Register
+                  </button>
+                </div>
+              )}
+              {/* {console.log(team, Mem)} */}
+            </form>
+          </div>
         </>
       )}
-      {n === 1 && (
-        <h1 className="font-bold text-xl text-center m-2">Register yourself</h1>
+      {props.registered && !props.paid && (
+        <>
+          <h1 className="font-bold text-xl text-center m-2">
+            Pay the registration fee
+          </h1>
+          <p className="text-center text-sm text-blue-600">
+            Your team has been registerd. Pay to confirm your registration.
+          </p>
+          <div className="grid justify-center my-8">
+            <button
+              className="btn btn-primary row-start-2 justify-self-center"
+              onClick={paymentModal}
+              disabled={loading}
+            >
+              Pay
+            </button>
+          </div>
+        </>
       )}
-      <div>
-        <form>
-          <div className="grid grid-cols-1 my-1">{renderInputForms(n)}</div>
-          {n > 0 && (
-            <div className="grid justify-center my-8">
-              <p id="msg" className="my-2"></p>
-              <button
-                className="btn btn-primary row-start-2 justify-self-center"
-                onClick={paymentModal}
-                disabled={loading}
-              >
-                Register
-              </button>
-            </div>
-          )}
-          {/* {console.log(team, Mem)} */}
-        </form>
-      </div>
+      {props.paid && (
+        <>
+          <h1 className="font-bold text-xl text-center m-2">
+            You have Successfully Registered!
+          </h1>
+        </>
+      )}
     </div>
   );
 };
