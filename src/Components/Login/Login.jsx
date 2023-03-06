@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useUser } from "../../Contexts/userContext";
-// import { useCookies } from "react-cookie";
-// import axios from "axios";
 import api from "../../Utils/axios.config";
 
 const Login = () => {
@@ -13,7 +11,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [cookies, setCookie] = useCookies(["user"]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,8 +67,9 @@ const Login = () => {
         error.response.status === 400 &&
         error.response.data.error === "403-emailUnverified"
       ) {
-        handleEmailVerification();
         setError("E-mail Not Verified.");
+        setMessage("Sending Verification E-mail...");
+        handleEmailVerification();
       } else {
         setError("Invalid Credentials");
       }
