@@ -25,10 +25,10 @@ module.exports.createTeam = async (req, res, next) => {
 			return res.status(400).send(Response(errors[400].eventDetailsRequired));
 
 		// Check if team members contains leader
-		if (team_members.find(email => email === res.locals.user.email))
+		if (team_members.find(aura_id => aura_id === res.locals.user.aura_id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
-		team_members = await Promise.all(team_members.map(email => User.findOne({ email })));
+		team_members = await Promise.all(team_members.map(aura_id => User.findOne({ aura_id })));
 		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
@@ -75,12 +75,14 @@ module.exports.createTeam = async (req, res, next) => {
 			team_name,
 			team_leader: {
 				id: res.locals.user._id,
+				aura_id: res.locals.user.aura_id,
 				usn: res.locals.user.usn,
 				name: res.locals.user.name,
 				email: res.locals.user.email,
 			},
 			team_members: team_members.map(member => ({
 				id: member._id,
+				aura_id: member.aura_id,
 				email: member.email,
 				name: member.name,
 				usn: member.usn,
@@ -120,6 +122,7 @@ module.exports.fetchAll = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
+		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -155,6 +158,7 @@ module.exports.fetchByEvent = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
+		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -198,6 +202,7 @@ module.exports.fetchByUser = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
+		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -220,7 +225,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 		if (String(team.team_leader.id) !== String(res.locals.user._id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
-		const old_team_members = team.team_members.map(member => String(member.email));
+		const old_team_members = team.team_members.map(member => member.aura_id);
 		let {
 			team_name = undefined,
 			team_members = undefined,
@@ -228,10 +233,10 @@ module.exports.modifyTeam = async (req, res, next) => {
 
 		if (team_members !== undefined && Array.isArray(team_members)) {
 			// Check if team members contains leader
-			if (team_members.find(email => email === res.locals.user.email))
+			if (team_members.find(aura_id => aura_id === res.locals.user.aura_id))
 				return res.status(403).send(Response(errors[403].invalidOperation));
 
-			team_members = await Promise.all(team_members.map(email => User.findOne({ email })));
+			team_members = await Promise.all(team_members.map(aura_id => User.findOne({ aura_id })));
 			if (team_members.length > 0 && team_members.find(member => !member))
 				return res.status(404).send(Response(errors[404].userNotFound));
 
@@ -242,7 +247,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 			// Check if any new team member is already registered for the event
 			const orFields = [];
 			team_members
-				.filter(member => !old_team_members.includes(member.email))
+				.filter(member => !old_team_members.includes(member.aura_id))
 				.forEach(member => {
 					orFields.push({
 						"team_leader.id": member._id,
@@ -264,6 +269,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 
 			team.team_members = team_members.map(member => ({
 				id: member._id,
+				aura_id: member.aura_id,
 				email: member.email,
 				usn: member.usn,
 				name: member.name,

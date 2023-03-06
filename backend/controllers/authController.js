@@ -61,7 +61,7 @@ module.exports.signup_post = async (req, res, next) => {
     });
 
     // Request email verification
-    await user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
+    user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");
