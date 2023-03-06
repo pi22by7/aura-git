@@ -31,6 +31,11 @@ const TeamSchema = new mongoose.Schema({
             required: [true, errors[400].teamLeaderIdRequired],
             index: true,
         },
+        aura_id: {
+            type: String,
+            required: [true, errors[400].auraIdRequired],
+            trim: true,
+        },
         usn: {
             type: String,
             required: [true, errors[400].teamLeaderUsnRequired],
@@ -50,6 +55,11 @@ const TeamSchema = new mongoose.Schema({
                 type: mongoose.Types.ObjectId,
                 ref: "user",
                 required: [true, errors[400].teamMemberIdRequired],
+            },
+            aura_id: {
+                type: String,
+                required: [true, errors[400].teamMemberAuraIdRequired],
+                trim: true,
             },
             email: {
                 type: String,
