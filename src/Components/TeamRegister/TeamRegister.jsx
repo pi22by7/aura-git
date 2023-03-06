@@ -1,20 +1,25 @@
 import { useUser } from "../../Contexts/userContext";
 import { useEffect, useState } from "react";
+// import Razorpay from "razorpay";
 import api from "../../Utils/axios.config";
 import logo from "../../Assets/logo.png";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Solo");
   const [isNull, setNull] = useState(true);
-  const evPart = `{${props.id}, ${props.title}}`;
+  const event_participated = JSON.stringify({
+    event_id: props.id,
+    event_title: props.title,
+  });
+  console.log(event_participated);
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
   const { paid, setPaid } = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
     if (user !== null) {
       setNull(false);
       team[0] = user.aura_id;
@@ -27,6 +32,20 @@ const TeamRegister = (props) => {
     setName(e);
   };
 
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
     newInputs[index] = event.target.value;
@@ -36,8 +55,8 @@ const TeamRegister = (props) => {
 
   const createOrder = async () => {
     try {
-      const { data } = await api.post(`/payments/order`);
-      return data;
+      const { data } = await api.get(`/payments/order?event_id=${props.id}`);
+      return data.data.order;
     } catch (error) {
       console.log("Error creating order:", error);
       return null;
@@ -60,18 +79,33 @@ const TeamRegister = (props) => {
     }
   };
 
-  const paymentModal = async () => {
+  const paymentModal = async (e) => {
+    e.preventDefault();
     setLoading(true);
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
     const order = await createOrder();
+    console.log(order);
+    // console.log(process.env.REACT_APP_RZRKEY);
     if (!order) {
       setLoading(false);
       alert("Unable to create payment order. Please try again later.");
       return;
     }
-    const { amount, id: orderId, currency } = order;
+    const amount = order.amount;
+    const orderId = order.id;
+    const currency = order.currency;
+    const key = process.env.REACT_APP_RZRKEY;
+    // console.log(key);
 
     const options = {
-      key: process.env.RZRKEY, // Enter the Key ID generated from the Dashboard
+      key: key,
       amount: amount.toString(),
       currency: currency,
       name: "KLS GIT, Belagavi",
@@ -80,35 +114,38 @@ const TeamRegister = (props) => {
       order_id: orderId,
       handler: (response) => handlePaymentSuccess(orderId, response),
       prefill: {
-        name: "Piyush",
-        email: "pi@example.com",
-        contact: "6969696969",
+        name: user.name,
+        email: user.email,
+        contact: user.phone,
       },
       notes: {
         address: "KLSGIT of Belagavi",
       },
       theme: {
-        color: "#61dafb",
+        color: "#ffffff",
       },
     };
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+
+    handleSubmit();
     setLoading(false);
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    paymentModal();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     let ele = document.getElementById("msg");
 
     if (isNull === true && paid === true) {
       ele.innerHTML = "You need to have an account to register for an event!";
     } else {
       ele.innerHTML = "Registrations will start on March 5th! :)";
+      const team_name = JSON.stringify({ name });
+      const team_members = JSON.stringify({ team });
       await api.post("/teams/createteam", {
-        evPart,
-        name,
-        team,
+        event_participated,
+        team_name,
+        team_members,
       });
     }
   };
@@ -170,7 +207,7 @@ const TeamRegister = (props) => {
               <p id="msg" className="my-2"></p>
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
-                onClick={handleSubmit}
+                onClick={paymentModal}
                 disabled={loading}
               >
                 Register

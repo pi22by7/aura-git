@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import { CookiesProvider } from "react-cookie";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, HashRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { UserProvider } from "./Contexts/userContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
