@@ -201,9 +201,8 @@ const Signup = () => {
             </div>
             <div className="mt-8 mb-5">
               {/* <Link to="/user">Login</Link> */}
-              <button className="btn btn-primary w-full" type="submit" disabled="true">
-                {/* Signup */}
-                Unavailable
+              <button className="btn btn-primary w-full" type="submit">
+                Signup
               </button>
             </div>
           </form>
