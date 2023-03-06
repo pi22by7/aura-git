@@ -24,8 +24,13 @@ async function paymentCreateOrderController(req, res, next) {
 		if (!event)
 			return res.status(404).send(Response(errors[404].eventNotFound));
 
+		// Check if user has registered for the event
+		const team = event.registered_teams.find(team => String(team.leader_id) === String(res.locals.user._id));
+		if (!team)
+			return res.status(403).send(Response(errors[403].teamNotRegistered));
+
 		// Check if user has already made the payment
-		if (await Receipt.findOne({ user_id: res.locals.user._id, event_id }))
+		if (team.payment.status || await Receipt.findOne({ user_id: res.locals.user._id, event_id }))
 			return res.status(400).send(Response(errors[400].alreadyPaid));
 
 		// Get scheme
@@ -102,6 +107,22 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 			user_id: res.locals.user._id,
 			event_id: order.notes.event,
 		});
+
+		// Reference receipt and update status in event document
+		const event = await Event.findById(order.notes.event);
+
+		const index = event.registered_teams.indexOf(team => String(team.leader_id) === String(res.locals.user._id));
+		if (index === -1)
+			return res.status(403).send(Response(errors[403].teamNotRegistered));
+
+		const update = { $set: {} };
+		update.$set[`registered_teams.${index}.payment`] = {
+			status: true,
+			receipt_id: receipt._id,
+		};
+		const results = await Event.updateOne({ _id: event._id }, update);
+		if (results.modifiedCount === 0)
+			return res.status(500).send(Response(errors[500]));
 
 		// Reference receipt in user document
 		res.locals.user.paid_for.push({

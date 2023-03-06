@@ -1,9 +1,12 @@
 // Imports
+const mongoose = require("mongoose");
 const Team = require("../models/Team");
 const User = require("../models/User");
 const errors = require("../configs/error.codes.json");
 const queryConfig = require("../configs/query.config.json");
 const Response = require("../models/standard.response.model");
+// const Receipt = require("../models/Receipt");
+const Event = require("../models/Event");
 const { errorHandler } = require("../utils/utils");
 
 // Body
@@ -23,6 +26,26 @@ module.exports.createTeam = async (req, res, next) => {
 
 		if (!("event_id" in event_participated))
 			return res.status(400).send(Response(errors[400].eventDetailsRequired));
+
+		// Validate event details
+		const event = await Event.findById(event_participated.event_id);
+		if (!event)
+			return res.status(404).send(Response(errors[404].eventNotFound));
+
+		// Check if the event has open registrations
+		if (!event.canRegister())
+			return res.status(403).send(Response(errors[403].registrationsClosed));
+
+		// // Check if payment is done
+		// const item = res.locals.user.paid_for.find(item => String(item.event_id) === event_participated.event_id);
+		// if (!item)
+		// 	return res.status(403).send(Response(errors[403].incompletePayment));
+
+		// // Check receipt
+		// const { receipt_id } = item;
+		// const receipt = await Receipt.findById({ user_id: res.locals.user._id, receipt_id });
+		// if (!receipt)
+		// 	return res.status(403).send(Response(errors[403].incompletePayment));
 
 		// Check if team members contains leader
 		if (team_members.find(aura_id => aura_id === res.locals.user.aura_id))
@@ -69,8 +92,20 @@ module.exports.createTeam = async (req, res, next) => {
 				return res.status(403).send(Response(errors[403].teamMemberAlreadyRegistered));
 		}
 
+		const id = new mongoose.Types.ObjectId().toHexString();
+		let limit = parseInt(event.registration_limit);
+		const query = { _id: event._id };
+
+		if (!isNaN(limit))
+			query[`registered_teams.${limit - 1}`] = { $exists: false };
+
+		const results2 = await Event.updateOne(query, { $push: { registered_teams: { team_id: id, leader_id: res.locals.user._id } } });
+		if (results2.modifiedCount === 0)
+			return res.status(403).send(Response(errors[403].registrationsClosed));
+
 		// Register team
 		const newTeam = await Team.create({
+			_id: id,
 			event_participated,
 			team_name,
 			team_leader: {
@@ -292,6 +327,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 	return next();
 };
 
+/* Not planned */
 module.exports.deleteTeam = async (req, res, next) => {
 	if (!res.locals.user)
 		return res.status(401).send(Response(errors[401].authRequired));
