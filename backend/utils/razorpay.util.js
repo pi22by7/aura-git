@@ -29,8 +29,17 @@ async function rpFetchOrderById(id) {
 	});
 }
 
+async function rpFetchPaymentById(id) {
+	return new Promise((resolve, _) => {
+		rp.payments.fetch(id)
+			.then(resolve)
+			.catch(_ => resolve(null));
+	});
+}
+
 module.exports = {
 	_rpCreateOrder,
 	rpCreateOrderByScheme,
 	rpFetchOrderById,
+	rpFetchPaymentById,
 };

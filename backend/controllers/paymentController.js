@@ -5,27 +5,7 @@ const Response = require("../models/standard.response.model");
 const Receipt = require("../models/Receipt");
 const Event = require("../models/Event");
 const { errorHandler } = require("../utils/utils");
-const { rpCreateOrderByScheme, rpFetchOrderById } = require("../utils/razorpay.util");
-
-// Constants
-const errorMessages = Object.freeze({
-	byCodes: {
-		11000: {
-			status: 403,
-			message: errors[403].paymentIdAlreadyUsed,
-		},
-	},
-});
-
-const getError = (error) => {
-	let msg;
-
-	// Check by code
-	if ((msg = errorMessages.byCodes[error.code])) return msg;
-
-	// Unhandled error
-	return errorHandler(error);
-};
+const { rpCreateOrderByScheme, rpFetchOrderById, rpFetchPaymentById } = require("../utils/razorpay.util");
 
 // Body
 async function paymentCreateOrderController(req, res, next) {
@@ -52,10 +32,10 @@ async function paymentCreateOrderController(req, res, next) {
 		let scheme;
 		if (event.team_size === 1)
 			// Solo
-			scheme = razorpayConfig.schemes.solo_event_registration;
+			scheme = razorpayConfig["available.schemes"].solo_event_registration;
 		else
 			// Team
-			scheme = razorpayConfig.schemes.team_event_registration;
+			scheme = razorpayConfig["available.schemes"].team_event_registration;
 
 		const order = await rpCreateOrderByScheme(scheme, {
 			user: String(res.locals.user._id),
@@ -98,6 +78,17 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 		if (order.notes.user !== String(res.locals.user._id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
+		// Check that `amount_paid` is equal to `amount`, and that `amount_due` is zero
+		if (order.amount_paid !== order.amount || order.amount_due !== 0)
+			return res.status(403).send(Response(errors[403].incompletePayment));
+
+		// Fetch payment and check if payment is made
+		const payment = await rpFetchPaymentById(payment_id);
+		if (!payment)
+			return res.status(403).send(Response(errors[403].incompletePayment));
+		if (payment.order_id !== id)
+			return res.status(400).send(Response(errors[400].receiptOrderMismatch));
+
 		// Store receipt
 		const receipt = await Receipt.create({
 			order_id: id,
@@ -125,7 +116,7 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 		res.locals.data.receipt = receipt;
 		res.locals.status = 201;
 	} catch (error) {
-		const { status, message } = getError(error);
+		const { status, message } = errorHandler(error, errors[400].alreadyPaid);
 		return res.status(status).send(Response(message));
 	}
 
