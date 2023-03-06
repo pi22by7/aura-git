@@ -1,7 +1,9 @@
 // Imports
 const errors = require("../configs/error.codes.json");
+const { razorpay: razorpayConfig } = require("../configs/utils.config.json");
 const Response = require("../models/standard.response.model");
 const Receipt = require("../models/Receipt");
+const Event = require("../models/Event");
 const { errorHandler } = require("../utils/utils");
 const { rpCreateOrderByScheme, rpFetchOrderById } = require("../utils/razorpay.util");
 
@@ -31,13 +33,34 @@ async function paymentCreateOrderController(req, res, next) {
 		return res.status(401).send(Response(errors[401].authRequired));
 
 	try {
-		const { scheme = undefined } = req.query;
+		const { event_id } = req.query;
 
-		// `scheme`
-		if (!scheme)
-			return res.status(400).send(Response(errors[400].schemeRequired));
+		// `event_id`
+		if (!event_id)
+			return res.status(400).send(Response(errors[400].eventIdRequired));
 
-		const order = await rpCreateOrderByScheme(scheme);
+		// Get event
+		const event = await Event.findById(event_id);
+		if (!event)
+			return res.status(404).send(Response(errors[404].eventNotFound));
+
+		// Check if user has already made the payment
+		if (await Receipt.findOne({ user_id: res.locals.user._id, event_id }))
+			return res.status(400).send(Response(errors[400].alreadyPaid));
+
+		// Get scheme
+		let scheme;
+		if (event.team_size === 1)
+			// Solo
+			scheme = razorpayConfig.schemes.solo_event_registration;
+		else
+			// Team
+			scheme = razorpayConfig.schemes.team_event_registration;
+
+		const order = await rpCreateOrderByScheme(scheme, {
+			user: String(res.locals.user._id),
+			event: String(event._id),
+		});
 		if (!order)
 			return res.status(400).send(Response(errors[400].invalidScheme));
 
@@ -66,10 +89,16 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 		if (!id)
 			return res.status(400).send(Response(errors[400].orderIdRequired));
 
+		// Fetch order
 		const order = await rpFetchOrderById(id);
 		if (!order)
 			return res.status(404).send(Response(errors[404].orderNotFound));
 
+		// Check if the order belongs to correct user
+		if (order.notes.user !== String(res.locals.user._id))
+			return res.status(403).send(Response(errors[403].invalidOperation));
+
+		// Store receipt
 		const receipt = await Receipt.create({
 			order_id: id,
 			order_details: {
@@ -80,7 +109,16 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 			payment_id,
 			payment_signature: signature,
 			user_id: res.locals.user._id,
+			event_id: order.notes.event,
 		});
+
+		// Reference receipt in user document
+		res.locals.user.paid_for.push({
+			event_id: order.notes.event,
+			receipt_id: receipt._id,
+		});
+		await res.locals.user.save();
+		await res.locals.refreshProfile();
 
 		if (!res.locals.data)
 			res.locals.data = {};

@@ -41,6 +41,11 @@ const schema = new mongoose.Schema({
 		required: [true, errors[500]],
 		ref: "user",
 	},
+	event_id: {
+		type: mongoose.Types.ObjectId,
+		required: [true, errors[500]],
+		ref: "event",
+	},
 });
 
 module.exports = mongoose.model("receipt", schema);

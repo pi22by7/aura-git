@@ -46,7 +46,8 @@
     "teamAlreadyExists": "400-teamAlreadyExists",
     "ticketAlreadyExists": "400-ticketAlreadyExists",
     "auraIdRequired": "400-auraIdRequired",
-    "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired"
+    "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
+    "alreadyPaid": "400-alreadyPaid"
   },
   "401": {
     "authRequired": "401-authRequired",
