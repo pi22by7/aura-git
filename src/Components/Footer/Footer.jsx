@@ -22,10 +22,10 @@ export const Footer = () => {
             <a className="my-3 block" href="/">
               Home
             </a>
-            <a className="my-3 block" href="/competitions">
+            <a className="my-3 block" href="/#/competitions">
               Competitions
             </a>
-            <a className="my-3 block" href="/rule-book">
+            <a className="my-3 block" href="/#/rule-book">
               Rule Book
             </a>
           </div>
@@ -33,15 +33,12 @@ export const Footer = () => {
             <div className="text-sm uppercase text-indigo-600 font-bold">
               Support
             </div>
-            <a className="my-3 block" href="/contact-us">
+            <a className="my-3 block" href="/#/contact-us">
               Contact Us
             </a>
-            <a className="my-3 block" href="/dev-team">
+            <a className="my-3 block" href="/#/dev-team">
               Dev Team
             </a>
-            {/* <a className="my-3 block" href="/#">
-              Conditions
-            </a> */}
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
@@ -55,8 +52,8 @@ export const Footer = () => {
             >
               Udyambag Industrial Area, Udyambag, Belagavi, Karnataka 590006
             </a>
-            <a className="my-3 block" href="mailto:aura@git.edu">
-              aura@git.edu
+            <a className="my-3 block" href="mailto:aura23.klsgit@gmail.com">
+              aura23.klsgit@gmail.com
             </a>
           </div>
         </div>

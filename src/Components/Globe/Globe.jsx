@@ -5,9 +5,15 @@ import Globe from "globe.gl";
 import PreLoader from "../PreLoader/PreLoader";
 import gData from "./gData.json";
 import art_map from "./map.png";
-import legend from "./legend_.png";
-import legend_mob from "./legend.png";
 import logo from "../../Assets/logo.png";
+import one from "./legend/11.png";
+import two from "./legend/Registration.png";
+import three from "./legend/Competitions.png";
+import four from "./legend/Rulebook.png";
+import five from "./legend/Schedule.png";
+import six from "./legend/Profile.png";
+import seven from "./legend/Contact.png";
+import eight from "./legend/Developer.png";
 
 const GlobeComponent = () => {
   const [loading, setLoading] = useState(true);
@@ -50,19 +56,16 @@ const GlobeComponent = () => {
       world.controls().update();
     });
     globeEl.addEventListener("touchstart", () => {
-      // console.log("touch");
       world.controls().autoRotate = false;
     });
     globeEl.addEventListener("touchend", () => {
       setTimeout(150000);
-      // console.log("end");
       world.controls().autoRotate = true;
       world.controls().update();
     });
 
     let world = Globe({ animateIn: true, waitForGlobeReady: false })
       .globeImageUrl(art_map)
-      // .pointOfView(74.50342658528442, 15.869407619709492)
       .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
       .htmlElementsData(gData)
       .htmlElement((d) => {
@@ -78,25 +81,19 @@ const GlobeComponent = () => {
     world.controls().enableZoom = true;
     world.controls().autoRotate = true;
     world.controls().autoRotateSpeed = 1.0;
-    // world.controls().minDistance = 100;
-    // world.controls().maxDistance = 10;
-
+    world.controls().update();
     // useEffect cleanup:
     return () => {
       world.controls().dispose();
+      world.renderer().dispose();
     };
   }, [marker, navigate]);
   return (
     <>
       {loading === true && <PreLoader type="welcome" />}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
-        <p className="absolute md:invisible visible bottom-8 right-1/2 transform translate-x-1/2 z-40">
-          <img
-            src={logo}
-            className="lg:h-40 h-28 mr-28"
-            alt="Aura Logo"
-            draggable={false}
-          />
+        <p className="absolute lg:invisible visible bottom-8 right-1/2 transform translate-x-1/2 z-40">
+          <img src={logo} className="h-28" alt="Aura Logo" draggable={false} />
         </p>
         <div
           id="globeViz"
@@ -105,11 +102,68 @@ const GlobeComponent = () => {
         ></div>
         {!loading && (
           <>
-            <div className="lg:w-52 w-28 absolute top-1/2 transfrom -translate-y-1/2 right-14 rounded-lg md:visible invisible">
-              <img src={legend} alt="legend" draggable={false} />
-            </div>
-            <div className="lg:w-52 w-28 absolute top-5 right-5 rounded-lg md:invisible visible">
-              <img src={legend_mob} alt="legend" draggable={false} />
+            <div className="lg:w-52 w-28 absolute lg:top-1/2 top-5 transfrom lg:-translate-y-1/2 lg:right-14 right-5 rounded-lg ">
+              <div className="h-fit flex flex-col justify-center items-center">
+                <a href="/" className="lg:contents hidden">
+                  <img src={one} alt="legend" draggable={false} />
+                </a>
+                <a href="/#/login">
+                  <img
+                    src={two}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/competitions">
+                  <img
+                    src={three}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/rule-book">
+                  <img
+                    src={four}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/schedule">
+                  <img
+                    src={five}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/profile">
+                  <img
+                    src={six}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/contact-us">
+                  <img
+                    src={seven}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+                <a href="/#/dev-team">
+                  <img
+                    src={eight}
+                    alt="legend"
+                    draggable={false}
+                    className="my-1"
+                  />
+                </a>
+              </div>
             </div>
           </>
         )}

@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, isRouteErrorResponse } from "react-router-dom";
+import { useUser } from "../Contexts/userContext";
+import {
+  useParams,
+  useNavigate,
+  isRouteErrorResponse,
+  Link,
+} from "react-router-dom";
 import api from "../Utils/axios.config";
 import EventDetails from "../Components/EventDetails/EventDetails";
 import EventCoordinators from "../Components/EventCoords/EventCoords";
@@ -13,26 +19,41 @@ const EventsDetailsPage = () => {
   const [teamSize, setTeamSize] = useState(0);
   const [event, setEvent] = useState(null);
   const [special, setSpecial] = useState();
+  const [registered, setRegistered] = useState(false);
+  const [paid, setPaid] = useState(false);
   const [url, setUrl] = useState();
+  const { user, setUser } = useUser();
+  const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
-
+  let team = null;
   useEffect(() => {
     async function fetchEvent() {
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
-          // console.log(res);
+          console.log(res);
+          const event = res.data.data.event;
           // eslint-disable-next-line react-hooks/exhaustive-deps
-          setTeamSize(parseInt(res.data.data.event.team_size));
-          setEvent(res.data.data.event);
-          setSpecial(Boolean(res.data.data.event.link));
-          setUrl(res.data.data.event.url);
+          setTeamSize(parseInt(event.team_size));
+          setEvent(event);
+          setSpecial(Boolean(event.link));
+          setUrl(event.url);
+          team = event.registered_teams.filter(
+            (team) => team.leader_id === uid
+          );
+          if (team !== null && team.length > 0) {
+            setRegistered(true);
+            if (team[0].payment.status) {
+              setPaid(true);
+            }
+          }
         })
         .catch((error) => {
+          console.log(error);
           if (error.response && error.response.status === 404) {
             navigate("/404");
           } else {
-            navigate("/events");
+            navigate("/competitions");
           }
         });
     }
@@ -57,14 +78,29 @@ const EventsDetailsPage = () => {
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
         <div className="grid grid-cols-1 place-items-center my-10">
-          <TeamRegister
-            size={teamSize}
-            title={event.title}
-            id={event._id}
-            className="justify-center justify-self-center w-4 mb-12"
-          />
-          {/* {console.log(url, special)} */}
-          {special && <Submission />}
+          {!user && (
+            <>
+              <p className="text-xl text-center font-bold my-5">
+                Please login to register for the event
+              </p>
+              <Link to="/login">
+                <button className="btn btn-primary">Login</button>
+              </Link>
+            </>
+          )}
+          {user && (
+            <TeamRegister
+              size={teamSize}
+              title={event.title}
+              id={event._id}
+              registered={registered}
+              paid={paid}
+              setRegistered={setRegistered}
+              setPaid={setPaid}
+              className="justify-center justify-self-center w-4 mb-12"
+            />
+          )}
+          {special && <Submission event={event._id} user={user.id} />}
           {url && (
             <a
               href={url}

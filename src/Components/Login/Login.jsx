@@ -50,6 +50,7 @@ const Login = () => {
           password,
         })
         .then((res) => {
+          localStorage.setItem("uid", res.data.data.user._id);
           setUser(res.data.data.user);
           setLoading(false);
           setError("");

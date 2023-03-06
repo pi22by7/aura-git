@@ -10,7 +10,7 @@ function parseLinks(strings) {
   const linkRegex = /(https?:\/\/[^\s]+)/g; // regular expression to match URLs
   return strings.map((str) => {
     const matches = str.match(linkRegex);
-    console.log(matches);
+    // console.log(matches);
     if (matches) {
       const parts = str.split(linkRegex);
       return parts.map((part, index) => {
@@ -21,6 +21,7 @@ function parseLinks(strings) {
               key={index}
               href={part}
               target="_blank"
+              rel="noreferrer"
             >
               {part}
             </a>
@@ -37,7 +38,7 @@ function parseLinks(strings) {
 
 const EventDetails = ({ event }) => {
   const rules = parseLinks(event.rules);
-  console.log(rules);
+  // console.log(rules);
   return (
     <div className="my-10">
       <h2 className="text-2xl font-bold text-center">Event Details</h2>

@@ -38,7 +38,7 @@ function App() {
         });
     };
     fetchData();
-  }, []);
+  }, [setUser]);
   return (
     <div className="App select-none">
       {path !== "/" && <NavBar />}

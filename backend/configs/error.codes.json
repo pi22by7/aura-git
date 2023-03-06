@@ -63,7 +63,9 @@
     "invalidOperation": "403-invalidOperation",
     "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed",
     "teamMemberEmailUnverified": "403-teamMemberEmailUnverified",
-    "incompletePayment": "403-incompletePayment"
+    "incompletePayment": "403-incompletePayment",
+    "registrationsClosed": "403-registrationsClosed",
+    "teamNotRegistered": "403-teamNotRegistered"
   },
   "404": {
     "userNotFound": "404-userNotFound",
