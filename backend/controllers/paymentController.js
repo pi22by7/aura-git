@@ -111,7 +111,7 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 		// Reference receipt and update status in event document
 		const event = await Event.findById(order.notes.event);
 
-		const index = event.registered_teams.indexOf(team => String(team.leader_id) === String(res.locals.user._id));
+		const index = event.registered_teams.findIndex(team => String(team.leader_id) === String(res.locals.user._id));
 		if (index === -1)
 			return res.status(403).send(Response(errors[403].teamNotRegistered));
 
