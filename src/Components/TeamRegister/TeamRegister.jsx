@@ -66,10 +66,12 @@ const TeamRegister = (props) => {
   const handlePaymentSuccess = async (orderId, paymentData) => {
     try {
       const data = {
-        orderCreationId: orderId,
-        razorpayPaymentId: paymentData.razorpay_payment_id,
-        razorpayOrderId: paymentData.razorpay_order_id,
-        razorpaySignature: paymentData.razorpay_signature,
+        // orderCreationId: orderId,
+        // razorpayPaymentId: paymentData.razorpay_payment_id,
+        // razorpayOrderId: paymentData.razorpay_order_id,
+        // razorpaySignature: paymentData.razorpay_signature,
+        payment_id: paymentData.razorpay_payment_id,
+        signature: paymentData.razorpay_signature,
       };
       await api.post(`/payments/order/${orderId}/receipt`, data);
       setPaid(true);
