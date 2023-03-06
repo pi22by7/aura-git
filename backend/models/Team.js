@@ -10,6 +10,7 @@ const TeamSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Event",
             required: [true, errors[400].participationEventIdRequired],
+            index: true,
         },
         event_title: {
             type: String,
@@ -28,6 +29,12 @@ const TeamSchema = new mongoose.Schema({
             type: mongoose.Types.ObjectId,
             ref: "user",
             required: [true, errors[400].teamLeaderIdRequired],
+            index: true,
+        },
+        aura_id: {
+            type: String,
+            required: [true, errors[400].auraIdRequired],
+            trim: true,
         },
         usn: {
             type: String,
@@ -49,6 +56,11 @@ const TeamSchema = new mongoose.Schema({
                 ref: "user",
                 required: [true, errors[400].teamMemberIdRequired],
             },
+            aura_id: {
+                type: String,
+                required: [true, errors[400].teamMemberAuraIdRequired],
+                trim: true,
+            },
             email: {
                 type: String,
                 required: [true, errors[400].teamMemberEmailRequired],
@@ -65,6 +77,7 @@ const TeamSchema = new mongoose.Schema({
         default: {},
     },
 }, { timestamps: true });
+TeamSchema.index({ "event_participated.event_id": 1, "team_leader.id": 1 }, { unique: true });
 
 const Team = mongoose.model("team", TeamSchema);
 

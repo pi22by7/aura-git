@@ -7,14 +7,13 @@ const {
 	ticketCreatePasswordResetController,
 	ticketResolvePasswordResetController,
 } = require("../controllers/ticketController");
-const { requireAuth } = require("../middleware/authMiddleware");
 
 // Constants
 const Router = express.Router();
 
 // Body
-Router.get("/verification/email", requireAuth, ticketCreateEmailVerificationController, complete);
-Router.get("/verification/email/resolve", requireAuth, ticketResolveEmailVerificationController, complete);
+Router.get("/verification/email", ticketCreateEmailVerificationController, complete);
+Router.get("/verification/email/resolve", ticketResolveEmailVerificationController, complete);
 
 Router.post("/verification/password", ticketCreatePasswordResetController, complete);
 Router.get("/verification/password/resolve", ticketResolvePasswordResetController, complete);

@@ -6,7 +6,38 @@ import {
   faCube,
 } from "@fortawesome/free-solid-svg-icons";
 
+function parseLinks(strings) {
+  const linkRegex = /(https?:\/\/[^\s]+)/g; // regular expression to match URLs
+  return strings.map((str) => {
+    const matches = str.match(linkRegex);
+    console.log(matches);
+    if (matches) {
+      const parts = str.split(linkRegex);
+      return parts.map((part, index) => {
+        if (matches.includes(part)) {
+          return (
+            <a
+              className="text-blue-500"
+              key={index}
+              href={part}
+              target="_blank"
+            >
+              {part}
+            </a>
+          );
+        } else {
+          return part;
+        }
+      });
+    } else {
+      return str;
+    }
+  });
+}
+
 const EventDetails = ({ event }) => {
+  const rules = parseLinks(event.rules);
+  console.log(rules);
   return (
     <div className="my-10">
       <h2 className="text-2xl font-bold text-center">Event Details</h2>
@@ -41,7 +72,7 @@ const EventDetails = ({ event }) => {
       <div className="py-5 md:w-4/5 w-11/12 mx-auto">
         <h2 className="text-2xl font-bold text-center mb-5">Rules</h2>
         <ul className="flex flex-col items-start mb-5">
-          {event.rules.map((rule, index) => (
+          {rules.map((rule, index) => (
             <li key={index} className="my-2 text-justify">
               <FontAwesomeIcon icon={faCube} className="mx-3" />
               {rule}

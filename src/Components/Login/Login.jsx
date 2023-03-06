@@ -8,9 +8,10 @@ import api from "../../Utils/axios.config";
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
   const { setUser } = useUser();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("2gi20cs050@students.git.edu");
+  const [password, setPassword] = useState("asdfasdf");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   // const [cookies, setCookie] = useCookies(["user"]);
 
@@ -23,6 +24,25 @@ const Login = () => {
     setError("");
     setLoading(true);
     handleLogin();
+  };
+
+  const handleEmailVerification = async () => {
+    await api
+      .get(`/tickets/verification/email?email=${email}`)
+      .then((res) => {
+        if (res.data.success)
+          setMessage("A verification E-mail has been sent to your mail.");
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 400 &&
+          err.response.data.error === "400-emailAlreadySent"
+        )
+          setMessage(
+            "Verification E-mail already sent. Please check your mail."
+          );
+        else setError("Something went wrong. Please try again later.");
+      });
   };
 
   const handleLogin = async () => {
@@ -46,6 +66,12 @@ const Login = () => {
         error.response.data.error === "404-userNotFound"
       ) {
         setError("E-mail Not Registered");
+      } else if (
+        error.response.status === 400 &&
+        error.response.data.error === "403-emailUnverified"
+      ) {
+        handleEmailVerification();
+        setError("E-mail Not Verified.");
       } else {
         setError("Invalid Credentials");
       }
@@ -57,6 +83,7 @@ const Login = () => {
       <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
         <h1 className="font-bold text-xl text-center m-2">Login</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
+        {message && <p className="text-green-500 text-center">{message}</p>}
         {loading && <p className="text-green-500 text-center">Verifying</p>}
         <div>
           <form onSubmit={handleSubmit}>

@@ -12,6 +12,7 @@ const Rulebook = () => {
         <a
           href="https://drive.google.com/file/d/10hPUDlX0J1Ubncq-WPFWqLPhK-galBg8/view?usp=sharing"
           target="_blank"
+          rel="noreferrer"
           className="lg:w-fit w-full absolute lg:right-10 right-1/2 lg:bottom-3 bottom-16 transform translate-x-1/2 lg:translate-x-0 px-2"
         >
           <button className="btn btn-primary w-full text-white font-bold py-2 px-4 rounded-full">

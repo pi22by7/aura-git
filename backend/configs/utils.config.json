@@ -9,9 +9,16 @@
   },
   "razorpay": {
     "currency": "INR",
+    "available.schemes": {
+      "solo_event_registration": "solo_event_registration",
+      "team_event_registration": "team_event_registration"
+    },
     "schemes": {
-      "event_registration": {
-        "amount": 100
+      "solo_event_registration": {
+        "amount": 5000
+      },
+      "team_event_registration": {
+        "amount": 25000
       }
     }
   },
@@ -19,6 +26,6 @@
     "prefix": "AURA23",
     "delimiter": "-",
     "name.length": 3,
-    "suffix.digits.length": 4
+    "suffix.digits.length": 5
   }
 }

@@ -11,6 +11,10 @@ configs/*.secure.json
 # SSL files
 *.pem
 
+# Winston logging
+*.log
+*-audit.json
+
 # Misc
 .DS_Store
 *.mongodb

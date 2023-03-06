@@ -36,7 +36,19 @@
     "idRequired": "400-idRequired",
     "collegeRequired": "400-collegeRequired",
     "phoneRequired": "400-phoneRequired",
-    "invalidPhone": "400-invalidPhone"
+    "invalidPhone": "400-invalidPhone",
+    "invalidLinksBody": "400-invalidLinksBody",
+    "linkRequired": "400-linkRequired",
+    "linksBodyRequired": "400-linksBodyRequired",
+    "eventIdRequired": "400-eventIdRequired",
+    "duplicateError": "400-duplicateError",
+    "submissionAlreadyExists": "400-submissionAlreadyExists",
+    "teamAlreadyExists": "400-teamAlreadyExists",
+    "ticketAlreadyExists": "400-ticketAlreadyExists",
+    "auraIdRequired": "400-auraIdRequired",
+    "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
+    "alreadyPaid": "400-alreadyPaid",
+    "receiptOrderMismatch": "400-receiptOrderMismatch"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -50,7 +62,8 @@
     "teamMemberAlreadyRegistered": "403-teamMemberAlreadyRegistered",
     "invalidOperation": "403-invalidOperation",
     "paymentIdAlreadyUsed": "403-paymentIdAlreadyUsed",
-    "teamMemberEmailUnverified": "403-teamMemberEmailUnverified"
+    "teamMemberEmailUnverified": "403-teamMemberEmailUnverified",
+    "incompletePayment": "403-incompletePayment"
   },
   "404": {
     "userNotFound": "404-userNotFound",
@@ -59,7 +72,8 @@
     "emailNotFound": "404-emailNotFound",
     "orderNotFound": "404-orderNotFound",
     "clubNotFound": "404-clubNotFound",
-    "teamNotFound": "404-teamNotFound"
+    "teamNotFound": "404-teamNotFound",
+    "submissionNotFound": "404-submissionNotFound"
   },
   "440": {
     "sessionExpired": "440-sessionExpired",

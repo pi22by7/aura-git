@@ -1,6 +1,7 @@
 // Imports
 const errors = require("../configs/error.codes.json");
 const { jwt: jwtConfig } = require("../configs/utils.config.json");
+const ticketConfig = require("../configs/ticket.config.json");
 const User = require("../models/User");
 const Response = require("../models/standard.response.model");
 const { bcryptHash, errorHandler } = require("../utils/utils");
@@ -58,9 +59,9 @@ module.exports.signup_post = async (req, res, next) => {
       college,
       password: await bcryptHash(password),
     });
-    const token = user.createToken();
 
-    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none", maxAge: jwtConfig.ages.login * 1000 });
+    // Request email verification
+    user.createNewTicket(ticketConfig.purposes.EMAIL_VERIFICATION);
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");
@@ -80,7 +81,12 @@ module.exports.login_post = async (req, res, next) => {
     const user = await User.login(email, password);
     const token = user.createToken();
 
-    res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none", maxAge: jwtConfig.ages.login * 1000 });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      // secure: true, TODO: Uncomment later
+      // sameSite: "none", TODO: Uncomment later
+      maxAge: jwtConfig.ages.login * 1000,
+    });
     if (!res.locals.data)
       res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");

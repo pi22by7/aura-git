@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PaymentForm from "../Components/PaymentForm/PaymentForm";
 import api from "../Utils/axios.config";
 import PreLoader from "../Components/PreLoader/PreLoader";
 import colleges from "../Dataset/collegesKar.json";
@@ -22,7 +21,10 @@ const UserPage = () => {
       await api
         .get(`/auth/user/status/`)
         .then((res) => {
-          if (!res.data.data.authenticated) return navigate("/login");
+          if (!res.data.data.authenticated) {
+            setUser(null);
+            return navigate("/login");
+          }
           setUser(res.data.profile);
           setLoading(false);
         })
@@ -31,7 +33,7 @@ const UserPage = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [navigate]);
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
@@ -60,19 +62,6 @@ const UserPage = () => {
       });
   };
 
-  // Handle email verification:
-  const handleVerifyEmail = async () => {
-    await api
-      .get("/tickets/verification/email/")
-      .then((res) => {
-        if (res.data.status === "success")
-          setMessage("Email sent successfully");
-        res.setError(null);
-      })
-      .catch((err) => {
-        setError("Error sending email. Please try again later.");
-      });
-  };
   if (loading) {
     return <PreLoader type="loading" />;
   }
@@ -119,30 +108,16 @@ const UserPage = () => {
               <label className="py-3 col-span-1" htmlFor="email">
                 Email
               </label>
-              <div className="grid md:grid-cols-5 grid-cols-1">
-                <input
-                  className={
-                    user.tickets.email_verification
-                      ? "bg-gray-100 rounded-lg p-2 md:col-span-5 outline-none"
-                      : "bg-gray-100 rounded-lg p-2 md:col-span-3 outline-none"
-                  }
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={user.email}
-                  required
-                  placeholder="Your Email"
-                  disabled
-                />
-                {!user.tickets.email_verification && (
-                  <button
-                    className="btn btn-primary md:col-span-2 md:mx-3 md:mt-0 mt-3"
-                    onClick={handleVerifyEmail}
-                  >
-                    Verify Email
-                  </button>
-                )}
-              </div>
+              <input
+                className="bg-gray-100 rounded-lg p-2 outline-none"
+                type="email"
+                name="email"
+                id="email"
+                value={user.email}
+                required
+                placeholder="Your Email"
+                disabled
+              />
             </div>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="phone">
@@ -203,7 +178,6 @@ const UserPage = () => {
               </button>
             </Link>
           </form>
-          <PaymentForm />
         </div>
       </div>
     </div>
