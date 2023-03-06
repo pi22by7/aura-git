@@ -8,8 +8,8 @@ import api from "../../Utils/axios.config";
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
   const { setUser } = useUser();
-  const [email, setEmail] = useState("2gi20cs050@students.git.edu");
-  const [password, setPassword] = useState("asdfasdf");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
