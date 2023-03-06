@@ -4,7 +4,7 @@ const Marker = ({ marker, url, title, navigate }) => {
   ele.style.cursor = "pointer";
   ele.style.color = "red";
   ele.innerHTML = marker;
-  ele.style.width = "30px";
+  ele.style.width = "35px";
   ele.title = title;
 
   // on click, navigate to the url
