@@ -16,6 +16,12 @@ const schema = new mongoose.Schema({
 		ref: "user",
 		index: true,
 	},
+	team: {
+		type: mongoose.Types.ObjectId,
+		required: [true, errors[500]],
+		ref: "team",
+		index: true,
+	},
 	links: {
 		type: [String],
 		required: [true, errors[400].linksBodyRequired],
@@ -50,6 +56,9 @@ schema.methods.getPopulated = async function () {
 		{
 			path: "user",
 			select: "-password",
+		},
+		{
+			path: "team",
 		},
 	]);
 };

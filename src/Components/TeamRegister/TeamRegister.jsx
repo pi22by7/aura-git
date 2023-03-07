@@ -61,6 +61,8 @@ const TeamRegister = (props) => {
 
   const handlePaymentSuccess = async (orderId, paymentData) => {
     try {
+      // orderCreationId: orderId,
+      // razorpayOrderId: paymentData.razorpay_order_id,
       const data = {
         // orderCreationId: orderId,
         // razorpayPaymentId: paymentData.razorpay_payment_id,
