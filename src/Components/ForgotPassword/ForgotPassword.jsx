@@ -53,10 +53,12 @@ const PasswordEnter = () => {
         <p className="font-semibold text-md text-center m-2">
           Please enter your email and new password:
         </p>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {message && <p className="text-green-500 text-center">{message}</p>}
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+        {message && (
+          <p className="msg-box text-green-500 text-center">{message}</p>
+        )}
         {loading && (
-          <p className="text-green-500 text-center">
+          <p className="msg-box text-green-500 text-center">
             Sending Verification link...
           </p>
         )}

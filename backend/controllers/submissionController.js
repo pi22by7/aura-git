@@ -136,11 +136,12 @@ async function submissionCreateController(req, res, next) {
 	try {
 		const { body } = req;
 
-		const { event_id = undefined, links = undefined, notes = undefined } = body;
+		const { event_id = undefined, links = undefined, notes = undefined, team_id = undefined } = body;
 
 		const submission = await Submission.create({
 			event: event_id,
 			user: res.locals.user._id,
+			team: team_id,
 			links,
 			notes,
 		});

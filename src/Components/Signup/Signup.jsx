@@ -83,9 +83,13 @@ const Signup = () => {
     <div className="form-container bg-signin bg-signinc w-screen">
       <div className="form-box bg-slate-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 border border-black-100 overflow-hidden md:mr-64 place-self-center">
         <h1 className="font-bold text-xl text-center m-2">Signup</h1>
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {message && <p className="text-green-500 text-center">{message}</p>}
+        {loading && (
+          <p className="msg-box text-green-500 text-center">Verifying</p>
+        )}
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+        {message && (
+          <p className="msg-box text-green-500 text-center">{message}</p>
+        )}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">

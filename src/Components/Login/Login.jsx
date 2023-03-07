@@ -81,9 +81,17 @@ const Login = () => {
     <div className="grid form-container bg-signin bg-signinc w-screen user-none">
       <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
         <h1 className="font-bold text-xl text-center m-2">Login</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {message && <p className="text-green-500 text-center">{message}</p>}
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
+        <p className=" text-red-500 font-md text-center">
+          Due to some inconvenience from our end, you maybe facing "Invalid
+          verification Link" issue, Please signup again.
+        </p>
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+        {message && (
+          <p className="msg-box text-green-500 text-center">{message}</p>
+        )}
+        {loading && (
+          <p className="msg-box text-green-500 text-center">Verifying</p>
+        )}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">

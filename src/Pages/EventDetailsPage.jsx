@@ -26,8 +26,12 @@ const EventsDetailsPage = () => {
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
   let team = null;
+
   useEffect(() => {
     async function fetchEvent() {
+      if (!uid) {
+        await api.get("/auth/user/logout");
+      }
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
@@ -73,7 +77,7 @@ const EventsDetailsPage = () => {
           alt={`${event.title}-banner`}
         />
       </div> */}
-      <div className="mt-10">
+      <div className="mt-10 w-full">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
@@ -91,6 +95,7 @@ const EventsDetailsPage = () => {
           {user && (
             <TeamRegister
               size={teamSize}
+              min_size={event.min_team_size ? event.min_team_size : 1}
               title={event.title}
               id={event._id}
               registered={registered}
@@ -100,7 +105,7 @@ const EventsDetailsPage = () => {
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
-          {special && <Submission event={event._id} user={user.id} />}
+          {special && registered && <Submission event={event._id} user={uid} />}
           {url && (
             <a
               href={url}
