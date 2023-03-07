@@ -20,6 +20,7 @@ import Schedule from "./Components/Schedule/Schedule";
 // import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 import DevTeam from "./Components/DevTeam/DevTeam";
 import Changed from "./Components/ForgotPassword/Changed";
+import AboutUs from "./Components/AboutUs/AboutUs";
 // import PaymentForm from "./Components/PaymentForm/PaymentForm";
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
           <Route path="verifyPass" element={<Changed />} />
           <Route path="verifyEmail" element={<Changed />} />
           <Route path="schedule" element={<Schedule />} />
+          <Route path="about-us" element={<AboutUs />}
           {/* <Route path="payment" element={<PaymentForm />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
