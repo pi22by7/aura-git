@@ -81,6 +81,12 @@ const TeamRegister = (props) => {
     }
   };
 
+  const paymentNo = async () => {
+    alert(
+      "We are still working on payments. Your team is registered, so you can come back and pay later."
+    );
+  };
+
   const paymentModal = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -312,7 +318,7 @@ const TeamRegister = (props) => {
             <div className="grid justify-center my-8">
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
-                onClick={paymentModal}
+                onClick={paymentNo}
                 disabled={loading}
               >
                 Pay
