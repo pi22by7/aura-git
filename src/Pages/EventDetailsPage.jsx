@@ -25,7 +25,7 @@ const EventsDetailsPage = () => {
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
-  let team = null;
+  const [team, setTeam] = useState([]);
 
   useEffect(() => {
     async function fetchEvent() {
@@ -35,21 +35,24 @@ const EventsDetailsPage = () => {
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
-          console.log(res);
           const event = res.data.data.event;
           // eslint-disable-next-line react-hooks/exhaustive-deps
           setTeamSize(parseInt(event.team_size));
           setEvent(event);
           setSpecial(Boolean(event.link));
           setUrl(event.url);
-          team = event.registered_teams.filter(
+          let tm = event.registered_teams.filter(
             (team) => team.leader_id === uid
           );
+          setTeam(tm);
           if (team !== null && team.length > 0) {
             setRegistered(true);
             if (team[0].payment.status) {
               setPaid(true);
             }
+          }
+          if (special) {
+            getTeamSubmissions();
           }
         })
         .catch((error) => {
@@ -63,6 +66,20 @@ const EventsDetailsPage = () => {
     }
     fetchEvent();
   }, [club, title, navigate, special, url]);
+
+  const getTeamSubmissions = async () => {
+    if (!team) return;
+    const teamId = team[0]._id;
+    console.log(teamId);
+    await api
+      .get(`/submissions/team/${teamId}`)
+      .then((res) => {
+        console.log(res.data.data.submissions);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (!event) {
     return <PreLoader type="loading" />;
@@ -105,7 +122,9 @@ const EventsDetailsPage = () => {
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
-          {special && registered && <Submission event={event._id} user={uid} />}
+          {special && registered && (
+            <Submission event={event._id} user={uid} team={team[0]} />
+          )}
           {url && (
             <a
               href={url}

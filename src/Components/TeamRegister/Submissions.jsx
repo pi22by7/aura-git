@@ -5,25 +5,38 @@ import api from "../../Utils/axios.config";
 // import { useState } from "react";
 const Submission = (props) => {
   const [link, setLink] = useState("");
-
-  const handleInputChange = (e) => {
-    e.preventDefault();
-    console.log(link);
-    setLink(e);
-  };
+  const [submission, setSubmission] = useState("");
   const event = props.event;
+  const team = props.team;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await api.post("/submissions", {
-      event,
-      link,
-    });
-    console.log(link, res);
+    if (link === "") {
+      setSubmission("Please enter a valid link");
+      return;
+    }
+    setSubmission("Submitting...");
+    await api
+      .post("/submissions", {
+        event_id: event,
+        links: [link],
+        team_id: team._id,
+      })
+      .then((res) => {
+        setSubmission("Submitted Successfully");
+      })
+      .catch((err) => {
+        setSubmission("Submission Failed");
+        console.log(err);
+      });
   };
 
   return (
     <div className="lign-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 my-10">
       <h1 className="font-bold text-xl text-center m-2">Your Submission</h1>
+      {submission && (
+        <p className="msg-box text-green-500 text-center">{submission}</p>
+      )}
       <div>
         <form>
           <div className="grid grid-cols-1 my-1">
@@ -36,7 +49,8 @@ const Submission = (props) => {
               type="text"
               name="submission"
               id="submission"
-              onChange={(e) => handleInputChange(e)}
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
               disabled={false}
               required
               placeholder="Enter G-Drive Link"

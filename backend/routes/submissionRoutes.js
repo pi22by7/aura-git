@@ -7,6 +7,7 @@ const {
 	submissionGetAllController,
 	submissionGetByEventController,
 	submissionGetByUserController,
+	submissionGetByTeamController,
 	submissionCreateController,
 	submissionUpdateController,
 	submissionDeleteController,
@@ -20,6 +21,7 @@ Router.get("/:id", submissionGetController, complete);
 Router.get("/", submissionGetAllController, complete);
 Router.get("/event/:id", submissionGetByEventController, complete);
 Router.get("/user/:id", submissionGetByUserController, complete);
+Router.get("/team/:id", submissionGetByTeamController, complete);
 
 Router.post("/", requireVerifiedAuth, submissionCreateController, complete);
 

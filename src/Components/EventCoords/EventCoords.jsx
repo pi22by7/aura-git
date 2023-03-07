@@ -5,7 +5,7 @@ const EventCoordinators = ({ eventCoordinators }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold text-center">Event Coordinators</h2>
-      <div className="grid md:grid-cols-3 grid-cols-1 justify-items-center mt-8">
+      <div className="grid md:auto-cols-auto md:grid-cols-3 grid-cols-1 justify-items-center mt-8">
         {eventCoordinators.map((eventCoordinator, index) => (
           <div key={index} className="flex flex-col items-center my-5">
             {/* {console.log(eventCoordinator.image)} */}
