@@ -4,6 +4,7 @@ const errors = require("../configs/error.codes.json");
 const Submission = require("../models/Submission");
 const Event = require("../models/Event");
 const User = require("../models/User");
+const Team = require("../models/Team");
 const Response = require("../models/standard.response.model");
 const { errorHandler } = require("../utils/utils");
 
@@ -129,6 +130,29 @@ async function submissionGetByUserController(req, res, next) {
 	return next();
 }
 
+async function submissionGetByTeamController(req, res, next) {
+	try {
+		const { params } = req;
+
+		const { id } = params;
+
+		const team = await Team.findById(id);
+		if (!team)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+
+		const submission = await Submission.findOne({ team: id });
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.submission = (!submission ? null : await submission.getPopulated());
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+}
+
 async function submissionCreateController(req, res, next) {
 	if (!res.locals.user)
 		return res.status(401).send(Response(errors[401].authRequired));
@@ -224,6 +248,7 @@ module.exports = {
 	submissionGetAllController,
 	submissionGetByEventController,
 	submissionGetByUserController,
+	submissionGetByTeamController,
 	submissionCreateController,
 	submissionUpdateController,
 	submissionDeleteController,

@@ -38,7 +38,9 @@ const EventsPage = () => {
           {events.map((club) => (
             <p
               key={club._id}
-              className=" bg-quaternary text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer"
+              className={`text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer ${
+                club._id === activeTab ? "bg-tertiary" : "bg-quaternary"
+              }`}
               onClick={(e) => {
                 setActiveTab(club._id);
               }}
@@ -54,7 +56,7 @@ const EventsPage = () => {
             activeTab === club._id && (
               <div
                 key={club._id}
-                className="grid grid-cols-1 justify-items-center "
+                className="grid grid-cols-1 justify-items-center"
               >
                 {club.events.map((event) => {
                   return <EventCard key={event._id} event={event} />;
