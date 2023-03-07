@@ -105,8 +105,10 @@ const UserPage = () => {
         </div>
         <div className="info lg:col-span-2 col-span-1 mt-5 w-full">
           <h1 className="text-3xl lg:text-left text-center">Your Profile</h1>
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {updating && <p className="text-green-500 text-center">Updating</p>}
+          {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+          {updating && (
+            <p className="msg-box text-green-500 text-center">Updating</p>
+          )}
           <form className="mt-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">
               <label className="py-3 col-span-1" htmlFor="name">

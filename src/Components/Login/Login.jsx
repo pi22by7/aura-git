@@ -85,9 +85,13 @@ const Login = () => {
           Due to some inconvenience from our end, you maybe facing "Invalid
           verification Link" issue, Please signup again.
         </p>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {message && <p className="text-green-500 text-center">{message}</p>}
-        {loading && <p className="text-green-500 text-center">Verifying</p>}
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+        {message && (
+          <p className="msg-box text-green-500 text-center">{message}</p>
+        )}
+        {loading && (
+          <p className="msg-box text-green-500 text-center">Verifying</p>
+        )}
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 my-1">

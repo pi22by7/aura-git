@@ -129,6 +129,15 @@ const TeamRegister = (props) => {
   };
   const registerTeam = async () => {
     // e.preventDefault();
+    if (!name) {
+      setError("Please enter team name");
+      return;
+    }
+    if (team.length < props.min_size - 1) {
+      setError(`Team size should be atleast ${props.min_size}`);
+      return;
+    }
+    setLoading(true);
     const team_name = name;
     const team_members = team;
     const data = {
@@ -141,10 +150,13 @@ const TeamRegister = (props) => {
       .post("/teams/createteam", data)
       .then((res) => {
         setMessage("Team Registered Successfully!");
+        setError("");
+        setLoading(false);
         props.setRegistered(true);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         if (
           err.response.status === 403 &&
           err.response.data.error === "403-teamMemberEmailUnverified"
@@ -190,9 +202,18 @@ const TeamRegister = (props) => {
 
   return (
     <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {message && <p className="text-green-500 text-center">{message}</p>}
-      {loading && <p className="text-green-500 text-center">Processing...</p>}
+      {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+      {message && (
+        <p className="msg-box text-green-500 text-center">{message}</p>
+      )}
+      {loading && (
+        <p className="msg-box text-green-500 text-center">Processing...</p>
+      )}
+      {props.min_size > 1 && (
+        <p className="text-center text-black">
+          Team size should be atleast {props.min_size}
+        </p>
+      )}
       {!props.registered && (
         <>
           <h1 className="font-bold text-xl text-center m-2">

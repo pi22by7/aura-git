@@ -26,8 +26,12 @@ const EventsDetailsPage = () => {
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
   let team = null;
+
   useEffect(() => {
     async function fetchEvent() {
+      if (!uid) {
+        await api.get("/auth/user/logout");
+      }
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
@@ -91,6 +95,7 @@ const EventsDetailsPage = () => {
           {user && (
             <TeamRegister
               size={teamSize}
+              min_size={event.min_team_size ? event.min_team_size : 1}
               title={event.title}
               id={event._id}
               registered={registered}
@@ -100,7 +105,7 @@ const EventsDetailsPage = () => {
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
-          {special && <Submission event={event._id} user={user.id} />}
+          {special && registered && <Submission event={event._id} user={uid} />}
           {url && (
             <a
               href={url}

@@ -75,3 +75,7 @@ code {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+
+.msg-box {
+  @apply bg-white w-fit py-1 px-3 mt-2 rounded-full shadow-md mx-auto;
+}
