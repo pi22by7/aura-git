@@ -35,7 +35,7 @@ async function paymentCreateOrderController(req, res, next) {
 			return res.status(404).send(Response(errors[404].teamNotFound));
 
 		// Validate team size
-		if (team_doc.team_members.length < event.min_team_size)
+		if (team_doc.team_members.length < event.min_team_size - 1)
 			return res.status(403).send(Response(errors[403].minTeamCount));
 
 		// Check if user has already made the payment

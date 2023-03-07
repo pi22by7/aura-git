@@ -56,7 +56,7 @@ module.exports.createTeam = async (req, res, next) => {
 			return res.status(404).send(Response(errors[404].userNotFound));
 
 		// Validate with min. team size
-		if (team_members.length < event.min_team_size)
+		if (team_members.length < event.min_team_size - 1)
 			return res.status(400).send(Response(errors[400].minTeamCount));
 
 		// Trim length to max. allowed team size
@@ -288,7 +288,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 				return res.status(404).send(Response(errors[404].userNotFound));
 
 			// Validate with min. team size
-			if (team_members.length < event.min_team_size)
+			if (team_members.length < event.min_team_size - 1)
 				return res.status(400).send(Response(errors[400].minTeamCount));
 
 			// Trim length to max. allowed team size
