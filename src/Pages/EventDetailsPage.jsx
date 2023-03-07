@@ -20,6 +20,7 @@ const EventsDetailsPage = () => {
   const [event, setEvent] = useState(null);
   const [special, setSpecial] = useState();
   const [registered, setRegistered] = useState(false);
+  const [teamSub, setTeamSub] = useState(null);
   const [paid, setPaid] = useState(false);
   const [url, setUrl] = useState();
   const { user, setUser } = useUser();
@@ -45,18 +46,14 @@ const EventsDetailsPage = () => {
             (team) => team.leader_id === uid
           );
           setTeam(tm);
-          if (team !== null && team.length > 0) {
+          if (tm !== null && tm.length > 0) {
             setRegistered(true);
-            if (team[0].payment.status) {
+            if (tm[0].payment.status) {
               setPaid(true);
             }
           }
-          if (special) {
-            getTeamSubmissions();
-          }
         })
         .catch((error) => {
-          console.log(error);
           if (error.response && error.response.status === 404) {
             navigate("/404");
           } else {
@@ -65,16 +62,21 @@ const EventsDetailsPage = () => {
         });
     }
     fetchEvent();
-  }, [club, title, navigate, special, url]);
+  }, [club, title]);
+
+  useEffect(() => {
+    if (special) {
+      getTeamSubmissions();
+    }
+  }, [team]);
 
   const getTeamSubmissions = async () => {
-    if (!team) return;
-    const teamId = team[0]._id;
-    console.log(teamId);
+    if (team.length == 0) return;
+    const teamId = team[0].team_id;
     await api
       .get(`/submissions/team/${teamId}`)
       .then((res) => {
-        console.log(res.data.data.submissions);
+        setTeamSub(res.data.data.submission);
       })
       .catch((err) => {
         console.log(err);
@@ -87,17 +89,11 @@ const EventsDetailsPage = () => {
 
   return (
     <div className="flex flex-col items-center w-[90%] mx-auto pt-5">
-      {/* <div className="w-full">
-        <img
-          className="w-full h-1/4 object-cover rounded-lg shadow-2xl"
-          src="https://cdn.pastemagazine.com/www/articles/best-of-festival-posters.jpg"
-          alt={`${event.title}-banner`}
-        />
-      </div> */}
       <div className="mt-10 w-full">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
+
         <div className="grid grid-cols-1 place-items-center my-10">
           {!user && (
             <>
@@ -119,11 +115,18 @@ const EventsDetailsPage = () => {
               paid={paid}
               setRegistered={setRegistered}
               setPaid={setPaid}
+              setTeam={setTeam}
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
           {special && registered && (
-            <Submission event={event._id} user={uid} team={team[0]} />
+            <Submission
+              event={event._id}
+              user={uid}
+              team={team[0]}
+              teamSub={teamSub}
+              setTeamSub={setTeamSub}
+            />
           )}
           {url && (
             <a

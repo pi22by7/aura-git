@@ -162,8 +162,10 @@ const TeamRegister = (props) => {
         setError("");
         setLoading(false);
         props.setRegistered(true);
+        props.setTeam([res.data.data.team]);
       })
       .catch((err) => {
+        console.log(err);
         let err_status = err.response.status;
         let err_code = err.response.data.error;
         setLoading(false);
@@ -202,6 +204,9 @@ const TeamRegister = (props) => {
             setError(
               "One or more team members have already registered for another team!"
             );
+          }
+          if (err_code === errors[403].eventAlreadyRegistered) {
+            setError("You have already registered for this event!");
           }
         } else if (err_status === 404) {
           if (err_code === errors[404].userNotFound) {

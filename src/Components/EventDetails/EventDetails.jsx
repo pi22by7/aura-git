@@ -81,6 +81,12 @@ const EventDetails = ({ event }) => {
           ))}
         </ul>
       </div>
+      <h2 className="text-2xl font-bold text-center">
+        {event.team_size > 1 ? "Team" : "Individual"} Registration Fees
+      </h2>
+      <p className="w-fit text-white text-2xl text-center my-5 rounded-full py-2 px-5 bg-primary mx-auto">
+        &#8377; {event.team_size > 1 ? "250" : "50"}
+      </p>
     </div>
   );
 };
