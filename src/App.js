@@ -84,10 +84,10 @@ function App() {
           <Route path="terms-and-conditions" element={<Policy />} />
           <Route path="privacy-policy" element={<Policy />} />
           <Route path="refund-policy" element={<Policy />} />
-          <Route path="about-us" element={<AboutUs />}
-          {/* <Route path="payment" element={<PaymentForm />} /> */}
+          <Route path="about-us" element={<AboutUs />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+
       </section>
       {path !== "/" && <Footer />}
     </div>
