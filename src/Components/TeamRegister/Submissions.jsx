@@ -7,7 +7,7 @@ const Submission = (props) => {
   const [link, setLink] = useState("");
   const [submission, setSubmission] = useState("");
   const event = props.event;
-  console.log(event);
+  const team = props.team;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ const Submission = (props) => {
       .post("/submissions", {
         event_id: event,
         links: [link],
-        team_id: props.team._id,
+        team_id: team._id,
       })
       .then((res) => {
         setSubmission("Submitted Successfully");

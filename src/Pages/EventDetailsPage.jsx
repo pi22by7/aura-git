@@ -35,7 +35,6 @@ const EventsDetailsPage = () => {
       await api
         .get(`/events/${club}/${title}`)
         .then((res) => {
-          console.log(res);
           const event = res.data.data.event;
           // eslint-disable-next-line react-hooks/exhaustive-deps
           setTeamSize(parseInt(event.team_size));
@@ -52,6 +51,9 @@ const EventsDetailsPage = () => {
               setPaid(true);
             }
           }
+          if (special) {
+            getTeamSubmissions();
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -64,6 +66,20 @@ const EventsDetailsPage = () => {
     }
     fetchEvent();
   }, [club, title, navigate, special, url]);
+
+  const getTeamSubmissions = async () => {
+    if (!team) return;
+    const teamId = team[0]._id;
+    console.log(teamId);
+    await api
+      .get(`/submissions/team/${teamId}`)
+      .then((res) => {
+        console.log(res.data.data.submissions);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (!event) {
     return <PreLoader type="loading" />;
