@@ -140,7 +140,7 @@ async function submissionGetByTeamController(req, res, next) {
 		if (!team)
 			return res.status(404).send(Response(errors[404].teamNotFound));
 
-		const submission = await Submission.find({ team: id });
+		const submission = await Submission.findOne({ team: id });
 
 		if (!res.locals.data)
 			res.locals.data = {};
