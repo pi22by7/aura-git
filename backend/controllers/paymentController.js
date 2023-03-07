@@ -4,6 +4,7 @@ const { razorpay: razorpayConfig } = require("../configs/utils.config.json");
 const Response = require("../models/standard.response.model");
 const Receipt = require("../models/Receipt");
 const Event = require("../models/Event");
+const Team = require("../models/Team");
 const { errorHandler } = require("../utils/utils");
 const { rpCreateOrderByScheme, rpFetchOrderById, rpFetchPaymentById } = require("../utils/razorpay.util");
 
@@ -28,6 +29,14 @@ async function paymentCreateOrderController(req, res, next) {
 		const team = event.registered_teams.find(team => String(team.leader_id) === String(res.locals.user._id));
 		if (!team)
 			return res.status(403).send(Response(errors[403].teamNotRegistered));
+
+		const team_doc = await Team.findById(team.team_id);
+		if (!team_doc)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+
+		// Validate team size
+		if (team_doc.team_members.length < event.min_team_size - 1)
+			return res.status(403).send(Response(errors[403].minTeamCount));
 
 		// Check if user has already made the payment
 		if (team.payment.status || await Receipt.findOne({ user_id: res.locals.user._id, event_id }))
@@ -111,7 +120,7 @@ async function paymentSubmitOrderReceiptController(req, res, next) {
 		// Reference receipt and update status in event document
 		const event = await Event.findById(order.notes.event);
 
-		const index = event.registered_teams.indexOf(team => String(team.leader_id) === String(res.locals.user._id));
+		const index = event.registered_teams.findIndex(team => String(team.leader_id) === String(res.locals.user._id));
 		if (index === -1)
 			return res.status(403).send(Response(errors[403].teamNotRegistered));
 
