@@ -48,7 +48,8 @@
     "auraIdRequired": "400-auraIdRequired",
     "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
     "alreadyPaid": "400-alreadyPaid",
-    "receiptOrderMismatch": "400-receiptOrderMismatch"
+    "receiptOrderMismatch": "400-receiptOrderMismatch",
+    "minTeamCount": "400-minTeamCount"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -65,7 +66,8 @@
     "teamMemberEmailUnverified": "403-teamMemberEmailUnverified",
     "incompletePayment": "403-incompletePayment",
     "registrationsClosed": "403-registrationsClosed",
-    "teamNotRegistered": "403-teamNotRegistered"
+    "teamNotRegistered": "403-teamNotRegistered",
+    "minTeamCount": "400-minTeamCount"
   },
   "404": {
     "userNotFound": "404-userNotFound",
