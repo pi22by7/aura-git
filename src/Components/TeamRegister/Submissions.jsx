@@ -1,20 +1,24 @@
 // import { useUser } from "../../Contexts/userContext";
 
+import { useState } from "react";
 import api from "../../Utils/axios.config";
-
 // import { useState } from "react";
 const Submission = (props) => {
+  const [link, setLink] = useState("");
+
   const handleInputChange = (e) => {
     e.preventDefault();
+    console.log(link);
+    setLink(e);
   };
-  const user = props.user;
   const event = props.event;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post("/submissions", {
-      user,
+    const res = await api.post("/submissions", {
       event,
+      link,
     });
+    console.log(link, res);
   };
 
   return (
@@ -32,8 +36,8 @@ const Submission = (props) => {
               type="text"
               name="submission"
               id="submission"
-              onChange={handleInputChange}
-              disabled={true}
+              onChange={(e) => handleInputChange(e)}
+              disabled={false}
               required
               placeholder="Enter G-Drive Link"
             />

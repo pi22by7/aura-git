@@ -66,7 +66,7 @@ const EventsDetailsPage = () => {
             className="justify-center justify-self-center w-4 mb-12"
           />
           {/* {console.log(url, special)} */}
-          {special && <Submission event={event._id} user={user.id} />}
+          {special && <Submission event={event._id} />}
           {url && (
             <a
               href={url}
