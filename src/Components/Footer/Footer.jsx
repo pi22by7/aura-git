@@ -39,6 +39,15 @@ export const Footer = () => {
             <a className="my-3 block" href="/#/dev-team">
               Dev Team
             </a>
+            <a className="my-3 block" href="/#/terms-and-conditions">
+              Terms and Conditions
+            </a>
+            <a className="my-3 block" href="/#/privacy-policy">
+              Privacy Policy
+            </a>
+            <a className="my-3 block" href="/#/refund-policy">
+              Refund Policy
+            </a>
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
