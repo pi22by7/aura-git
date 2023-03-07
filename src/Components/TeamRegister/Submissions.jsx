@@ -1,13 +1,16 @@
-// import { useUser } from "../../Contexts/userContext";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../Utils/axios.config";
 // import { useState } from "react";
-const Submission = (props) => {
+const Submission = ({ event, team, teamSub, setTeamSub }) => {
   const [link, setLink] = useState("");
   const [submission, setSubmission] = useState("");
-  const event = props.event;
-  const team = props.team;
+
+  useEffect(() => {
+    console.log(teamSub);
+    if (teamSub) {
+      setLink(teamSub.links[0]);
+    }
+  }, [teamSub]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,14 +23,53 @@ const Submission = (props) => {
       .post("/submissions", {
         event_id: event,
         links: [link],
-        team_id: team._id,
+        team_id: team.team_id,
       })
       .then((res) => {
         setSubmission("Submitted Successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((err) => {
         setSubmission("Submission Failed");
         console.log(err);
+      });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!teamSub) return;
+    if (link === "") {
+      setSubmission("Please enter a valid link");
+      return;
+    }
+    setSubmission("Updating...");
+    await api
+      .patch(`/submissions/${teamSub._id}`, {
+        links: [link],
+      })
+      .then((res) => {
+        setSubmission("Updated Successfully");
+      })
+      .catch((err) => {
+        setSubmission("Update Failed");
+      });
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    if (!teamSub) return;
+    setSubmission("Deleting...");
+    await api
+      .delete(`/submissions/${teamSub._id}`)
+      .then((res) => {
+        setLink("");
+        setTeamSub(null);
+        setSubmission("Deleted Successfully");
+      })
+      .catch((err) => {
+        setSubmission("Delete Failed");
       });
   };
 
@@ -60,12 +102,30 @@ const Submission = (props) => {
             </p>
           </div>
           <div className="grid justify-center my-8">
-            <button
-              className="btn btn-primary row-start-2 justify-self-center"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
+            {!teamSub && (
+              <button
+                className="btn btn-primary row-start-2 justify-self-center"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            )}
+            {teamSub && (
+              <div className="grid grid-cols-2 gap-x-16 place-items-center">
+                <button
+                  className="btn btn-primary row-start-2 justify-self-center"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
+                <button
+                  className="btn bg-red-500 row-start-2 justify-self-center"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         </form>
       </div>
