@@ -201,79 +201,97 @@ const TeamRegister = (props) => {
   };
 
   return (
-    <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
-      {error && <p className="msg-box text-red-500 text-center">{error}</p>}
-      {message && (
-        <p className="msg-box text-green-500 text-center">{message}</p>
-      )}
-      {loading && (
-        <p className="msg-box text-green-500 text-center">Processing...</p>
-      )}
-      {props.min_size > 1 && (
-        <p className="text-center text-black">
-          Team size should be atleast {props.min_size}
+    <>
+      {!props.registered && (
+        <p className="text-blue-600 text-center py-2">
+          One who registers is the team leader and is already included in the
+          team.
         </p>
       )}
-      {!props.registered && (
-        <>
-          <h1 className="font-bold text-xl text-center m-2">
-            {n > 1 ? "Register your team" : "Register yourself"}
-          </h1>
-          <label className="py-3 col-span-1">Team Name</label>
-          <input
-            className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={false}
-            required
-            placeholder="Enter Team Name"
-          />
-          <div>
-            <form>
-              <div className="grid grid-cols-1 my-1">{renderInputForms(n)}</div>
-              {n > 0 && (
-                <div className="grid justify-center my-8">
-                  <button
-                    className="btn btn-primary row-start-2 justify-self-center"
-                    onClick={registerTeam}
-                    disabled={loading}
-                  >
-                    Register
-                  </button>
+      <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
+        {message && (
+          <p className="msg-box text-green-500 text-center">{message}</p>
+        )}
+        {loading && (
+          <p className="msg-box text-green-500 text-center">Processing...</p>
+        )}
+        {!props.registered && (
+          <>
+            <h1 className="font-bold text-xl text-center m-2">
+              {n > 1 ? "Register your team" : "Register yourself"}
+            </h1>
+            {props.min_size > 1 && (
+              <p className="text-center text-black">
+                Team size should be atleast {props.min_size}
+              </p>
+            )}
+            <label className="py-3 col-span-1">Team Name</label>
+            <input
+              className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={false}
+              required
+              placeholder="Enter Team Name"
+            />
+            <label className="py-3 col-span-1">Team Leader</label>
+            <input
+              className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+              value={user.aura_id}
+              disabled
+              required
+              placeholder="Enter Team Name"
+            />
+            <div>
+              <form>
+                <div className="grid grid-cols-1 my-1">
+                  {renderInputForms(n)}
                 </div>
-              )}
-              {/* {console.log(team, Mem)} */}
-            </form>
-          </div>
-        </>
-      )}
-      {props.registered && !props.paid && (
-        <>
-          <h1 className="font-bold text-xl text-center m-2">
-            Pay the registration fee
-          </h1>
-          <p className="text-center text-sm text-blue-600">
-            Your team has been registerd. Pay to confirm your registration.
-          </p>
-          <div className="grid justify-center my-8">
-            <button
-              className="btn btn-primary row-start-2 justify-self-center"
-              onClick={paymentModal}
-              disabled={loading}
-            >
-              Pay
-            </button>
-          </div>
-        </>
-      )}
-      {props.paid && (
-        <>
-          <h1 className="font-bold text-xl text-center m-2">
-            You have Successfully Registered!
-          </h1>
-        </>
-      )}
-    </div>
+                {n > 0 && (
+                  <div className="grid justify-center my-8">
+                    <button
+                      className="btn btn-primary row-start-2 justify-self-center"
+                      onClick={registerTeam}
+                      disabled={loading}
+                    >
+                      Register
+                    </button>
+                  </div>
+                )}
+                {/* {console.log(team, Mem)} */}
+              </form>
+            </div>
+          </>
+        )}
+        {props.registered && !props.paid && (
+          <>
+            <h1 className="font-bold text-xl text-center m-2">
+              Pay the registration fee
+            </h1>
+            <p className="text-center text-sm text-blue-600">
+              Your team has been registerd. Pay to confirm your registration.
+            </p>
+            <div className="grid justify-center my-8">
+              <button
+                className="btn btn-primary row-start-2 justify-self-center"
+                onClick={paymentModal}
+                disabled={loading}
+              >
+                Pay
+              </button>
+            </div>
+          </>
+        )}
+        {props.paid && (
+          <>
+            <h1 className="font-bold text-xl text-center m-2">
+              You have Successfully Registered!
+            </h1>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 export default TeamRegister;
