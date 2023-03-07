@@ -11,6 +11,7 @@ const collegesList = colleges.map((college) => (
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
@@ -68,27 +69,42 @@ const UserPage = () => {
 
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 min-h-[100vh] h-fit place-items-center justify-items-center bg-profile lg:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-profilec py-5">
-      <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center w-4/5 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
+      <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center md:w-4/5 w-11/12 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
         <div className="col-span-1 grid">
           <QRCode
             value={user}
             className="w-32 h-32 md:w-44 md:h-44 m-4 max-w-none max-h-none bg-white p-2 justify-self-center"
+            onClick={() => {
+              navigator.clipboard.writeText(user.aura_id);
+              setCopied(true);
+              setTimeout(() => {
+                setCopied(false);
+              }, 1500);
+            }}
           />
-          {/* <img
-            src={
-              user.profileImage
-                ? user.profileImage
-                : "https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
-            }
-            alt="Profile"
-            className="w-32 h-32 md:w-44 md:h-44 rounded-full m-4 max-w-none max-h-none"
-          /> */}
-          <h3>
-            Aura ID: <span className="font-bold">{user.aura_id}</span>
+          <h3 className="relative">
+            Aura ID:{" "}
+            <span
+              className="font-bold cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText(user.aura_id);
+                setCopied(true);
+                setTimeout(() => {
+                  setCopied(false);
+                }, 1500);
+              }}
+            >
+              {user.aura_id}
+            </span>
+            {copied && (
+              <span className="text-green-500 rounded-full inline absolute top-5 left-1/2 transform -translate-x-1/2 p-2 my-2 bg-slate-300">
+                Copied
+              </span>
+            )}
           </h3>
         </div>
-        <div className="info lg:col-span-2 col-span-1 w-full">
-          <h1 className="text-3xl">Your Profile</h1>
+        <div className="info lg:col-span-2 col-span-1 mt-5 w-full">
+          <h1 className="text-3xl lg:text-left text-center">Your Profile</h1>
           {error && <p className="text-red-500 text-center">{error}</p>}
           {updating && <p className="text-green-500 text-center">Updating</p>}
           <form className="mt-4" onSubmit={handleSubmit}>

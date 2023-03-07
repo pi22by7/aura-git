@@ -73,7 +73,7 @@ const EventsDetailsPage = () => {
           alt={`${event.title}-banner`}
         />
       </div> */}
-      <div className="mt-10">
+      <div className="mt-10 w-full">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
         <EventDetails event={event} />
