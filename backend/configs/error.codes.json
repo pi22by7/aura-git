@@ -48,7 +48,8 @@
     "auraIdRequired": "400-auraIdRequired",
     "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
     "alreadyPaid": "400-alreadyPaid",
-    "receiptOrderMismatch": "400-receiptOrderMismatch"
+    "receiptOrderMismatch": "400-receiptOrderMismatch",
+    "minTeamCount": "400-minTeamCount"
   },
   "401": {
     "authRequired": "401-authRequired",

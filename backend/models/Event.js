@@ -29,6 +29,10 @@ const EventSchema = new mongoose.Schema({
 	team_size: {
 		type: Number,
 	},
+	min_team_size: {
+		type: Number,
+		default: 0,
+	},
 	rounds: {
 		type: Number,
 	},

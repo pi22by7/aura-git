@@ -55,6 +55,10 @@ module.exports.createTeam = async (req, res, next) => {
 		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
+		// Validate with min. team size
+		if (team_members.length < event.min_team_size)
+			return res.status(400).send(Response(errors[400].minTeamCount));
+
 		// Trim length to max. allowed team size
 		if (team_members.length > event.team_size)
 			team_members = team_members.copyWithin(0, 0, event.team_size);
@@ -264,6 +268,10 @@ module.exports.modifyTeam = async (req, res, next) => {
 		if (String(team.team_leader.id) !== String(res.locals.user._id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
+		const event = await Event.findById(team.event_participated.event_id);
+		if (!event)
+			return res.status(404).send(Response(errors[404].eventNotFound));
+
 		const old_team_members = team.team_members.map(member => member.aura_id);
 		let {
 			team_name = undefined,
@@ -278,6 +286,14 @@ module.exports.modifyTeam = async (req, res, next) => {
 			team_members = await Promise.all(team_members.map(aura_id => User.findOne({ aura_id })));
 			if (team_members.length > 0 && team_members.find(member => !member))
 				return res.status(404).send(Response(errors[404].userNotFound));
+
+			// Validate with min. team size
+			if (team_members.length < event.min_team_size)
+				return res.status(400).send(Response(errors[400].minTeamCount));
+
+			// Trim length to max. allowed team size
+			if (team_members.length > event.team_size)
+				team_members = team_members.copyWithin(0, 0, event.team_size);
 
 			// Check if all team members have their email addresses verified
 			if (team_members.find(member => member.email_verified === false))
