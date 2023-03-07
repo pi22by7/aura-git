@@ -111,7 +111,7 @@ module.exports = {
 			}
 
 			if ("message" in error) {
-				logError(`Error message: "${JSON.stringify(error)}"`);
+				logError(`Error message: "${error.message}"`);
 				return {
 					status: 400,
 					message: error.message,
