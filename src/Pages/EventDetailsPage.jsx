@@ -25,7 +25,7 @@ const EventsDetailsPage = () => {
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
-  let team = null;
+  const [team, setTeam] = useState([]);
 
   useEffect(() => {
     async function fetchEvent() {
@@ -42,9 +42,10 @@ const EventsDetailsPage = () => {
           setEvent(event);
           setSpecial(Boolean(event.link));
           setUrl(event.url);
-          team = event.registered_teams.filter(
+          let tm = event.registered_teams.filter(
             (team) => team.leader_id === uid
           );
+          setTeam(tm);
           if (team !== null && team.length > 0) {
             setRegistered(true);
             if (team[0].payment.status) {
@@ -105,7 +106,9 @@ const EventsDetailsPage = () => {
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
-          {special && registered && <Submission event={event._id} user={uid} />}
+          {special && registered && (
+            <Submission event={event._id} user={uid} team={team[0]} />
+          )}
           {url && (
             <a
               href={url}

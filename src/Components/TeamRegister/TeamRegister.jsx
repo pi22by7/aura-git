@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 // import Razorpay from "razorpay";
 import api from "../../Utils/axios.config";
 import logo from "../../Assets/logo.png";
+import errors from "../../Utils/error.codes.json";
+import { redirect } from "react-router-dom";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
@@ -147,7 +149,6 @@ const TeamRegister = (props) => {
       team_name,
       team_members,
     };
-    console.log(data);
     await api
       .post("/teams/createteam", data)
       .then((res) => {
@@ -157,15 +158,49 @@ const TeamRegister = (props) => {
         props.setRegistered(true);
       })
       .catch((err) => {
-        console.log(err);
+        let err_status = err.response.status;
+        let err_code = err.response.data.error;
         setLoading(false);
-        if (
-          err.response.status === 403 &&
-          err.response.data.error === "403-teamMemberEmailUnverified"
-        ) {
-          setError(
-            "One or more team members have not verified their email address. Please ask them to verify their email address and try again."
-          );
+        if (err_status === 400) {
+          if (err_code === errors[400].eventDetailsRequired) {
+            setError("Event Details Required!");
+          }
+          if (err_code === errors[400].teamNameRequired) {
+            setError("Team Name Required!");
+          }
+          if (err_code === errors[400].minTeamSize) {
+            setError("Minimum Team Size Required!");
+          }
+        } else if (err_status === 401) {
+          if (
+            err_code === errors[401].authRequired ||
+            err_code === errors[401].invalidOrExpiredToken
+          ) {
+            setError(
+              "You are not authorized to perform this operation. Please login and try again."
+            );
+            setTimeout(() => {
+              redirect("/login");
+            }, 3000);
+          }
+        } else if (err_status === 403) {
+          if (err_code === errors[403].teamMemberEmailUnverified) {
+            setError(
+              "One or more team members have not verified their email address. Please ask them to verify their email address and try again."
+            );
+          }
+          if (err_code === errors[403].invalidOperation) {
+            setError("You cannot add yourself as a team member!");
+          }
+          if (err_code === errors[403].teamMemberAlreadyRegistered) {
+            setError(
+              "One or more team members have already registered for another team!"
+            );
+          }
+        } else if (err_status === 404) {
+          if (err_code === errors[404].userNotFound) {
+            setError("One or more team members are not registered!");
+          }
         } else {
           setError("Team Registration Failed!");
         }
