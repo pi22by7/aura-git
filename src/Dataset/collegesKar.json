@@ -20077,6 +20077,13 @@
   },
   {
     "university": "Rani Channamma University, Belagavi (Id: U-0602)",
+    "college": "KLS VASANTRAO POTDAR POLYTECHNIQUE COLLEGE, BELGAUM",
+    "college_type": "Affiliated College",
+    "state": "Karnataka",
+    "district": "Belgaum"
+  },
+  {
+    "university": "Rani Channamma University, Belagavi (Id: U-0602)",
     "college": "KLS INST. OF MANAGEMENT EDUCATION & RESEARCH, BELAGAVI (PG) (Id: C-10073)",
     "college_type": "Affiliated College",
     "state": "Karnataka",
@@ -22571,13 +22578,6 @@
     "university": "Vesveswaraiah Technological University, Belgaum (Id: U-0249)",
     "college": "Gogte Institute of Technology, BELGAUM (Id: C-1439)",
     "college_type": "Affiliated College",
-    "state": "Karnataka",
-    "district": "Belgaum"
-  },
-  {
-    "university": "Vesveswaraiah Technological University, Belgaum (Id: U-0249)",
-    "college": "Gogte Institute of Technology, Belgaum (QIP Centre) (Id: C-1234)",
-    "college_type": "PG Center / Off-Campus Center",
     "state": "Karnataka",
     "district": "Belgaum"
   },
