@@ -218,10 +218,7 @@ const TeamRegister = (props) => {
       });
   };
   // eslint-disable-next-line no-unused-vars
-  //   const { setUser } = useUser();
   const n = props.size;
-  // console.log(n);
-  // const times = [...Array(n).keys()];
   const renderInputForms = (x) => {
     const inputForms = [];
 

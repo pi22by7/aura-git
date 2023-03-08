@@ -84,7 +84,6 @@ function App() {
           <Route path="about-us" element={<AboutUs />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-
       </section>
       {path !== "/" && <Footer />}
     </div>
