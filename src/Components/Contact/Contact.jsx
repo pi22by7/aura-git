@@ -69,7 +69,7 @@ const council = [
     name: "Tejaswith Shigihalli",
     role: "Co-Ordinator",
     image: Tejaswith,
-    instagram: "https://www.instagram.com/tejaswith_/",
+    instagram: "https://www.instagram.com/_tejas_x_5/",
     phone: 9535457747,
     handle: "_tejas_x_5",
   },
