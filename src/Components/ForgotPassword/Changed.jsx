@@ -37,7 +37,7 @@ const Changed = () => {
         <h1 className="font-bold text-xl text-center m-2">
           {location === "/verifyPass" ? "Verify Password" : "Verify Email"}
         </h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="msg-box text-red-500 text-center">{error}</p>}
         <p className="font-semibold text-md text-center m-2">
           {location === "/verifyPass"
             ? "Click to verify password change."
