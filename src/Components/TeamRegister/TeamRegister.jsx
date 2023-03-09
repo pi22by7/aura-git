@@ -265,9 +265,12 @@ const TeamRegister = (props) => {
                     </span>
                   </button>
                 </div>
-                {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <img src={payqr} alt="qr code for payment" />
+                  <img
+                    src={payqr}
+                    alt="qr code for payment"
+                    className="justify-center"
+                  />
                   <input
                     className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
                     type="text"
@@ -278,7 +281,6 @@ const TeamRegister = (props) => {
                     placeholder="Enter UPI Transaction ID"
                   />
                 </div>
-                {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
