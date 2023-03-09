@@ -15,6 +15,8 @@ const UserPage = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
+  const [paidFor, setPaidFor] = useState([]);
+  const [dispPay, setDispPay] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,20 @@ const UserPage = () => {
     };
     fetchData();
   }, [navigate]);
+
+  useEffect(() => {
+    const participated = async () => {
+      let res = await api.get(`/users/${user._id}`);
+      setPaidFor(res.data.data.paid_for[0]);
+      for (let i = 0; i < paidFor.length; i++) {
+        let res2 = await api.get(`/events/${paidFor[i]}`);
+        setDispPay((oldArray) => [...oldArray, res2]);
+      }
+      // return res.data.data.paid_for;
+    };
+    participated();
+  });
+
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
@@ -104,6 +120,15 @@ const UserPage = () => {
           </h3>
         </div>
         <div className="info lg:col-span-2 col-span-1 mt-5 w-full">
+          <div>
+            {dispPay &&
+              dispPay.map((event) => (
+                <div key={event.id} className="event">
+                  <h2>{event.title}</h2>
+                  {/* <p>{event.date}</p> */}
+                </div>
+              ))}
+          </div>
           <h1 className="text-3xl lg:text-left text-center">Your Profile</h1>
           {error && <p className="msg-box text-red-500 text-center">{error}</p>}
           {updating && (

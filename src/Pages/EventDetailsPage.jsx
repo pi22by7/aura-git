@@ -62,7 +62,7 @@ const EventsDetailsPage = () => {
         });
     }
     fetchEvent();
-  }, [club, title]);
+  }, [club, title, navigate, uid]);
 
   useEffect(() => {
     if (special) {

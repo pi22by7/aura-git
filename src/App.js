@@ -78,10 +78,10 @@ function App() {
           <Route path="verifyPass" element={<Changed />} />
           <Route path="verifyEmail" element={<Changed />} />
           <Route path="schedule" element={<Schedule />} />
-          <Route path="terms-and-conditions" element={<Policy />} />
+          {/* <Route path="terms-and-conditions" element={<Policy />} />
           <Route path="privacy-policy" element={<Policy />} />
           <Route path="refund-policy" element={<Policy />} />
-          <Route path="about-us" element={<AboutUs />} />
+          <Route path="about-us" element={<AboutUs />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>
