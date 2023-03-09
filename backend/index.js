@@ -20,6 +20,7 @@ const ticketRoutes = require("./routes/ticketRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const submissionRoutes = require("./routes/submissionRoutes");
+const newsRoutes = require("./routes/newsRoutes");
 
 // Route Middlewares
 expressApp.get("*", checkUser);
@@ -30,3 +31,4 @@ expressApp.use("/teams", teamRoutes);
 expressApp.use("/tickets", ticketRoutes);
 expressApp.use("/payments", paymentRoutes);
 expressApp.use("/submissions", submissionRoutes);
+expressApp.use("/news", newsRoutes);
