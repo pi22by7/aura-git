@@ -247,12 +247,15 @@ const TeamRegister = (props) => {
 
   return (
     <>
-      {!props.registered && (
-        <p className="text-blue-600 text-center py-2">
-          One who registers is the team leader and is already included in the
-          team.
-        </p>
-      )}
+      ...(!props.registered ? ...[
+      <p className="text-blue-600 text-center py-2">
+        One who registers is the team leader and is already included in the
+        team.
+      </p>
+      <p className="text-blue-600 text-center py-2">
+        Note: Cross college entries are NOT ALLOWED.
+      </p>
+      ] : ...[])
       <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
         {error && <p className="msg-box text-red-500 text-center">{error}</p>}
         {message && (
