@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const { complete } = require("../controllers/controllers");
+const { complete, outOfOrder } = require("../controllers/controllers");
 const {
 	newsGetAllController,
 	newsGetByIdController,
@@ -16,10 +16,10 @@ const Router = express.Router();
 Router.get("/", newsGetAllController, complete);
 Router.get("/:id", newsGetByIdController, complete);
 
-Router.post("/", newsCreateController, complete);
+Router.post("/", outOfOrder);
 
-Router.patch("/:id", newsUpdateController, complete);
+Router.patch("/:id", outOfOrder);
 
-Router.delete("/:id", newsDeleteByIdController, complete);
+Router.delete("/:id", outOfOrder);
 
 module.exports = Router;
