@@ -20,11 +20,8 @@ import Schedule from "./Components/Schedule/Schedule";
 // import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 import DevTeam from "./Components/DevTeam/DevTeam";
 import Changed from "./Components/ForgotPassword/Changed";
-<<<<<<< HEAD
 import Policy from "./Components/Policy/Policy";
-=======
 import AboutUs from "./Components/AboutUs/AboutUs";
->>>>>>> 37b339af5df9e996177d51d2818c5e2538e47838
 // import PaymentForm from "./Components/PaymentForm/PaymentForm";
 
 function App() {
@@ -87,7 +84,6 @@ function App() {
           <Route path="about-us" element={<AboutUs />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-
       </section>
       {path !== "/" && <Footer />}
     </div>
