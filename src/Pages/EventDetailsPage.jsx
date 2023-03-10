@@ -42,6 +42,8 @@ const EventsDetailsPage = () => {
           setEvent(event);
           setSpecial(Boolean(event.link));
           setUrl(event.url);
+          console.log(event);
+          console.log(event.registered_teams);
           let tm = event.registered_teams.filter(
             (team) => team.leader_id === uid
           );
@@ -71,7 +73,7 @@ const EventsDetailsPage = () => {
   }, [team]);
 
   const getTeamSubmissions = async () => {
-    if (team.length == 0) return;
+    if (team.length === 0) return;
     const teamId = team[0].team_id;
     await api
       .get(`/submissions/team/${teamId}`)

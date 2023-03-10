@@ -88,7 +88,7 @@ function App() {
         </Routes>
       </section>
       {path !== "/" && <Footer />}
-      <ToastContainer />
+      <ToastContainer className="mt-20" />
     </div>
   );
 }

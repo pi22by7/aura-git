@@ -8,7 +8,6 @@ import PreLoader from "../Components/PreLoader/PreLoader";
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState(null);
   const [events, setEvents] = useState([]);
-  let i = 0;
 
   useEffect(() => {
     messageToast("You can check the latest updates on our News section.");
@@ -25,7 +24,6 @@ const EventsPage = () => {
       }
     }
     fetchEvents();
-    console.log("rendered", i++);
   }, []);
 
   if (events.length === 0) {

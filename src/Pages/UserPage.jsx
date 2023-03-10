@@ -89,7 +89,7 @@ const UserPage = () => {
       <div className="lg:col-start-2 lg:col-span-2 grid grid-cols-2 place-items-center md:w-4/5 w-11/12 p-5">
         <button
           className={`btn ${
-            activeTab == "profile" ? "btn-secondary" : "btn-primary"
+            activeTab === "profile" ? "btn-secondary" : "btn-primary"
           } w-4/5`}
           onClick={() => setActiveTab("profile")}
         >
@@ -97,14 +97,14 @@ const UserPage = () => {
         </button>
         <button
           className={`btn ${
-            activeTab == "events" ? "btn-secondary" : "btn-primary"
+            activeTab === "events" ? "btn-secondary" : "btn-primary"
           } w-4/5`}
           onClick={() => setActiveTab("events")}
         >
           My Events
         </button>
       </div>
-      {activeTab == "profile" && (
+      {activeTab === "profile" && (
         <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center md:w-4/5 w-11/12 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
           <div className="col-span-1 grid">
             <QRCode
@@ -252,7 +252,7 @@ const UserPage = () => {
           </div>
         </div>
       )}
-      {activeTab == "events" && (
+      {activeTab === "events" && (
         <div className="h-[100vh] lg:col-start-2 lg:col-span-2 grid grid-cols-1 place-items-center md:w-4/5 w-11/12 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
           <h1 className="text-3xl lg:text-left text-center">Your Events</h1>
           <div className="h-full overflow-scroll [&::-webkit-scrollbar]:hidden mt-10">
