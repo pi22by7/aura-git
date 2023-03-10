@@ -70,9 +70,7 @@ const EventsDetailsPage = () => {
 
   useEffect(() => {
     if (team && event) {
-      const tm = event.registered_teams.find(
-        (team) => team.team_id === team._id
-      );
+      const tm = event.registered_teams.find((t) => t.team_id === team._id);
       if (tm && tm.payment.status) {
         setPaid(true);
       }
@@ -84,7 +82,6 @@ const EventsDetailsPage = () => {
       .get(`/teams/user/${uid}`)
       .then((res) => {
         const teams = res.data.data.results;
-        console.log(teams);
         teams.map((team) => {
           if (team.event_participated.event_id === event._id) {
             setTeam(team);
@@ -166,6 +163,7 @@ const EventsDetailsPage = () => {
               setPaid={setPaid}
               setTeam={setTeam}
               setIsLeader={setIsLeader}
+              team={team}
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}

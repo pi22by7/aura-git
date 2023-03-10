@@ -119,7 +119,7 @@ const UserPage = () => {
               }}
             />
             <h3 className="relative">
-              Aura ID:{" "}
+              Aura ID:
               <span
                 className="font-bold cursor-pointer"
                 onClick={() => {
@@ -257,6 +257,7 @@ const UserPage = () => {
           <h1 className="text-3xl lg:text-left text-center">Your Events</h1>
           <div className="h-full overflow-scroll [&::-webkit-scrollbar]:hidden mt-10">
             {/* Add your events here */}
+            Updating soon
           </div>
         </div>
       )}

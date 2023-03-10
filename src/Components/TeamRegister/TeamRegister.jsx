@@ -2,7 +2,7 @@ import { useUser } from "../../Contexts/userContext";
 import { useEffect, useState } from "react";
 // import Razorpay from "razorpay";
 import api from "../../Utils/axios.config";
-import { successToast } from "../../Utils/Toasts/Toasts";
+import { successToast, errorToast } from "../../Utils/Toasts/Toasts";
 // import logo from "../../Assets/logo.png";
 import errors from "../../Utils/error.codes.json";
 import { redirect } from "react-router-dom";
@@ -72,12 +72,6 @@ const TeamRegister = (props) => {
   //     setPaid(false);
   //   }
   // };
-
-  const paymentNo = async () => {
-    alert(
-      "We are still working on payments. Your team is registered, so you can come back and pay later."
-    );
-  };
 
   // const paymentModal = async (e) => {
   //   e.preventDefault();
@@ -154,7 +148,7 @@ const TeamRegister = (props) => {
         setError("");
         setLoading(false);
         props.setRegistered(true);
-        props.setTeam([res.data.data.team]);
+        props.setTeam(res.data.data.team);
         props.setIsLeader(true);
         successToast(
           props.size > 1
@@ -219,12 +213,24 @@ const TeamRegister = (props) => {
   const n = props.size;
 
   const pay = () => {
-    window.open("", "_blank");
-    api.post(`/receipts`, {
-      team,
-      transID,
-    });
-    setShowModal(false);
+    if (transID === "") {
+      errorToast("Please enter transaction ID");
+      return;
+    }
+    api
+      .post(`/receipts`, {
+        team_id: props.team._id,
+        transaction_id: transID,
+      })
+      .then((res) => {
+        successToast("Your payment has been recorded");
+        props.setPaid(true);
+        setShowModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast("Failed to record payment");
+      });
   };
   const renderInputForms = (x) => {
     const inputForms = [];
@@ -274,14 +280,18 @@ const TeamRegister = (props) => {
                   <img
                     src={payqr}
                     alt="qr code for payment"
-                    className="justify-center"
+                    className="justify-center mx-auto"
                   />
+                  <p className="my-4 text-blue-600 text-md">
+                    Scan the QR code to pay the amount to register for the
+                    event.
+                  </p>
                   <input
-                    className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                    className="bg-gray-100 w-full rounded-lg p-2 col-span-1 outline-none my-3"
                     type="text"
                     name="transactionID"
                     id="txnID"
-                    onChange={(e) => setTransaction(e)}
+                    onChange={(e) => setTransaction(e.target.value)}
                     required
                     placeholder="Enter UPI Transaction ID"
                   />
@@ -297,7 +307,7 @@ const TeamRegister = (props) => {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={pay()}
+                    onClick={() => pay()}
                   >
                     Pay (Redirects to Google Forms)
                   </button>
@@ -305,7 +315,6 @@ const TeamRegister = (props) => {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
       {!props.registered && (
@@ -378,7 +387,7 @@ const TeamRegister = (props) => {
             <p className="text-center text-sm text-blue-600">
               Your team has been registered. Pay to confirm your registration.
             </p>
-            <p className="text-center text-sm text-red-600">
+            {/* <p className="text-center text-sm text-red-600">
               You will be notified once the payment starts. Updates will be
               updated on the{" "}
               <a
@@ -389,13 +398,11 @@ const TeamRegister = (props) => {
                 News
               </a>{" "}
               tab
-            </p>
+            </p> */}
             <div className="grid justify-center my-8">
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
-                // onClick={paymentNo}
-                // disabled={loading}
-                disabled="true"
+                onClick={() => setShowModal(true)}
               >
                 Pay
               </button>
@@ -416,8 +423,12 @@ const TeamRegister = (props) => {
         {props.paid && (
           <>
             <h1 className="font-bold text-xl text-center m-2">
-              You have Successfully Registered!
+              You have Successfully Registered for the Event 😎!
             </h1>
+            <p className="text-center text-sm text-blue-600">
+              Your payments will be verified and in case of any fraudaulent
+              actions, your team will be disqualified.
+            </p>
           </>
         )}
       </div>
