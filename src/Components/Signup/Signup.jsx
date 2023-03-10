@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { successToast } from "../../Utils/Toasts/Toasts";
 import api from "../../Utils/axios.config";
 import colleges from "../../Dataset/collegesKar.json";
 
@@ -56,6 +57,7 @@ const Signup = () => {
             setName("");
             setCollege("");
             setUsn("");
+            successToast("You have successfully signed up.");
           } else {
             setLoading(false);
             setError("Something Went Wrong");

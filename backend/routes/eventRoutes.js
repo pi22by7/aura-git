@@ -5,6 +5,7 @@ const {
 	eventGetAllController,
 	eventGetByClubController,
 	eventGetByClubAndTitleController,
+	eventGetByIdController,
 } = require("../controllers/eventController");
 const { checkUser } = require("../middleware/authMiddleware");
 
@@ -13,6 +14,9 @@ const router = Router();
 
 // Body
 router.get("/", checkUser, eventGetAllController, complete);
+
+router.get("/resolve/:id", checkUser, eventGetByIdController, complete);
+
 router.get("/:club", checkUser, eventGetByClubController, complete);
 router.get("/:club/:title", checkUser, eventGetByClubAndTitleController, complete);
 

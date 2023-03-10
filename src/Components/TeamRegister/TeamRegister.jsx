@@ -2,9 +2,11 @@ import { useUser } from "../../Contexts/userContext";
 import { useEffect, useState } from "react";
 // import Razorpay from "razorpay";
 import api from "../../Utils/axios.config";
-import logo from "../../Assets/logo.png";
+import { successToast } from "../../Utils/Toasts/Toasts";
+// import logo from "../../Assets/logo.png";
 import errors from "../../Utils/error.codes.json";
 import { redirect } from "react-router-dom";
+import payqr from "../../Assets/qr.png";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
@@ -13,6 +15,7 @@ const TeamRegister = (props) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isNull, setNull] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const event_participated = {
     event_id: props.id,
     event_title: props.title,
@@ -20,9 +23,7 @@ const TeamRegister = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
   const { paid, setPaid } = useState(false);
-
   useEffect(() => {
-    // console.log(user);
     if (user !== null) {
       setNull(false);
     } else {
@@ -30,19 +31,19 @@ const TeamRegister = (props) => {
     }
   }, [team, user]);
 
-  function loadScript(src) {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  }
+  // function loadScript(src) {
+  //   return new Promise((resolve) => {
+  //     const script = document.createElement("script");
+  //     script.src = src;
+  //     script.onload = () => {
+  //       resolve(true);
+  //     };
+  //     script.onerror = () => {
+  //       resolve(false);
+  //     };
+  //     document.body.appendChild(script);
+  //   });
+  // }
 
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
@@ -51,35 +52,35 @@ const TeamRegister = (props) => {
     // console.log(team);
   };
 
-  const createOrder = async () => {
-    try {
-      const { data } = await api.get(`/payments/order?event_id=${props.id}`);
-      return data.data.order;
-    } catch (error) {
-      console.log("Error creating order:", error);
-      return null;
-    }
-  };
+  // const createOrder = async () => {
+  //   try {
+  //     const { data } = await api.get(`/payments/order?event_id=${props.id}`);
+  //     return data.data.order;
+  //   } catch (error) {
+  //     console.log("Error creating order:", error);
+  //     return null;
+  //   }
+  // };
 
-  const handlePaymentSuccess = async (orderId, paymentData) => {
-    try {
-      // orderCreationId: orderId,
-      // razorpayOrderId: paymentData.razorpay_order_id,
-      const data = {
-        // orderCreationId: orderId,
-        // razorpayPaymentId: paymentData.razorpay_payment_id,
-        // razorpayOrderId: paymentData.razorpay_order_id,
-        // razorpaySignature: paymentData.razorpay_signature,
-        payment_id: paymentData.razorpay_payment_id,
-        signature: paymentData.razorpay_signature,
-      };
-      await api.post(`/payments/order/${orderId}/receipt`, data);
-      setPaid(true);
-    } catch (error) {
-      console.log("Error processing payment:", error);
-      setPaid(false);
-    }
-  };
+  // const handlePaymentSuccess = async (orderId, paymentData) => {
+  //   try {
+  //     // orderCreationId: orderId,
+  //     // razorpayOrderId: paymentData.razorpay_order_id,
+  //     const data = {
+  //       // orderCreationId: orderId,
+  //       // razorpayPaymentId: paymentData.razorpay_payment_id,
+  //       // razorpayOrderId: paymentData.razorpay_order_id,
+  //       // razorpaySignature: paymentData.razorpay_signature,
+  //       payment_id: paymentData.razorpay_payment_id,
+  //       signature: paymentData.razorpay_signature,
+  //     };
+  //     await api.post(`/payments/order/${orderId}/receipt`, data);
+  //     setPaid(true);
+  //   } catch (error) {
+  //     console.log("Error processing payment:", error);
+  //     setPaid(false);
+  //   }
+  // };
 
   const paymentNo = async () => {
     alert(
@@ -87,56 +88,56 @@ const TeamRegister = (props) => {
     );
   };
 
-  const paymentModal = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+  // const paymentModal = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   const res = await loadScript(
+  //     "https://checkout.razorpay.com/v1/checkout.js"
+  //   );
 
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      return;
-    }
-    const order = await createOrder();
-    // console.log(process.env.REACT_APP_RZRKEY);
-    if (!order) {
-      setLoading(false);
-      alert("Unable to create payment order. Please try again later.");
-      return;
-    }
-    const amount = order.amount;
-    const orderId = order.id;
-    const currency = order.currency;
-    const key = process.env.REACT_APP_RZRKEY;
+  //   if (!res) {
+  //     alert("Razorpay SDK failed to load. Are you online?");
+  //     return;
+  //   }
+  //   const order = await createOrder();
+  //   // console.log(process.env.REACT_APP_RZRKEY);
+  //   if (!order) {
+  //     setLoading(false);
+  //     alert("Unable to create payment order. Please try again later.");
+  //     return;
+  //   }
+  //   const amount = order.amount;
+  //   const orderId = order.id;
+  //   const currency = order.currency;
+  //   const key = process.env.REACT_APP_RZRKEY;
 
-    const options = {
-      key: key,
-      amount: amount.toString(),
-      currency: currency,
-      name: "KLS GIT, Belagavi",
-      description: "Test Transaction",
-      image: logo,
-      order_id: orderId,
-      handler: (response) => handlePaymentSuccess(orderId, response),
-      prefill: {
-        name: user.name,
-        email: user.email,
-        contact: user.phone,
-      },
-      notes: {
-        address: "KLSGIT of Belagavi",
-      },
-      theme: {
-        color: "#ffffff",
-      },
-    };
+  //   const options = {
+  //     key: key,
+  //     amount: amount.toString(),
+  //     currency: currency,
+  //     name: "KLS GIT, Belagavi",
+  //     description: "Test Transaction",
+  //     image: logo,
+  //     order_id: orderId,
+  //     handler: (response) => handlePaymentSuccess(orderId, response),
+  //     prefill: {
+  //       name: user.name,
+  //       email: user.email,
+  //       contact: user.phone,
+  //     },
+  //     notes: {
+  //       address: "KLSGIT of Belagavi",
+  //     },
+  //     theme: {
+  //       color: "#ffffff",
+  //     },
+  //   };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-    // handleSubmit();
-    setLoading(false);
-  };
+  //   const paymentObject = new window.Razorpay(options);
+  //   paymentObject.open();
+  //   // handleSubmit();
+  //   setLoading(false);
+  // };
   const registerTeam = async () => {
     // e.preventDefault();
     if (!name) {
@@ -163,6 +164,11 @@ const TeamRegister = (props) => {
         setLoading(false);
         props.setRegistered(true);
         props.setTeam([res.data.data.team]);
+        successToast(
+          props.size > 1
+            ? "You have successfully registered your team!"
+            : "You have successfully registered for the event"
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -247,6 +253,60 @@ const TeamRegister = (props) => {
 
   return (
     <>
+      {showModal ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">Pay Now</h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                  <img
+                    src={payqr}
+                    alt="qr code for payment"
+                    className="justify-center"
+                  />
+                  <input
+                    className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+                    type="text"
+                    name="transactionID"
+                    id="txnID"
+                    // onChange={}
+                    required
+                    placeholder="Enter UPI Transaction ID"
+                  />
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Pay (Redirects to Google Forms)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
       {!props.registered && (
         <p className="text-blue-600 text-center py-2">
           One who registers is the team leader and is already included in the
@@ -315,12 +375,13 @@ const TeamRegister = (props) => {
               Pay the registration fee
             </h1>
             <p className="text-center text-sm text-blue-600">
-              Your team has been registerd. Pay to confirm your registration.
+              Your team has been registered. Pay to confirm your registration.
             </p>
             <div className="grid justify-center my-8">
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
-                onClick={paymentNo}
+                // onClick={paymentNo}
+                onClick={() => setShowModal(true)}
                 disabled={loading}
               >
                 Pay

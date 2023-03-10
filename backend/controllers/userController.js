@@ -67,6 +67,11 @@ async function userSearchController(req, res, next) {
 		if (typeof email_verified === "boolean")
 			query.email_verified = email_verified;
 
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
+
 		const users = await User.find({
 			...query,
 			"_profile_information.account_creation_timestamp": { $lte: paginationTs },

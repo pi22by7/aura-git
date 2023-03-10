@@ -20,12 +20,15 @@ const EventCoordinators = ({ eventCoordinators }) => {
             </p>
             <p className="font-semibold text-md mt-1 cursor-pointer">
               <a
-                href={`https://wa.me/91${eventCoordinator.contact_number}`}
+                href={`https://wa.me/91${eventCoordinator.contact_number.replaceAll(
+                  " ",
+                  ""
+                )}`}
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faPhone} className="mx-2" />
-                {eventCoordinator.contact_number}
+                {eventCoordinator.contact_number.replaceAll(" ", "")}
               </a>
             </p>
           </div>

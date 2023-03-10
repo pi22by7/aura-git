@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 import api from "./Utils/axios.config";
 import { useUser } from "./Contexts/userContext";
 import { NavBar } from "./Components/Navbar/NavBar";
@@ -17,12 +18,12 @@ import Contact from "./Components/Contact/Contact";
 import UserPage from "./Pages/UserPage";
 import Rulebook from "./Components/Rulebook/Rulebook";
 import Schedule from "./Components/Schedule/Schedule";
-// import PasswordEnter from "./Components/ForgotPassword/PasswordEnter";
 import DevTeam from "./Components/DevTeam/DevTeam";
 import Changed from "./Components/ForgotPassword/Changed";
-import Policy from "./Components/Policy/Policy";
-import AboutUs from "./Components/AboutUs/AboutUs";
-// import PaymentForm from "./Components/PaymentForm/PaymentForm";
+// import Policy from "./Components/Policy/Policy";
+// import AboutUs from "./Components/AboutUs/AboutUs";
+import News from "./Components/News/News";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const { setUser } = useUser();
@@ -78,14 +79,16 @@ function App() {
           <Route path="verifyPass" element={<Changed />} />
           <Route path="verifyEmail" element={<Changed />} />
           <Route path="schedule" element={<Schedule />} />
-          <Route path="terms-and-conditions" element={<Policy />} />
+          <Route path="news" element={<News />} />
+          {/* <Route path="terms-and-conditions" element={<Policy />} />
           <Route path="privacy-policy" element={<Policy />} />
           <Route path="refund-policy" element={<Policy />} />
-          <Route path="about-us" element={<AboutUs />} />
+          <Route path="about-us" element={<AboutUs />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </section>
       {path !== "/" && <Footer />}
+      <ToastContainer />
     </div>
   );
 }

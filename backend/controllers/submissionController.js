@@ -39,8 +39,12 @@ async function submissionGetAllController(req, res, next) {
 			paginationTs = Date.now(),
 		} = query;
 
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
+
 		let submissions = await Submission.find({
-			// ...query,
 			last_modified: { $lte: paginationTs },
 		})
 			.sort({ last_modified: -1 })
@@ -69,6 +73,11 @@ async function submissionGetByEventController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
 
 		const event = await Event.findById(id);
 		if (!event)
@@ -104,6 +113,11 @@ async function submissionGetByUserController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
 
 		const user = await User.findById(id);
 		if (!user)

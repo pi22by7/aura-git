@@ -154,6 +154,11 @@ module.exports.fetchAll = async (req, res, next) => {
 			paginationTs = Date.now(),
 		} = query;
 
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
+
 		const teams = await Team.find({
 			updatedAt: { $lte: paginationTs },
 		})
@@ -185,6 +190,11 @@ module.exports.fetchByEvent = async (req, res, next) => {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
 
 		const teams = await Team.find({
 			"event_participated.event_id": id,
@@ -222,6 +232,11 @@ module.exports.fetchByUser = async (req, res, next) => {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
 
 		const teams = await Team.find({
 			$or: [
