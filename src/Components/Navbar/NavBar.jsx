@@ -71,6 +71,11 @@ export const NavBar = () => {
               CONTACT US
             </NavLink>
           </li>
+          <li className="md:px-5 px-3">
+            <NavLink onClick={handleMenuToggle} to="/news">
+              NEWS
+            </NavLink>
+          </li>
         </ul>
       </div>
       <div className="md:place-self-end md:my-auto">

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { successToast } from "../../Utils/Toasts/Toasts";
 import { useUser } from "../../Contexts/userContext";
 import api from "../../Utils/axios.config";
 
@@ -56,17 +57,18 @@ const Login = () => {
           setError("");
           setEmail("");
           setPassword("");
+          successToast("You have successfully logged in to your account.");
         });
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
       if (
-        error.response.status === 400 &&
-        error.response.data.error === "404-userNotFound"
+        err.response.status === 400 &&
+        err.response.data.error === "404-userNotFound"
       ) {
         setError("E-mail Not Registered");
       } else if (
-        error.response.status === 400 &&
-        error.response.data.error === "403-emailUnverified"
+        err.response.status === 400 &&
+        err.response.data.error === "403-emailUnverified"
       ) {
         setError("E-mail Not Verified.");
         setMessage("Sending Verification E-mail...");

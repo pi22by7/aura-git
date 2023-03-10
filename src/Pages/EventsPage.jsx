@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../Utils/axios.config";
+import { messageToast } from "../Utils/Toasts/Toasts";
 import { EventCard } from "../Components/EventCard/EventCard";
 import PreLoader from "../Components/PreLoader/PreLoader";
 
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState(null);
   const [events, setEvents] = useState([]);
+  let i = 0;
 
   useEffect(() => {
     async function fetchEvents() {
@@ -17,12 +19,13 @@ const EventsPage = () => {
         });
         setEvents(response.data.data.events);
         setActiveTab(response.data.data.events[0]._id);
+        messageToast("You can check the latest updates on our News section.");
       } catch (error) {
         console.error(error);
       }
     }
-
     fetchEvents();
+    console.log("rendered", i++);
   }, []);
 
   if (events.length === 0) {

@@ -2,6 +2,7 @@ import { useUser } from "../../Contexts/userContext";
 import { useEffect, useState } from "react";
 // import Razorpay from "razorpay";
 import api from "../../Utils/axios.config";
+import { successToast } from "../../Utils/Toasts/Toasts";
 // import logo from "../../Assets/logo.png";
 import errors from "../../Utils/error.codes.json";
 import { redirect } from "react-router-dom";
@@ -22,9 +23,7 @@ const TeamRegister = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
   const { paid, setPaid } = useState(false);
-
   useEffect(() => {
-    // console.log(user);
     if (user !== null) {
       setNull(false);
     } else {
@@ -165,6 +164,11 @@ const TeamRegister = (props) => {
         setLoading(false);
         props.setRegistered(true);
         props.setTeam([res.data.data.team]);
+        successToast(
+          props.size > 1
+            ? "You have successfully registered your team!"
+            : "You have successfully registered for the event"
+        );
       })
       .catch((err) => {
         console.log(err);

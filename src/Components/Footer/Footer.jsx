@@ -28,6 +28,9 @@ export const Footer = () => {
             <a className="my-3 block" href="/#/rule-book">
               Rule Book
             </a>
+            <a className="my-3 block" href="/#/news">
+              News
+            </a>
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
@@ -39,7 +42,7 @@ export const Footer = () => {
             <a className="my-3 block" href="/#/dev-team">
               Dev Team
             </a>
-            <a className="my-3 block" href="/#/terms-and-conditions">
+            {/* <a className="my-3 block" href="/#/terms-and-conditions">
               Terms and Conditions
             </a>
             <a className="my-3 block" href="/#/privacy-policy">
@@ -47,7 +50,7 @@ export const Footer = () => {
             </a>
             <a className="my-3 block" href="/#/refund-policy">
               Refund Policy
-            </a>
+            </a> */}
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">

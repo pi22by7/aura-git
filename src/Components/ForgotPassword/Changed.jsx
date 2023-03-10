@@ -1,6 +1,11 @@
 import api from "../../Utils/axios.config";
 import { useState } from "react";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
+import {
+  successToast,
+  errorToast,
+  messageToast,
+} from "../../Utils/Toasts/Toasts";
 
 const Changed = () => {
   const [error, setError] = useState("");
@@ -10,24 +15,31 @@ const Changed = () => {
   // console.log(searchParams.get("token"));
   // console.log(searchParams.get("target"));
   let api_url;
+  let msg;
 
   async function onSuccess() {
     if (location === "/verifyPass") {
       api_url = `/tickets/verification/password/resolve?token=${searchParams.get(
         "token"
       )}&target=${searchParams.get("target")}`;
+      msg = "Password Changed Successfully";
     } else if (location === "/verifyEmail") {
       api_url = `/tickets/verification/email/resolve?token=${searchParams.get(
         "token"
       )}`;
+      msg = "Email Verified Successfully";
     }
     await api
       .get(api_url)
       .then((res) => {
+        successToast(msg);
         return navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        errorToast("The link has expired.");
+        messageToast(
+          "To generate a new link, please login again with your credentials. A new link will be sent to your mail."
+        );
         setError("Invalid Link");
       });
   }
