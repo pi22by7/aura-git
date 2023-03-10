@@ -223,7 +223,10 @@ const TeamRegister = (props) => {
         transaction_id: transID,
       })
       .then((res) => {
-        successToast("Your payment has been recorded");
+        successToast("Your payment has been recorded. Please make sure that you also submit the form to complete your registration. https://forms.gle/L9iwR3HBoTXmbK687");
+
+        setTimeout(() => window.open("https://forms.gle/BSBtcqeEYfZWqo4Y9", "_blank"), 1000);
+
         props.setPaid(true);
         setShowModal(false);
       })
@@ -425,6 +428,12 @@ const TeamRegister = (props) => {
             <h1 className="font-bold text-xl text-center m-2">
               You have Successfully Registered for the Event 😎!
             </h1>
+            <p className="text-center text-sm text-blue-600">
+              Please make sure that you have filled the form after
+              completing your payment for this event
+              (<a href="https://forms.gle/BSBtcqeEYfZWqo4Y9" target="_blank" rel="noreferrer">https://forms.gle/BSBtcqeEYfZWqo4Y9</a>).
+            </p>
+            <br />
             <p className="text-center text-sm text-blue-600">
               Your payments will be verified and in case of any fraudaulent
               actions, your team will be disqualified.
