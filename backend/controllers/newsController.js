@@ -10,10 +10,15 @@ async function newsGetAllController(req, res, next) {
 	try {
 		const { query } = req;
 
-		const {
+		let {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+
+		if (typeof pageSize === "string")
+			pageSize = parseInt(pageSize, 10);
+		if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+			pageSize = queryConfig["search.pagination"]["page.size"];
 
 		const news = await News.find({
 			posted_at: { $lte: paginationTs },
