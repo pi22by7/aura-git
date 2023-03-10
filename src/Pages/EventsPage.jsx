@@ -11,6 +11,7 @@ const EventsPage = () => {
   let i = 0;
 
   useEffect(() => {
+    messageToast("You can check the latest updates on our News section.");
     async function fetchEvents() {
       try {
         const response = await api.get("/events");
@@ -19,7 +20,6 @@ const EventsPage = () => {
         });
         setEvents(response.data.data.events);
         setActiveTab(response.data.data.events[0]._id);
-        messageToast("You can check the latest updates on our News section.");
       } catch (error) {
         console.error(error);
       }
