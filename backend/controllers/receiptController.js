@@ -247,7 +247,7 @@ async function receiptGetByTeamController(req, res, next) {
 			res.locals.data = {};
 		res.locals.data.receipt = await receipt.getPopulated();
 	} catch (error) {
-		const { status, message } = errorHandler(error, errors[400].receiptExists);
+		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
 	}
 }
