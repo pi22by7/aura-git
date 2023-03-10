@@ -229,6 +229,29 @@ async function receiptGetByEventAndCurrentUserController(req, res, next) {
 	return next();
 }
 
+async function receiptGetByTeamController(req, res, next) {
+	try {
+		const { params } = req;
+
+		const { id } = params;
+
+		const team = await Team.findById(id);
+		if (!team)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+
+		const receipt = await Receipt.findOne({ team: team._id });
+		if (!receipt)
+			return res.status(404).send(Response(errors[404].receiptNotFound));
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.receipt = await receipt.getPopulated();
+	} catch (error) {
+		const { status, message } = errorHandler(error, errors[400].receiptExists);
+		return res.status(status).send(Response(message));
+	}
+}
+
 async function receiptCreateController(req, res, next) {
 	if (!res.locals.user)
 		return res.status(401).send(Response(errors[401].authRequired));
@@ -330,6 +353,7 @@ module.exports = {
 	receiptGetByIdController,
 	receiptGetByEventController,
 	receiptGetByEventAndCurrentUserController,
+	receiptGetByTeamController,
 	receiptCreateController,
 	receiptUpdateController,
 };
