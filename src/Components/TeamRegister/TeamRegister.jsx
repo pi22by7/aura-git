@@ -20,6 +20,7 @@ const TeamRegister = (props) => {
     event_id: props.id,
     event_title: props.title,
   };
+  const teamSize = props.size;
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
 
@@ -286,8 +287,7 @@ const TeamRegister = (props) => {
                     className="justify-center mx-auto"
                   />
                   <p className="my-4 text-blue-600 text-md">
-                    Scan the QR code to pay the amount to register for the
-                    event.
+                    Please open your preferred payment app and please pay <strong className="highlight">₹{teamSize === 1 ? "50" : "250"}</strong> by scanning the QR code displayed above.
                   </p>
                   <input
                     className="bg-gray-100 w-full rounded-lg p-2 col-span-1 outline-none my-3"
