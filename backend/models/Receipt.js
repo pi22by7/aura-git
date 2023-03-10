@@ -4,51 +4,43 @@ const errors = require("../configs/error.codes.json");
 
 // Constants
 const schema = new mongoose.Schema({
-	order_id: {
-		type: String,
-		required: [true, errors[400].orderIdRequired],
-		trim: true,
-	},
-	order_details: {
-		amount: {
-			type: Number,
-			required: [true, errors[500]],
-			min: 0,
-		},
-		currency: {
-			type: String,
-			required: [true, errors[500]],
-			trim: true,
-		},
-		receipt_number: {
-			type: String,
-			trim: true,
-		},
-	},
-	payment_id: {
-		type: String,
-		required: [true, errors[400].paymentIdRequired],
-		unique: true,
-		trim: true,
-	},
-	payment_signature: {
-		type: String,
-		required: [true, errors[400].paymentSignatureRequired],
-		trim: true,
-	},
-	user_id: {
+	user: {
 		type: mongoose.Types.ObjectId,
-		required: [true, errors[500]],
+		required: [true, errors[400].userIdRequired],
 		ref: "user",
-		index: true,
 	},
-	event_id: {
+	team: {
 		type: mongoose.Types.ObjectId,
-		required: [true, errors[500]],
-		ref: "event",
-		index: true,
+		required: [true, errors[400].teamIdRequired],
+		ref: "team",
 	},
-});
-schema.index({ user_id: 1, event_id: 1 }, { unique: true });
+	event: {
+		type: mongoose.Types.ObjectId,
+		required: [true, errors[400].eventIdRequired],
+		ref: "event",
+	},
+	transaction_id: {
+		type: String,
+		required: [true, errors[400].transactionIdRequired],
+		trim: true,
+		unique: true,
+	},
+}, { timestamps: true });
+schema.index({ team: 1, event: 1 }, { unique: true });
+
+schema.methods.getPopulated = async function () {
+	return this.populate([
+		{
+			path: "user",
+			select: "-password",
+		},
+		{
+			path: "event",
+		},
+		{
+			path: "team",
+		},
+	]);
+};
 
 module.exports = mongoose.model("receipt", schema);
