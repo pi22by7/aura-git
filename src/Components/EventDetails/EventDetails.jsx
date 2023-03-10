@@ -50,6 +50,7 @@ const EventDetails = ({ event }) => {
           />
           <h3 className="text-xl font-bold my-2">Team Size</h3>
           <p className="text-xl font-semibold">{event.team_size}</p>
+          <p className="text-sm mt-1">(Min Team Size {event.min_team_size})</p>
         </div>
         <div className="flex flex-col items-center py-3">
           <FontAwesomeIcon
@@ -66,7 +67,16 @@ const EventDetails = ({ event }) => {
           />
           <h3 className="text-xl font-bold my-2">Registration Limit</h3>
           <p className="text-xl font-semibold">
-            {event.registration_limit ? event.registration_limit : "NA"}
+            {parseInt(event.registration_limit)
+              ? event.registration_limit
+              : "NA"}
+          </p>
+          <p className="text-sm mt-1">
+            {parseInt(event.registration_limit)
+              ? `(Available Slots ${
+                  event.registration_limit - event.registered_teams.length
+                })`
+              : null}
           </p>
         </div>
       </div>

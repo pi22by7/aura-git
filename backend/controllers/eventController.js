@@ -105,3 +105,27 @@ module.exports.eventGetByClubAndTitleController = async (req, res, next) => {
 
   return next();
 };
+
+module.exports.eventGetByIdController = async (req, res, next) => {
+  try {
+    const { params } = req;
+
+    const { id } = params;
+
+    const record = await Event.findById(id);
+    if (!record)
+      return res.status(404).send(Response(errors[404].eventNotFound));
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    if (record.kind === eventConfig.kinds.event)
+      res.locals.data.event = record;
+    else if (record.kind === eventConfig.kinds.rulebook)
+      res.locals.data.rulebook = record;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};

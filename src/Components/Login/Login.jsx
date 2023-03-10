@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { successToast } from "../../Utils/Toasts/Toasts";
 import { useUser } from "../../Contexts/userContext";
 import api from "../../Utils/axios.config";
 
@@ -56,17 +57,18 @@ const Login = () => {
           setError("");
           setEmail("");
           setPassword("");
+          successToast("You have successfully logged in to your account.");
         });
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
       if (
-        error.response.status === 400 &&
-        error.response.data.error === "404-userNotFound"
+        err.response.status === 400 &&
+        err.response.data.error === "404-userNotFound"
       ) {
         setError("E-mail Not Registered");
       } else if (
-        error.response.status === 400 &&
-        error.response.data.error === "403-emailUnverified"
+        err.response.status === 400 &&
+        err.response.data.error === "403-emailUnverified"
       ) {
         setError("E-mail Not Verified.");
         setMessage("Sending Verification E-mail...");
@@ -81,10 +83,6 @@ const Login = () => {
     <div className="grid form-container bg-signin bg-signinc w-screen user-none">
       <div className="form-box bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100 md:mr-64">
         <h1 className="font-bold text-xl text-center m-2">Login</h1>
-        <p className=" text-red-500 font-md text-center">
-          Due to some inconvenience from our end, you maybe facing "Invalid
-          verification Link" issue, Please signup again.
-        </p>
         {error && <p className="msg-box text-red-500 text-center">{error}</p>}
         {message && (
           <p className="msg-box text-green-500 text-center">{message}</p>

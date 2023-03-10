@@ -1,0 +1,7 @@
+.highlight {
+  @apply font-bold text-orange-600;
+}
+
+.link {
+  @apply text-blue-600 font-semibold;
+}

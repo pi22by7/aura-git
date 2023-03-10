@@ -27,11 +27,6 @@
     "teamLeaderDetailsRequired": "400-teamLeaderDetailsRequired",
     "shortName": "400-shortName",
     "searchQueryRequired": "400-searchQueryRequired",
-    "schemeRequired": "400-schemeRequired",
-    "invalidScheme": "400-invalidScheme",
-    "orderIdRequired": "400-orderIdRequired",
-    "paymentIdRequired": "400-paymentIdRequired",
-    "paymentSignatureRequired": "400-paymentSignatureRequired",
     "invalidKind": "400-invalidKind",
     "idRequired": "400-idRequired",
     "collegeRequired": "400-collegeRequired",
@@ -47,9 +42,12 @@
     "ticketAlreadyExists": "400-ticketAlreadyExists",
     "auraIdRequired": "400-auraIdRequired",
     "teamMemberAuraIdRequired": "400-teamMemberAuraIdRequired",
-    "alreadyPaid": "400-alreadyPaid",
-    "receiptOrderMismatch": "400-receiptOrderMismatch",
-    "minTeamCount": "400-minTeamCount"
+    "minTeamCount": "400-minTeamCount",
+    "newsContentRequired": "400-newsContentRequired",
+    "userIdRequired": "400-userIdRequired",
+    "teamIdRequired": "400-teamIdRequired",
+    "transactionIdRequired": "400-transactionIdRequired",
+    "receiptExists": "400-receiptExists"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -67,7 +65,7 @@
     "incompletePayment": "403-incompletePayment",
     "registrationsClosed": "403-registrationsClosed",
     "teamNotRegistered": "403-teamNotRegistered",
-    "minTeamCount": "400-minTeamCount"
+    "minTeamCount": "403-minTeamCount"
   },
   "404": {
     "userNotFound": "404-userNotFound",
@@ -77,7 +75,9 @@
     "orderNotFound": "404-orderNotFound",
     "clubNotFound": "404-clubNotFound",
     "teamNotFound": "404-teamNotFound",
-    "submissionNotFound": "404-submissionNotFound"
+    "submissionNotFound": "404-submissionNotFound",
+    "newsNotFound": "404-newsNotFound",
+    "receiptNotFound": "404-receiptNotFound"
   },
   "440": {
     "sessionExpired": "440-sessionExpired",
