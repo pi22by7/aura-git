@@ -381,8 +381,8 @@ const TeamRegister = (props) => {
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
                 // onClick={paymentNo}
-                onClick={() => setShowModal(true)}
-                disabled={loading}
+                // disabled={loading}
+                disabled="true"
               >
                 Pay
               </button>
