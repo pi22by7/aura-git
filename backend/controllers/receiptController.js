@@ -282,7 +282,7 @@ async function receiptCreateController(req, res, next) {
 		});
 
 		// Update user
-		res.locals.data.paid_for.push({
+		res.locals.user.paid_for.push({
 			event_id: team.event_participated.event_id,
 			receipt_id: receipt._id,
 		});
