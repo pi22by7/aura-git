@@ -20,8 +20,9 @@ const EventsDetailsPage = () => {
   const [event, setEvent] = useState(null);
   const [special, setSpecial] = useState();
   const [registered, setRegistered] = useState(false);
-  const [teamSub, setTeamSub] = useState(null);
   const [paid, setPaid] = useState(false);
+  const [isLeader, setIsLeader] = useState(false);
+  const [teamSub, setTeamSub] = useState(null);
   const [url, setUrl] = useState();
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
@@ -42,18 +43,6 @@ const EventsDetailsPage = () => {
           setEvent(event);
           setSpecial(Boolean(event.link));
           setUrl(event.url);
-          console.log(event);
-          console.log(event.registered_teams);
-          let tm = event.registered_teams.filter(
-            (team) => team.leader_id === uid
-          );
-          setTeam(tm);
-          if (tm !== null && tm.length > 0) {
-            setRegistered(true);
-            if (tm[0].payment.status) {
-              setPaid(true);
-            }
-          }
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -67,10 +56,49 @@ const EventsDetailsPage = () => {
   }, [club, title, navigate, uid]);
 
   useEffect(() => {
+    if (event) {
+      getUsersTeams();
+    }
+  }, [event]);
+
+  useEffect(() => {
     if (special) {
       getTeamSubmissions();
     }
   }, [team]);
+
+  useEffect(() => {
+    if (team && event) {
+      const tm = event.registered_teams.find(
+        (team) => team.team_id === team._id
+      );
+      if (tm && tm.payment.status) {
+        setPaid(true);
+      }
+    }
+  }, [team, event]);
+
+  const getUsersTeams = async () => {
+    await api
+      .get(`/teams/user/${uid}`)
+      .then((res) => {
+        const teams = res.data.data.results;
+        teams.map((team) => {
+          if (team.event_participated.event_id === event._id) {
+            setTeam(team);
+            if (team !== null) {
+              setRegistered(true);
+              if (team.team_leader.id === uid) {
+                setIsLeader(true);
+              }
+            }
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getTeamSubmissions = async () => {
     if (team.length === 0) return;
@@ -115,9 +143,11 @@ const EventsDetailsPage = () => {
               id={event._id}
               registered={registered}
               paid={paid}
+              isLeader={isLeader}
               setRegistered={setRegistered}
               setPaid={setPaid}
               setTeam={setTeam}
+              setIsLeader={setIsLeader}
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}

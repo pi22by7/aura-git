@@ -31,7 +31,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="md:grid md:grid-cols-4 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border-1px bg-opacity-20 z-40 ">
+    <nav className="md:grid md:grid-cols-5 md:place-items-center flex justify-between items-center sticky top-0 w-full md:px-12 px-6 md:py-2 py-4 bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border-1px bg-opacity-20 z-40 ">
       <div className="md:place-self-start">
         <Link className="font-bold text-xl" to="/">
           <img
@@ -48,30 +48,35 @@ export const NavBar = () => {
       > */}
       <div
         ref={navMenuRef}
-        className="nav-menu col-span-2 md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:visible invisible md:bg-transparent bg-white"
+        className="nav-menu col-span-3 md:place-self-center md:static absolute min-h-fit md:w-auto w-full left-0 top-[100%] md:py-0 py-5 md:visible invisible md:bg-transparent bg-white"
       >
-        <ul className="flex md:flex-row flex-col md:items-center gap-3">
-          <li className="md:px-5 px-3">
+        <ul className="flex md:flex-row flex-col md:items-center gap-1">
+          <li className="px-3">
             <NavLink onClick={handleMenuToggle} to="/">
               HOME
             </NavLink>
           </li>
-          <li className="md:px-5 px-3">
+          <li className="px-3">
             <NavLink onClick={handleMenuToggle} to="/competitions">
               COMPETITIONS
             </NavLink>
           </li>
-          <li className="md:px-5 px-3">
+          <li className="px-3">
             <NavLink onClick={handleMenuToggle} to="/rule-book">
               RULE BOOK
             </NavLink>
           </li>
-          <li className="md:px-5 px-3">
+          <li className="px-3">
+            <NavLink onClick={handleMenuToggle} to="/schedule">
+              SCHEDULE
+            </NavLink>
+          </li>
+          <li className="px-3">
             <NavLink onClick={handleMenuToggle} to="/contact-us">
               CONTACT US
             </NavLink>
           </li>
-          <li className="md:px-5 px-3">
+          <li className="px-3">
             <NavLink onClick={handleMenuToggle} to="/news">
               NEWS
             </NavLink>

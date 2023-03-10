@@ -10,11 +10,10 @@ import payqr from "../../Assets/qr.png";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [isNull, setNull] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const event_participated = {
     event_id: props.id,
@@ -22,14 +21,6 @@ const TeamRegister = (props) => {
   };
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
-  const { paid, setPaid } = useState(false);
-  useEffect(() => {
-    if (user !== null) {
-      setNull(false);
-    } else {
-      setNull(true);
-    }
-  }, [team, user]);
 
   // function loadScript(src) {
   //   return new Promise((resolve) => {
@@ -49,7 +40,6 @@ const TeamRegister = (props) => {
     const newInputs = [...team];
     newInputs[index] = event.target.value;
     setTeam(newInputs);
-    // console.log(team);
   };
 
   // const createOrder = async () => {
@@ -164,6 +154,7 @@ const TeamRegister = (props) => {
         setLoading(false);
         props.setRegistered(true);
         props.setTeam([res.data.data.team]);
+        props.setIsLeader(true);
         successToast(
           props.size > 1
             ? "You have successfully registered your team!"
@@ -369,13 +360,25 @@ const TeamRegister = (props) => {
             </div>
           </>
         )}
-        {props.registered && !props.paid && (
+        {props.registered && !props.paid && props.isLeader && (
           <>
             <h1 className="font-bold text-xl text-center m-2">
               Pay the registration fee
             </h1>
             <p className="text-center text-sm text-blue-600">
               Your team has been registered. Pay to confirm your registration.
+            </p>
+            <p className="text-center text-sm text-red-600">
+              You will be notified once the payment starts. Updates will be
+              updated on the{" "}
+              <a
+                href="/#/news"
+                className="text-blue-500 font-sem
+              "
+              >
+                News
+              </a>{" "}
+              tab
             </p>
             <div className="grid justify-center my-8">
               <button
@@ -387,6 +390,17 @@ const TeamRegister = (props) => {
                 Pay
               </button>
             </div>
+          </>
+        )}
+        {props.registered && !props.paid && !props.isLeader && (
+          <>
+            <h1 className="font-bold text-xl text-center m-2">
+              Your team has been registered. <br /> waiting for the team leader
+              to pay the registration fee.
+            </h1>
+            <p className="text-center text-sm text-blue-600">
+              Only the team leader can pay the registration fee.
+            </p>
           </>
         )}
         {props.paid && (
