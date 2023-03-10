@@ -20,8 +20,10 @@ const EventsDetailsPage = () => {
   const [event, setEvent] = useState(null);
   const [special, setSpecial] = useState();
   const [registered, setRegistered] = useState(false);
-  const [teamSub, setTeamSub] = useState(null);
   const [paid, setPaid] = useState(false);
+  const [isLeader, setIsLeader] = useState(false);
+  const [teamSub, setTeamSub] = useState(null);
+  const [inValidTeam, setInValidTeam] = useState(false);
   const [url, setUrl] = useState();
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
@@ -42,16 +44,6 @@ const EventsDetailsPage = () => {
           setEvent(event);
           setSpecial(Boolean(event.link));
           setUrl(event.url);
-          let tm = event.registered_teams.filter(
-            (team) => team.leader_id === uid
-          );
-          setTeam(tm);
-          if (tm !== null && tm.length > 0) {
-            setRegistered(true);
-            if (tm[0].payment.status) {
-              setPaid(true);
-            }
-          }
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -65,13 +57,52 @@ const EventsDetailsPage = () => {
   }, [club, title, navigate, uid]);
 
   useEffect(() => {
+    if (event) {
+      getUsersTeams();
+    }
+  }, [event]);
+
+  useEffect(() => {
     if (special) {
       getTeamSubmissions();
     }
   }, [team]);
 
+  useEffect(() => {
+    if (team && event) {
+      const tm = event.registered_teams.find((t) => t.team_id === team._id);
+      if (tm && tm.payment.status) {
+        setPaid(true);
+      }
+    }
+  }, [team, event]);
+
+  const getUsersTeams = async () => {
+    await api
+      .get(`/teams/user/${uid}`)
+      .then((res) => {
+        const teams = res.data.data.results;
+        teams.map((team) => {
+          if (team.event_participated.event_id === event._id) {
+            setTeam(team);
+            if (team !== null) {
+              setRegistered(true);
+              if (team.team_members.length + 1 < event.min_team_size)
+                setInValidTeam(true);
+              if (team.team_leader.id === uid) {
+                setIsLeader(true);
+              }
+            }
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const getTeamSubmissions = async () => {
-    if (team.length == 0) return;
+    if (team.length === 0) return;
     const teamId = team[0].team_id;
     await api
       .get(`/submissions/team/${teamId}`)
@@ -105,7 +136,21 @@ const EventsDetailsPage = () => {
               </Link>
             </>
           )}
-          {user && (
+          {user && isLeader && inValidTeam && (
+            <p className="text-xl text-center text-red-600 font-bold my-5">
+              You have successfully registered for the event.
+              <br /> Unfortunately your team size is less than the minimum team
+              size.
+              <br /> Please add more members to your team.
+              <br />
+              You can update your team in your{" "}
+              <Link to="/profile" className="text-blue-500">
+                Profile
+              </Link>
+              , under the "Your Events" tab
+            </p>
+          )}
+          {user && !inValidTeam && (
             <TeamRegister
               size={teamSize}
               min_size={event.min_team_size ? event.min_team_size : 1}
@@ -113,9 +158,12 @@ const EventsDetailsPage = () => {
               id={event._id}
               registered={registered}
               paid={paid}
+              isLeader={isLeader}
               setRegistered={setRegistered}
               setPaid={setPaid}
               setTeam={setTeam}
+              setIsLeader={setIsLeader}
+              team={team}
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}

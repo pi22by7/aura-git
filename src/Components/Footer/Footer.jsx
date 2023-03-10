@@ -28,6 +28,9 @@ export const Footer = () => {
             <a className="my-3 block" href="/#/rule-book">
               Rule Book
             </a>
+            <a className="my-3 block" href="/#/schedule">
+              Schedule
+            </a>
             <a className="my-3 block" href="/#/news">
               News
             </a>
