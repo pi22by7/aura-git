@@ -10,7 +10,7 @@ import payqr from "../../Assets/qr.png";
 
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
-  const [name, setName] = useState(null);
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -130,7 +130,7 @@ const TeamRegister = (props) => {
   // };
   const registerTeam = async () => {
     // e.preventDefault();
-    if (!name) {
+    if (name === "") {
       setError("Please enter team name");
       return;
     }

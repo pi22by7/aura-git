@@ -23,6 +23,7 @@ const EventsDetailsPage = () => {
   const [paid, setPaid] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
   const [teamSub, setTeamSub] = useState(null);
+  const [inValidTeam, setInValidTeam] = useState(false);
   const [url, setUrl] = useState();
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
@@ -83,11 +84,14 @@ const EventsDetailsPage = () => {
       .get(`/teams/user/${uid}`)
       .then((res) => {
         const teams = res.data.data.results;
+        console.log(teams);
         teams.map((team) => {
           if (team.event_participated.event_id === event._id) {
             setTeam(team);
             if (team !== null) {
               setRegistered(true);
+              if (team.team_members.length + 1 < event.min_team_size)
+                setInValidTeam(true);
               if (team.team_leader.id === uid) {
                 setIsLeader(true);
               }
@@ -135,7 +139,21 @@ const EventsDetailsPage = () => {
               </Link>
             </>
           )}
-          {user && (
+          {user && isLeader && inValidTeam && (
+            <p className="text-xl text-center text-red-600 font-bold my-5">
+              You have successfully registered for the event.
+              <br /> Unfortunately your team size is less than the minimum team
+              size.
+              <br /> Please add more members to your team.
+              <br />
+              You can update your team in your{" "}
+              <Link to="/profile" className="text-blue-500">
+                Profile
+              </Link>
+              , under the "Your Events" tab
+            </p>
+          )}
+          {user && !inValidTeam && (
             <TeamRegister
               size={teamSize}
               min_size={event.min_team_size ? event.min_team_size : 1}
