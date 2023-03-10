@@ -278,6 +278,7 @@ async function receiptCreateController(req, res, next) {
 			user: res.locals.user._id,
 			event: team.event_participated.event_id,
 			team: team._id,
+			transaction_id,
 		});
 
 		// Update user
