@@ -127,7 +127,7 @@ const TeamRegister = (props) => {
   };
   const n = props.size;
   const pay = () => {
-    let t = /^[a-z-0-9]+$/i;
+    let t = /^[a-z-0-9-]+$/i;
     if (transID === "") {
       errorToast("Please enter transaction ID");
       return;
