@@ -1,5 +1,4 @@
 const CreateMarker = ({ url, title, navigate }) => {
-  console.log(url, title, navigate);
   const ele = document.createElement("div");
   ele.style.cursor = "pointer";
   ele.style.color = "red";

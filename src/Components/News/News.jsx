@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../Utils/axios.config";
 import parse from "html-react-parser";
 import "./News.css";
+import { errorToast } from "../../Utils/Toasts/Toasts";
 
 const News = () => {
   const paginationT = null;
@@ -24,7 +25,7 @@ const News = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        errorToast("Something went wrong. Please try again later.");
       });
   };
 

@@ -6,7 +6,6 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
   const [submission, setSubmission] = useState("");
 
   useEffect(() => {
-    console.log(teamSub);
     if (teamSub) {
       setLink(teamSub.links[0]);
     }
@@ -33,7 +32,6 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
       })
       .catch((err) => {
         setSubmission("Submission Failed");
-        console.log(err);
       });
   };
 

@@ -108,7 +108,6 @@ const GlobeComponent = () => {
       });
       var sprite = new THREE.Sprite(spriteMaterial);
       let size = (window.innerWidth > 600 ? 50 : 50) / window.innerHeight;
-      console.log(size);
       sprite.scale.set(size, size, 0);
       // Set user data for the sprite
       sprite.userData = { title, url, navigate };

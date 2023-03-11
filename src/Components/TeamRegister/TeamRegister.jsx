@@ -77,7 +77,6 @@ const TeamRegister = (props) => {
         );
       })
       .catch((err) => {
-        console.log(err);
         let err_status = err.response.status;
         let err_code = err.response.data.error;
         setLoading(false);
@@ -155,7 +154,6 @@ const TeamRegister = (props) => {
           setShowModal(false);
         })
         .catch((err) => {
-          console.log(err);
           errorToast("Failed to record payment");
         });
     } else {
@@ -307,7 +305,6 @@ const TeamRegister = (props) => {
                     </button>
                   </div>
                 )}
-                {/* {console.log(team, Mem)} */}
               </form>
             </div>
           </>
