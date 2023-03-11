@@ -48,6 +48,10 @@ const TeamRegister = (props) => {
         );
         return;
       }
+      if (team[i] === user.aura_id) {
+        errorToast("You cannot add yourself as a team member!");
+        return;
+      }
     }
     setLoading(true);
     const team_name = name;
