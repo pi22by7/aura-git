@@ -17,5 +17,6 @@ configs/*.secure.json
 *.log.gz
 
 # Misc
+test*.js
 .DS_Store
 *.mongodb
