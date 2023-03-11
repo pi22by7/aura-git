@@ -266,7 +266,7 @@ async function receiptCreateController(req, res, next) {
 		if (transaction_id === undefined)
 			return res.status(400).send(Response(errors[400].transactionIdRequired));
 
-		if (!/^[a-z0-9]+$/i.test(transaction_id))
+		if (!/^[a-z0-9-]+$/i.test(transaction_id))
 			return res.status(400).send(Response(errors[400].invalidTransactionId));
 
 		// Check if team exists and belongs to current user
