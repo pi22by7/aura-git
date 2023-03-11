@@ -47,7 +47,8 @@
     "userIdRequired": "400-userIdRequired",
     "teamIdRequired": "400-teamIdRequired",
     "transactionIdRequired": "400-transactionIdRequired",
-    "receiptExists": "400-receiptExists"
+    "receiptExists": "400-receiptExists",
+    "invalidTransactionId": "400-invalidTransactionId"
   },
   "401": {
     "authRequired": "401-authRequired",
