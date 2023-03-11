@@ -12,8 +12,6 @@ const Changed = () => {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const [searchParams] = useSearchParams();
-  // console.log(searchParams.get("token"));
-  // console.log(searchParams.get("target"));
   let api_url;
   let msg;
 

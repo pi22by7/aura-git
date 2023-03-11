@@ -48,6 +48,10 @@ const TeamRegister = (props) => {
         );
         return;
       }
+      if (team[i] === user.aura_id) {
+        errorToast("You cannot add yourself as a team member!");
+        return;
+      }
     }
     setLoading(true);
     const team_name = name;
@@ -73,7 +77,6 @@ const TeamRegister = (props) => {
         );
       })
       .catch((err) => {
-        console.log(err);
         let err_status = err.response.status;
         let err_code = err.response.data.error;
         setLoading(false);
@@ -151,7 +154,6 @@ const TeamRegister = (props) => {
           setShowModal(false);
         })
         .catch((err) => {
-          console.log(err);
           errorToast("Failed to record payment");
         });
     } else {
@@ -303,7 +305,6 @@ const TeamRegister = (props) => {
                     </button>
                   </div>
                 )}
-                {/* {console.log(team, Mem)} */}
               </form>
             </div>
           </>

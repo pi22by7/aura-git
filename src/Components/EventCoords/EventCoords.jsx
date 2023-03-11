@@ -8,13 +8,11 @@ const EventCoordinators = ({ eventCoordinators }) => {
       <div className="grid md:grid-cols-3 grid-cols-1 justify-items-center mt-8">
         {eventCoordinators.map((eventCoordinator, index) => (
           <div key={index} className="flex flex-col items-center my-5">
-            {/* {console.log(eventCoordinator.image)} */}
             <img
               className="w-36 h-36 object-cover object-top rounded-full shadow-2xl"
               src={eventCoordinator.image}
               alt={eventCoordinator.name}
             />
-            {/* {console.log(eventCoordinator.image)} */}
             <p className="font-semibold text-xl my-2">
               {eventCoordinator.name}
             </p>
