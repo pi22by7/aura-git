@@ -28,7 +28,7 @@ const TeamRegister = (props) => {
     const newInputs = [...team];
     newInputs[index] = String(event.target.value).trim();
     let p = /^AURA23-[A-Z]{3}-[0-9]{5}$/;
-    if (newInputs[index] !== p)
+    if (!p.test(newInputs[index]))
       errorToast("Invalid AURA ID: Format is AURA23-XXX-12345");
     else setTeam(newInputs);
   };
@@ -125,7 +125,7 @@ const TeamRegister = (props) => {
     if (transID === "") {
       errorToast("Please enter transaction ID");
       return;
-    } else if (transID === t) {
+    } else if (!t.test(transID)) {
       api
         .post(`/receipts`, {
           team_id: props.team._id,
