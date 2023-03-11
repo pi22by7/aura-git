@@ -125,7 +125,7 @@ const TeamRegister = (props) => {
     if (transID === "") {
       errorToast("Please enter transaction ID");
       return;
-    } else if (!t.test(transID)) {
+    } else if (t.test(transID)) {
       api
         .post(`/receipts`, {
           team_id: props.team._id,
