@@ -19,6 +19,7 @@ import { glowGeometry, createGlowMaterial } from "./Assets/Glow";
 
 const GlobeComponent = () => {
   const [loading, setLoading] = useState(true);
+  const [animationId, setAnimationId] = useState(null);
   const mapRef = useRef(null);
   let sphere = null;
   const navigate = useNavigate();
@@ -55,22 +56,33 @@ const GlobeComponent = () => {
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     glow.position.set(0, 0, 0);
     glow.scale.set(glow_Scale, glow_Scale, glow_Scale);
-    sphere.add(glow);
+    // sphere.add(glow);
+
+    // Add directional light to a sphere of radius 2.5
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 0, 0);
+    directionalLight.target.position.set(1.75, 1.75, 1.75);
+    scene.add(directionalLight);
+    scene.add(directionalLight.target);
+
+    // Create an ambient light
+    const ambientLight = new THREE.AmbientLight(0xbbbbbb, 1);
+    scene.add(ambientLight);
 
     scene.add(sphere);
     scene.add(stars);
 
     // Add markers on sphere for each country in g_data based on lat and long
-    function latLongToVector3(lat, lon, radius) {
-      var phi = (lat * Math.PI) / 180;
-      var theta = ((lon - 180) * Math.PI) / 180;
+    // function latLongToVector3(lat, lon, radius) {
+    //   var phi = (lat * Math.PI) / 180;
+    //   var theta = ((lon - 180) * Math.PI) / 180;
 
-      var x = -radius * Math.cos(phi) * Math.cos(theta);
-      var y = radius * Math.sin(phi);
-      var z = radius * Math.cos(phi) * Math.sin(theta);
+    //   var x = -radius * Math.cos(phi) * Math.cos(theta);
+    //   var y = radius * Math.sin(phi);
+    //   var z = radius * Math.cos(phi) * Math.sin(theta);
 
-      return new THREE.Vector3(x, y, z);
-    }
+    //   return new THREE.Vector3(x, y, z);
+    // }
 
     for (var i = 0; i < gData.length; i++) {
       // var markerLocation = gData[i];
