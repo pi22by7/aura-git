@@ -24,106 +24,14 @@ const TeamRegister = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { user, setUser } = useUser();
 
-  // function loadScript(src) {
-  //   return new Promise((resolve) => {
-  //     const script = document.createElement("script");
-  //     script.src = src;
-  //     script.onload = () => {
-  //       resolve(true);
-  //     };
-  //     script.onerror = () => {
-  //       resolve(false);
-  //     };
-  //     document.body.appendChild(script);
-  //   });
-  // }
-
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
-    newInputs[index] = event.target.value;
-    setTeam(newInputs);
+    newInputs[index] = String(event.target.value).trim();
+    if (newInputs[index] !== "^AURA23-[A-Z]{3}-[0-9]{5}$")
+      errorToast("Invalid AURA ID: Format is AURA23-XXX-12345");
+    else setTeam(newInputs);
   };
 
-  // const createOrder = async () => {
-  //   try {
-  //     const { data } = await api.get(`/payments/order?event_id=${props.id}`);
-  //     return data.data.order;
-  //   } catch (error) {
-  //     console.log("Error creating order:", error);
-  //     return null;
-  //   }
-  // };
-
-  // const handlePaymentSuccess = async (orderId, paymentData) => {
-  //   try {
-  //     // orderCreationId: orderId,
-  //     // razorpayOrderId: paymentData.razorpay_order_id,
-  //     const data = {
-  //       // orderCreationId: orderId,
-  //       // razorpayPaymentId: paymentData.razorpay_payment_id,
-  //       // razorpayOrderId: paymentData.razorpay_order_id,
-  //       // razorpaySignature: paymentData.razorpay_signature,
-  //       payment_id: paymentData.razorpay_payment_id,
-  //       signature: paymentData.razorpay_signature,
-  //     };
-  //     await api.post(`/payments/order/${orderId}/receipt`, data);
-  //     setPaid(true);
-  //   } catch (error) {
-  //     console.log("Error processing payment:", error);
-  //     setPaid(false);
-  //   }
-  // };
-
-  // const paymentModal = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   const res = await loadScript(
-  //     "https://checkout.razorpay.com/v1/checkout.js"
-  //   );
-
-  //   if (!res) {
-  //     alert("Razorpay SDK failed to load. Are you online?");
-  //     return;
-  //   }
-  //   const order = await createOrder();
-  //   // console.log(process.env.REACT_APP_RZRKEY);
-  //   if (!order) {
-  //     setLoading(false);
-  //     alert("Unable to create payment order. Please try again later.");
-  //     return;
-  //   }
-  //   const amount = order.amount;
-  //   const orderId = order.id;
-  //   const currency = order.currency;
-  //   const key = process.env.REACT_APP_RZRKEY;
-
-  //   const options = {
-  //     key: key,
-  //     amount: amount.toString(),
-  //     currency: currency,
-  //     name: "KLS GIT, Belagavi",
-  //     description: "Test Transaction",
-  //     image: logo,
-  //     order_id: orderId,
-  //     handler: (response) => handlePaymentSuccess(orderId, response),
-  //     prefill: {
-  //       name: user.name,
-  //       email: user.email,
-  //       contact: user.phone,
-  //     },
-  //     notes: {
-  //       address: "KLSGIT of Belagavi",
-  //     },
-  //     theme: {
-  //       color: "#ffffff",
-  //     },
-  //   };
-
-  //   const paymentObject = new window.Razorpay(options);
-  //   paymentObject.open();
-  //   // handleSubmit();
-  //   setLoading(false);
-  // };
   const registerTeam = async () => {
     // e.preventDefault();
     if (name === "") {
@@ -210,9 +118,7 @@ const TeamRegister = (props) => {
         }
       });
   };
-  // eslint-disable-next-line no-unused-vars
   const n = props.size;
-
   const pay = () => {
     if (transID === "") {
       errorToast("Please enter transaction ID");
