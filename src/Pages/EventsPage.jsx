@@ -7,6 +7,8 @@ import PreLoader from "../Components/PreLoader/PreLoader";
 
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState(null);
+  const [curBg, setCurBg] = useState("bg-dance");
+  const [curBgC, setCurBgC] = useState("bg-dancec");
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -26,12 +28,29 @@ const EventsPage = () => {
     fetchEvents();
   }, []);
 
+  const updateBg = (e) => {
+    const bg = document.querySelector(".events-bg");
+    bg.classList.remove(curBg);
+    bg.classList.remove(curBgC);
+    const cur =
+      "bg-" +
+      e.currentTarget.dataset.id
+        .replaceAll("Club", "")
+        .replaceAll(" ", "")
+        .replaceAll("-", "")
+        .toLowerCase();
+    setCurBg(cur);
+    setCurBgC(cur + "c");
+    bg.classList.add(cur);
+    bg.classList.add(cur + "c");
+  };
+
   if (events.length === 0) {
     return <PreLoader type="loading" />;
   }
 
   return (
-    <div className="h-screen grid md:grid-cols-3 grid-cols-1 bg-events md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-scroll bg-eventc overflow-scroll [&::-webkit-scrollbar]:hidden">
+    <div className="events-bg h-screen grid md:grid-cols-3 grid-cols-1 md:bg-contain bg-cover md:bg-left bg-right bg-no-repeat bg-scroll overflow-scroll [&::-webkit-scrollbar]:hidden bg-dance bg-dancec">
       <div className="lg:col-start-2 lg:col-span-2 md:col-span-3 col-span-1">
         <h1 className="text-3xl font-bold text-center pt-5">Competitions</h1>
         {/* Tabs for each club in events */}
@@ -39,11 +58,13 @@ const EventsPage = () => {
           {events.map((club) => (
             <p
               key={club._id}
+              data-id={club._id}
               className={`text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer ${
                 club._id === activeTab ? "bg-tertiary" : "bg-quaternary"
               }`}
               onClick={(e) => {
                 setActiveTab(club._id);
+                updateBg(e);
               }}
             >
               {club._id.replace("Club", "")}
