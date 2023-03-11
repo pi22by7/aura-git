@@ -6,7 +6,7 @@ export const createGlowMaterial = (camera) => {
     uniforms: {
       c: { type: "f", value: 0.1 },
       p: { type: "f", value: 1.4 },
-      glowColor: { type: "c", value: new THREE.Color(0x0000ff) },
+      glowColor: { type: "c", value: new THREE.Color(0x808080) },
       viewVector: { type: "v3", value: camera.position },
     },
     vertexShader: `

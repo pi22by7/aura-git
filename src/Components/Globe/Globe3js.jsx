@@ -56,17 +56,17 @@ const GlobeComponent = () => {
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     glow.position.set(0, 0, 0);
     glow.scale.set(glow_Scale, glow_Scale, glow_Scale);
-    // sphere.add(glow);
+    sphere.add(glow);
 
     // Add directional light to a sphere of radius 2.5
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(0, 0, 0);
-    directionalLight.target.position.set(1.75, 1.75, 1.75);
+    directionalLight.position.set(200, 500, 600);
+    directionalLight.target.position.set(0, 0, 0);
     scene.add(directionalLight);
     scene.add(directionalLight.target);
 
     // Create an ambient light
-    const ambientLight = new THREE.AmbientLight(0xbbbbbb, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
 
     scene.add(sphere);
@@ -104,9 +104,11 @@ const GlobeComponent = () => {
       // Create a sprite with the marker texture
       var spriteMaterial = new THREE.SpriteMaterial({
         map: markerTexture,
+        sizeAttenuation: false,
       });
       var sprite = new THREE.Sprite(spriteMaterial);
-      let size = window.innerWidth > 600 ? 0.25 : 0.15;
+      let size = (window.innerWidth > 600 ? 50 : 15) / window.innerHeight;
+      console.log(size);
       sprite.scale.set(size, size, 0);
       // Set user data for the sprite
       sprite.userData = { title, url, navigate };
@@ -193,8 +195,8 @@ const GlobeComponent = () => {
     const controls = new OrbitControls(camera, renderer.domElement);
     // controls.enableZoom = false;
     controls.enablePan = true;
-    controls.maxDistance = 6;
-    controls.minDistance = 3;
+    controls.maxDistance = 5;
+    controls.minDistance = 4;
     controls.update();
 
     //  Cleanup
