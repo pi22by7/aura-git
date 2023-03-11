@@ -27,7 +27,7 @@ const GlobeComponent = () => {
   useEffect(() => {
     if (!sphere) return;
     else if (sphere.geometry !== undefined && sphere.material !== undefined)
-      setTimeout(() => setLoading(false), 1500);
+      setLoading(false);
   }, [sphere]);
 
   useEffect(() => {
