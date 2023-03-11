@@ -192,9 +192,9 @@ const GlobeComponent = () => {
     // Add orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
     // controls.enableZoom = false;
-    controls.enablePan = true;
+    controls.enablePan = false;
     controls.maxDistance = 5;
-    controls.minDistance = 4;
+    controls.minDistance = 3;
     controls.update();
 
     //  Cleanup

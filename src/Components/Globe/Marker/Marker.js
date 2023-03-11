@@ -1,18 +1,12 @@
-const CreateMarker = ({ url, title, navigate }) => {
+const CreateMarker = ({ marker, url, title, navigate }) => {
   const ele = document.createElement("div");
   ele.style.cursor = "pointer";
+  ele.style["pointer-events"] = "auto";
   ele.style.color = "red";
   ele.style.width = "35px";
+  ele.innerHTML = marker;
   ele.title = title;
-
-  // create a image element
-  // const img = document.createElement("img");
-  // img.src = "../marker.png";
-  // img.style.width = "100%";
-  // img.style.height = "100%";
-  // img.style.objectFit = "contain";
-
-  // ele.appendChild(img);
+  console.log(url, title);
 
   // on click, navigate to the url
   ele.addEventListener("click", () => {

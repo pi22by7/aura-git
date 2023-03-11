@@ -85,7 +85,6 @@ const GlobeComponent = () => {
     // useEffect cleanup:
     return () => {
       world.controls().dispose();
-      world.postProcessingComposer().dispose();
       world.renderer().dispose();
     };
   }, [marker, navigate]);

@@ -1,6 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    { pattern: /^bg-/, type: "class" },
+    {
+      pattern:
+        /bg-(dancec|dramaticsc|egamingc|fashionc|fineartsc|literaryc|musicc|photographyc|quizc|shauryac|specialeventsc)/,
+      type: "class",
+    },
+  ],
   theme: {
     extend: {
       colors: {
@@ -14,6 +22,17 @@ module.exports = {
         profilec: "#e6e6e6ff",
         contactc: "#ffd5d5ff",
         rulebookc: "#afc6e9ff",
+        dancec: "#ffd5e5ff",
+        dramaticsc: "#d5e5ffff",
+        egamingc: "#eeaaffff",
+        fashionc: "#ffe6d5ff",
+        fineartsc: "#d5f6ffff",
+        literaryc: "#f6ffd5ff",
+        musicc: "#fffae3ff",
+        photographyc: "#ccaaffff",
+        quizc: "#d5fff6ff",
+        shauryac: "#ffd5d5ff",
+        specialeventsc: "#ffe4f9ff",
       },
       height: (theme) => ({
         "screen/90": "90vh",
@@ -31,6 +50,17 @@ module.exports = {
         profile: "url('./Assets/prof.png')",
         contactus: "url('./Assets/contactus.png')",
         rulebook: "url('./Assets/rule.png')",
+        dance: "url('./Assets/Events/DANCE.png')",
+        dramatics: "url('./Assets/Events/DRAMA.png')",
+        egaming: "url('./Assets/Events/GAMING.png')",
+        fashion: "url('./Assets/Events/FASHION.png')",
+        finearts: "url('./Assets/Events/FINEARTS.png')",
+        literary: "url('./Assets/Events/LITERARY.png')",
+        music: "url('./Assets/Events/MUSIC.png')",
+        photography: "url('./Assets/Events/PHOTOGRAPHY.png')",
+        quiz: "url('./Assets/Events/QUIZ.png')",
+        shaurya: "url('./Assets/Events/SHAURYA.png')",
+        specialevents: "url('./Assets/Events/SPECIAL.png')",
       },
     },
   },

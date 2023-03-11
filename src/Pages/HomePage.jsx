@@ -1,6 +1,6 @@
 // import Map from "../Components/Map/Map";
 
-import GlobeComponent from "../Components/Globe/Globe3js";
+import GlobeComponent from "../Components/Globe/Globe";
 // import GlobeComponent from "../Components/Globe/GlobeBackUp";
 
 const HomePage = () => (
