@@ -292,16 +292,40 @@ async function receiptCreateController(req, res, next) {
 		// Update event
 		const event = await Event.findById(team.event_participated.event_id);
 		const index = event.registered_teams.findIndex(reg_team => String(reg_team.team_id) === String(team._id));
-		assert(index !== -1);
 
-		const query = { $set: {} };
-		query.$set[`registered_teams.${index}.payment`] = {
-			status: true,
-			receipt_id: receipt._id,
-		};
-		const results = await Event.updateOne({ _id: event._id }, query);
-		if (results.modifiedCount === 0)
-			throw Error("Event update failed!");
+		if (index === -1) {
+			// Create entry
+
+			const results = await Event.updateOne(
+				{ _id: event._id },
+				{
+					$push: {
+						registered_teams: {
+							team_id: team_id,
+							leader_id: res.locals.user._id,
+							payment: {
+								status: true,
+								receipt_id: receipt._id,
+							},
+						},
+					},
+				},
+			);
+
+			if (results.modifiedCount === 0)
+				throw Error("Unable to update entry in registered_teams");
+		} else {
+			// Update existing entry
+
+			const query = { $set: {} };
+			query.$set[`registered_teams.${index}.payment`] = {
+				status: true,
+				receipt_id: receipt._id,
+			};
+			const results = await Event.updateOne({ _id: event._id }, query);
+			if (results.modifiedCount === 0)
+				throw Error("Event update failed!");
+		}
 
 		if (!res.locals.data)
 			res.locals.data = {};
