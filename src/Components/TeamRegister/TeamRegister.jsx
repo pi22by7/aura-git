@@ -217,24 +217,32 @@ const TeamRegister = (props) => {
     if (transID === "") {
       errorToast("Please enter transaction ID");
       return;
+    } else if (transID === "/^[a-z-0-9]+$/i") {
+      api
+        .post(`/receipts`, {
+          team_id: props.team._id,
+          transaction_id: transID,
+        })
+        .then((res) => {
+          successToast(
+            "Your payment has been recorded. Please make sure that you also submit the form to complete your registration. https://forms.gle/L9iwR3HBoTXmbK687"
+          );
+
+          setTimeout(
+            () => window.open("https://forms.gle/BSBtcqeEYfZWqo4Y9", "_blank"),
+            1000
+          );
+
+          props.setPaid(true);
+          setShowModal(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          errorToast("Failed to record payment");
+        });
+    } else {
+      errorToast("The Transaction ID was invalid.");
     }
-    api
-      .post(`/receipts`, {
-        team_id: props.team._id,
-        transaction_id: transID,
-      })
-      .then((res) => {
-        successToast("Your payment has been recorded. Please make sure that you also submit the form to complete your registration. https://forms.gle/L9iwR3HBoTXmbK687");
-
-        setTimeout(() => window.open("https://forms.gle/BSBtcqeEYfZWqo4Y9", "_blank"), 1000);
-
-        props.setPaid(true);
-        setShowModal(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        errorToast("Failed to record payment");
-      });
   };
   const renderInputForms = (x) => {
     const inputForms = [];
@@ -287,7 +295,11 @@ const TeamRegister = (props) => {
                     className="justify-center mx-auto"
                   />
                   <p className="my-4 text-blue-600 text-md">
-                    Please open your preferred payment app and please pay <strong className="highlight">₹{teamSize === 1 ? "50" : "250"}</strong> by scanning the QR code displayed above.
+                    Please open your preferred payment app and please pay{" "}
+                    <strong className="highlight">
+                      ₹{teamSize === 1 ? "50" : "250"}
+                    </strong>{" "}
+                    by scanning the QR code displayed above.
                   </p>
                   <input
                     className="bg-gray-100 w-full rounded-lg p-2 col-span-1 outline-none my-3"
@@ -296,7 +308,7 @@ const TeamRegister = (props) => {
                     id="txnID"
                     onChange={(e) => setTransaction(e.target.value)}
                     required
-                    placeholder="Enter UPI Transaction ID"
+                    placeholder="Enter Transaction ID"
                   />
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -312,7 +324,7 @@ const TeamRegister = (props) => {
                     type="button"
                     onClick={() => pay()}
                   >
-                    Pay (Redirects to Google Forms)
+                    Next (Redirects to Google Forms)
                   </button>
                 </div>
               </div>
@@ -429,9 +441,16 @@ const TeamRegister = (props) => {
               You have Successfully Registered for the Event 😎!
             </h1>
             <p className="text-center text-sm text-blue-600">
-              Please make sure that you have filled the form after
-              completing your payment for this event
-              (<a href="https://forms.gle/BSBtcqeEYfZWqo4Y9" target="_blank" rel="noreferrer">https://forms.gle/BSBtcqeEYfZWqo4Y9</a>).
+              Please make sure that you have filled the form after completing
+              your payment for this event (
+              <a
+                href="https://forms.gle/BSBtcqeEYfZWqo4Y9"
+                target="_blank"
+                rel="noreferrer"
+              >
+                https://forms.gle/BSBtcqeEYfZWqo4Y9
+              </a>
+              ).
             </p>
             <br />
             <p className="text-center text-sm text-blue-600">
