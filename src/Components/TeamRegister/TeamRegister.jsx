@@ -27,10 +27,7 @@ const TeamRegister = (props) => {
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
     newInputs[index] = String(event.target.value).trim();
-    let p = /^AURA23-[A-Z]{3}-[0-9]{5}$/;
-    if (!p.test(newInputs[index]))
-      errorToast("Invalid AURA ID: Format is AURA23-XXX-12345");
-    else setTeam(newInputs);
+    setTeam(newInputs);
   };
 
   const registerTeam = async () => {
@@ -42,6 +39,15 @@ const TeamRegister = (props) => {
     if (team.length < props.min_size - 1) {
       setError(`Team size should be atleast ${props.min_size}`);
       return;
+    }
+    let p = /^AURA23-[A-Z]{3}-[0-9]{5}$/;
+    for (let i = 0; i < team.length; i++) {
+      if (!p.test(team[i])) {
+        errorToast(
+          "One of the AURA IDs is invalid: Format is AURA23-XXX-12345"
+        );
+        return;
+      }
     }
     setLoading(true);
     const team_name = name;
