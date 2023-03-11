@@ -71,9 +71,8 @@ const EventDetails = ({ event }) => {
           </p>
           <p className="text-sm mt-1">
             {parseInt(event.registration_limit)
-              ? `(Available Slots ${
-                  event.registration_limit - event.registered_teams.length
-                })`
+              ? (event.registration_limit - event.registered_teams.length < 20 ? `(Available Slots ${event.registration_limit - event.registered_teams.length
+                })` : null)
               : null}
           </p>
         </div>
