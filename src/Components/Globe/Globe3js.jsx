@@ -18,17 +18,16 @@ import { createSphere, stars } from "./Assets/Sphere";
 import { glowGeometry, createGlowMaterial } from "./Assets/Glow";
 
 const GlobeComponent = () => {
-  const [loading, setLoading] = useState(true);
-  const [animationId, setAnimationId] = useState(null);
+  // const [loading, setLoading] = useState(true);
   const mapRef = useRef(null);
   let sphere = null;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!sphere) return;
-    else if (sphere.geometry !== undefined && sphere.material !== undefined)
-      setLoading(false);
-  }, [sphere]);
+  // useEffect(() => {
+  //   if (!sphere) return;
+  //   else if (sphere.geometry !== undefined && sphere.material !== undefined)
+  //     setLoading(false);
+  // }, [sphere]);
 
   useEffect(() => {
     // create a globe using three.js
@@ -230,7 +229,7 @@ const GlobeComponent = () => {
 
   return (
     <>
-      {loading === true && (
+      {/* {loading === true && (
         <div className="w-[100vw] h-[100vh] flex justify-center items-center bg-white absolute top-0 z-50">
           <img
             src={welcome}
@@ -239,7 +238,7 @@ const GlobeComponent = () => {
             draggable={false}
           />
         </div>
-      )}
+      )} */}
       <div className="w-[100vw] h-[100vh] absolute top-0 z-40">
         <p className="absolute lg:invisible visible bottom-8 right-1/2 transform translate-x-1/2 z-40">
           <img src={logo} className="h-28" alt="Aura Logo" draggable={false} />
@@ -250,7 +249,7 @@ const GlobeComponent = () => {
           ref={mapRef}
         ></div>
 
-        {!loading && (
+        {true && (
           <>
             <div className="lg:w-52 w-28 absolute lg:top-1/2 top-5 transfrom lg:-translate-y-1/2 lg:right-14 right-5 rounded-lg z-40 ">
               <div className="h-fit flex flex-col justify-center items-center">
