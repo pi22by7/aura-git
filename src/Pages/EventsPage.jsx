@@ -57,7 +57,6 @@ const EventsPage = () => {
     const img = new Image();
     img.src = path;
     img.onload = () => {
-      console.log("here");
       const dominantColor = colorThief.getColor(img);
       const palette = chroma(dominantColor).palette();
       const mostProminentHue = palette.sort(
