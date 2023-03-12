@@ -100,20 +100,14 @@ module.exports.createTeam = async (req, res, next) => {
 				return res.status(403).send(Response(errors[403].teamMemberAlreadyRegistered));
 		}
 
-		const id = new mongoose.Types.ObjectId().toHexString();
 		let limit = parseInt(event.registration_limit);
 		const query = { _id: event._id };
 
 		if (!isNaN(limit))
 			query[`registered_teams.${limit - 1}`] = { $exists: false };
 
-		const results2 = await Event.updateOne(query, { $push: { registered_teams: { team_id: id, leader_id: res.locals.user._id } } });
-		if (results2.modifiedCount === 0)
-			return res.status(403).send(Response(errors[403].registrationsClosed));
-
 		// Register team
 		const newTeam = await Team.create({
-			_id: id,
 			event_participated,
 			team_name,
 			team_leader: {
@@ -131,6 +125,12 @@ module.exports.createTeam = async (req, res, next) => {
 				usn: member.usn,
 			})),
 		});
+
+		const results2 = await Event.updateOne(query, { $push: { registered_teams: { team_id: newTeam._id, leader_id: res.locals.user._id } } });
+		if (results2.modifiedCount === 0) {
+			await Team.deleteOne({ _id: newTeam._id });
+			return res.status(403).send(Response(errors[403].registrationsClosed));
+		}
 
 		if (!res.locals.data)
 			res.locals.data = {};
