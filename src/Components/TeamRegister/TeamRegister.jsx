@@ -11,6 +11,7 @@ import payqr from "../../Assets/qr.png";
 const TeamRegister = (props) => {
   const [team, setTeam] = useState([]);
   const [name, setName] = useState("");
+  const [teamid, setteamid] = useState();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +29,120 @@ const TeamRegister = (props) => {
     const newInputs = [...team];
     newInputs[index] = String(event.target.value).trim();
     setTeam(newInputs);
+  };
+
+  useEffect(() => {
+    if (props.registered) {
+      const existingteam = async () => {
+        let res_team = await api.get(
+          `/teams/event/${props.id}?userid=${user._id}`
+        );
+        setTeam(res_team.data.data.results[0]);
+        console.log("here");
+      };
+      existingteam();
+    }
+  }, []);
+
+  const editTeam = async () => {
+    console.log(team);
+    if (name === "") {
+      setError("Please enter team name");
+      return;
+    }
+    if (team.length < props.min_size - 1) {
+      setError(`Team size should be atleast ${props.min_size}`);
+      return;
+    }
+    let p = /^AURA23-[A-Z]{3}-[0-9]{5}$/;
+    for (let i = 0; i < team.length; i++) {
+      if (!p.test(team[i])) {
+        errorToast(
+          "One of the AURA IDs is invalid: Format is AURA23-XXX-12345"
+        );
+        return;
+      }
+      if (team[i] === user.aura_id) {
+        errorToast("You cannot add yourself as a team member!");
+        return;
+      }
+    }
+    setLoading(true);
+    const team_name = name;
+    const team_members = team;
+    const data = {
+      team_name,
+      team_members,
+    };
+    api
+      .patch(`/teams/${team._id}`, data)
+      .then((res) => {
+        setMessage("Team Updated Successfully!");
+        setError("");
+        setLoading(false);
+        props.setRegistered(true);
+        props.setTeam(res.data.data.team);
+        props.setIsLeader(true);
+        successToast(
+          props.size > 1
+            ? "You have successfully updated your team!"
+            : "You have successfully registered for the event"
+        );
+      })
+      .catch((err) => {
+        let err_status = err.response.status;
+        let err_code = err.response.data.error;
+        setLoading(false);
+        if (err_status === 400) {
+          if (err_code === errors[400].eventDetailsRequired) {
+            setError("Event Details Required!");
+          }
+          if (err_code === errors[400].teamNameRequired) {
+            setError("Team Name Required!");
+          }
+          if (err_code === errors[400].minTeamSize) {
+            setError("Minimum Team Size Required!");
+          }
+        } else if (err_status === 401) {
+          if (
+            err_code === errors[401].authRequired ||
+            err_code === errors[401].invalidOrExpiredToken
+          ) {
+            setError(
+              "You are not authorized to perform this operation. Please login and try again."
+            );
+            setTimeout(() => {
+              redirect("/login");
+            }, 3000);
+          }
+        } else if (err_status === 403) {
+          if (err_code === errors[403].teamMemberEmailUnverified) {
+            setError(
+              "One or more team members have not verified their email address. Please ask them to verify their email address and try again."
+            );
+          }
+          if (err_code === errors[403].invalidOperation) {
+            setError("You cannot add yourself as a team member!");
+          }
+          if (err_code === errors[403].teamMemberAlreadyRegistered) {
+            setError(
+              "One or more team members have already registered for another team!"
+            );
+          }
+          if (err_code === errors[403].eventAlreadyRegistered) {
+            setError("You have already registered for this event!");
+          }
+          if (err_code === errors[403].teamLocked) {
+            setError("You cannot edit the team after payment.");
+          }
+        } else if (err_status === 404) {
+          if (err_code === errors[404].userNotFound) {
+            setError("One or more team members are not registered!");
+          }
+        } else {
+          setError("Team Registration Failed!");
+        }
+      });
   };
 
   const registerTeam = async () => {
@@ -261,53 +376,66 @@ const TeamRegister = (props) => {
         {loading && (
           <p className="msg-box text-green-500 text-center">Processing...</p>
         )}
-        {!props.registered && (
-          <>
-            <h1 className="font-bold text-xl text-center m-2">
-              {n > 1 ? "Register your team" : "Register yourself"}
-            </h1>
-            {props.min_size > 1 && (
-              <p className="text-center text-black">
-                Team size should be atleast {props.min_size}
-              </p>
-            )}
-            <label className="py-3 col-span-1">Team Name</label>
-            <input
-              className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={false}
-              required
-              placeholder="Enter Team Name"
-            />
-            <label className="py-3 col-span-1">Team Leader</label>
-            <input
-              className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
-              value={user.aura_id}
-              disabled
-              required
-              placeholder="Enter Team Name"
-            />
-            <div>
-              <form>
-                <div className="grid grid-cols-1 my-1">
-                  {renderInputForms(n)}
+
+        <>
+          <h1 className="font-bold text-xl text-center m-2">
+            {n > 1 ? "Register your team" : "Register yourself"}
+          </h1>
+          {props.min_size > 1 && (
+            <p className="text-center text-black">
+              Team size should be atleast {props.min_size}
+            </p>
+          )}
+          <label className="py-3 col-span-1">Team Name</label>
+          <input
+            className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={false}
+            required
+            placeholder="Enter Team Name"
+          />
+          <label className="py-3 col-span-1">Team Leader</label>
+          <input
+            className="bg-gray-100 rounded-lg p-2 col-span-1 outline-none"
+            value={user.aura_id}
+            disabled
+            required
+            placeholder="Enter Team Name"
+          />
+          <div>
+            <form>
+              <div className="grid grid-cols-1 my-1">{renderInputForms(n)}</div>
+              {n > 0 && (
+                <div className="grid justify-center my-8">
+                  {!props.registered && (
+                    <>
+                      <button
+                        className="btn btn-primary row-start-2 justify-self-center"
+                        onClick={registerTeam}
+                        disabled={loading}
+                      >
+                        Register
+                      </button>
+                    </>
+                  )}
+                  {props.registered && (
+                    <>
+                      <button
+                        className="btn btn-primary row-start-2 justify-self-center"
+                        onClick={editTeam}
+                        disabled={loading}
+                      >
+                        Edit Team
+                      </button>
+                    </>
+                  )}
                 </div>
-                {n > 0 && (
-                  <div className="grid justify-center my-8">
-                    <button
-                      className="btn btn-primary row-start-2 justify-self-center"
-                      onClick={registerTeam}
-                      disabled={loading}
-                    >
-                      Register
-                    </button>
-                  </div>
-                )}
-              </form>
-            </div>
-          </>
-        )}
+              )}
+            </form>
+          </div>
+        </>
+
         {props.registered && !props.paid && props.isLeader && (
           <>
             <h1 className="font-bold text-xl text-center m-2">
