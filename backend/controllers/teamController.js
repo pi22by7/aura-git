@@ -170,7 +170,7 @@ module.exports.fetchAll = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
-		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
+		res.locals.data.results = teams.slice(0, pageSize).filter(team => !!team);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -233,7 +233,7 @@ module.exports.fetchByEvent = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
-		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
+		res.locals.data.results = teams.slice(0, pageSize).filter(team => !!team);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
@@ -282,7 +282,7 @@ module.exports.fetchByUser = async (req, res, next) => {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (teams.length === pageSize + 1 ? pageSize : teams.length);
 		res.locals.data.paginationTs = (teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null);
-		res.locals.data.results = teams.copyWithin(0, 0, teams.length - 1);
+		res.locals.data.results = teams.slice(0, pageSize).filter(team => !!team);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
