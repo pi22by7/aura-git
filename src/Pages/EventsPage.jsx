@@ -56,6 +56,7 @@ const EventsPage = () => {
       ".png";
     const img = new Image();
     img.src = path;
+    console.log(img);
     img.onload = () => {
       const dominantColor = colorThief.getColor(img);
       const palette = chroma(dominantColor).palette();
@@ -88,10 +89,8 @@ const EventsPage = () => {
             <p
               key={club._id}
               data-id={club._id}
-              className={`tabs text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer bg-tertiary`}
-              // ${
-              //   club._id === activeTab ? "bg-tertiary" : "bg-quaternary"
-              // }`}
+              className={`tabs text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer
+              ${club._id === activeTab ? "bg-tertiary" : "bg-quaternary"}`}
               onClick={(e) => {
                 setActiveTab(club._id);
                 updateBg(e);
