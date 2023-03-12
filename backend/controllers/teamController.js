@@ -5,7 +5,7 @@ const User = require("../models/User");
 const errors = require("../configs/error.codes.json");
 const queryConfig = require("../configs/query.config.json");
 const Response = require("../models/standard.response.model");
-// const Receipt = require("../models/Receipt");
+const Receipt = require("../models/Receipt");
 const Event = require("../models/Event");
 const { errorHandler } = require("../utils/utils");
 
@@ -304,6 +304,10 @@ module.exports.modifyTeam = async (req, res, next) => {
 			return res.status(404).send(Response(errors[404].teamNotFound));
 		if (String(team.team_leader.id) !== String(res.locals.user._id))
 			return res.status(403).send(Response(errors[403].invalidOperation));
+
+		// Check if the payment is done, if yes team cannot be updated
+		if (await Receipt.findOne({ team: id }))
+			return res.status(403).send(Response(errors[403].teamLocked));
 
 		const event = await Event.findById(team.event_participated.event_id);
 		if (!event)
