@@ -36,21 +36,31 @@ const UserPage = () => {
           console.log(err);
         });
     };
+
     fetchData();
   }, [navigate]);
 
-  useEffect(() => {
-    const participated = async () => {
-      let res = await api.get(`/users/${user._id}`);
-      setPaidFor(res.data.data.paid_for[0]);
-      for (let i = 0; i < paidFor.length; i++) {
-        let res2 = await api.get(`/events/${paidFor[i]}`);
-        setDispPay((oldArray) => [...oldArray, res2]);
-      }
-      // return res.data.data.paid_for;
-    };
-    participated();
-  });
+  const participated = async () => {
+    let res = await api.get(`/users/${user._id}`);
+    let test = res.data.data.user.paid_for;
+    let newArray = [];
+    test.forEach((obj) => {
+      console.log(obj);
+      newArray.push(obj.event_id);
+    });
+    setPaidFor(newArray);
+    console.log(paidFor);
+    for (let i = 0; i < paidFor.length; i++) {
+      console.log("here");
+      let res2 = await api.get(`/events/resolve/${paidFor[i]}`);
+      setDispPay((oldArray) => [
+        ...oldArray,
+        [res2.data.data.event.title, res2.data.data.event.club],
+      ]);
+      console.log(dispPay);
+    }
+    // return res.data.data.paid_for;
+  };
 
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
@@ -99,7 +109,10 @@ const UserPage = () => {
           className={`btn ${
             activeTab === "events" ? "btn-secondary" : "btn-primary"
           } w-4/5`}
-          onClick={() => setActiveTab("events")}
+          onClick={() => {
+            setActiveTab("events");
+            participated();
+          }}
         >
           My Events
         </button>
@@ -108,7 +121,8 @@ const UserPage = () => {
         <div className="lg:col-start-2 lg:col-span-2 grid lg:grid-cols-3 grid-cols-1 place-items-center md:w-4/5 w-11/12 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
           <div className="col-span-1 grid">
             <QRCode
-              value={user}
+              value={`${user.aura_id}, ${user.phone}, ${user.college}, ${user.email}`}
+              level="L"
               className="w-32 h-32 md:w-44 md:h-44 m-4 max-w-none max-h-none bg-white p-2 justify-self-center"
               onClick={() => {
                 navigator.clipboard.writeText(user.aura_id);
@@ -140,15 +154,6 @@ const UserPage = () => {
             </h3>
           </div>
           <div className="info lg:col-span-2 col-span-1 mt-5 w-full">
-            <div>
-              {dispPay &&
-                dispPay.map((event) => (
-                  <div key={event.id} className="event">
-                    <h2>{event.title}</h2>
-                    {/* <p>{event.date}</p> */}
-                  </div>
-                ))}
-            </div>
             <h1 className="text-3xl lg:text-left text-center">Your Profile</h1>
             {error && (
               <p className="msg-box text-red-500 text-center">{error}</p>
@@ -255,9 +260,19 @@ const UserPage = () => {
       {activeTab === "events" && (
         <div className="h-[100vh] lg:col-start-2 lg:col-span-2 grid grid-cols-1 place-items-center md:w-4/5 w-11/12 p-5 rounded-lg bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20">
           <h1 className="text-3xl lg:text-left text-center">Your Events</h1>
-          <div className="h-full overflow-scroll [&::-webkit-scrollbar]:hidden mt-10">
-            {/* Add your events here */}
-            Updating soon
+          <div>
+            <div>
+              {dispPay &&
+                dispPay.map((event) => (
+                  <div
+                    key={event.title}
+                    className="p-12 rounded-full bg-white align-middle mt-5"
+                  >
+                    <h2>{event[0]}</h2>
+                    <p>{event[1]}</p>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       )}

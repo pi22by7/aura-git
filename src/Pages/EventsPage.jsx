@@ -4,11 +4,14 @@ import api from "../Utils/axios.config";
 import { messageToast } from "../Utils/Toasts/Toasts";
 import { EventCard } from "../Components/EventCard/EventCard";
 import PreLoader from "../Components/PreLoader/PreLoader";
+import chroma from "chroma-js";
+import ColorThief from "colorthief";
 
 const EventsPage = () => {
   const [activeTab, setActiveTab] = useState(null);
   const [curBg, setCurBg] = useState("bg-dance");
   const [curBgC, setCurBgC] = useState("bg-dancec");
+  const [curAcc, setAcc] = useState("bg-tertiary");
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -43,6 +46,33 @@ const EventsPage = () => {
     setCurBgC(cur + "c");
     bg.classList.add(cur);
     bg.classList.add(cur + "c");
+
+    console.log(cur.toUpperCase());
+
+    const colorThief = new ColorThief();
+    const path =
+      "../Assets/Events/" +
+      e.currentTarget.dataset.id.replaceAll("Club", "").toUpperCase().trim() +
+      ".png";
+    const img = new Image();
+    img.src = path;
+    img.onload = () => {
+      console.log("here");
+      const dominantColor = colorThief.getColor(img);
+      const palette = chroma(dominantColor).palette();
+      const mostProminentHue = palette.sort(
+        (a, b) => chroma.contrast(a, "#ffffff") < chroma.contrast(b, "#ffffff")
+      )[0];
+      const darkestColor = chroma
+        .scale(mostProminentHue)
+        .mode("lab")
+        .colors(10)[0];
+      const tab = document.querySelector(".tabs");
+      tab.classList.remove(curAcc);
+      const curac = "bg-[" + darkestColor + "]";
+      setAcc(curac);
+      tab.classList.add(curac);
+    };
   };
 
   if (events.length === 0) {
@@ -59,9 +89,10 @@ const EventsPage = () => {
             <p
               key={club._id}
               data-id={club._id}
-              className={`text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer ${
-                club._id === activeTab ? "bg-tertiary" : "bg-quaternary"
-              }`}
+              className={`tabs text-center text-lg rounded-full py-2 text-white font-semibold cursor-pointer bg-tertiary`}
+              // ${
+              //   club._id === activeTab ? "bg-tertiary" : "bg-quaternary"
+              // }`}
               onClick={(e) => {
                 setActiveTab(club._id);
                 updateBg(e);
