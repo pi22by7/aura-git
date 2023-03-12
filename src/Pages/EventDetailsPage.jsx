@@ -28,7 +28,7 @@ const EventsDetailsPage = () => {
   const { user, setUser } = useUser();
   const uid = localStorage.getItem("uid");
   const navigate = useNavigate();
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState(null);
 
   useEffect(() => {
     async function fetchEvent() {
@@ -102,8 +102,8 @@ const EventsDetailsPage = () => {
   };
 
   const getTeamSubmissions = async () => {
-    if (team.length === 0) return;
-    const teamId = team[0].team_id;
+    if (!team) return;
+    const teamId = team._id;
     await api
       .get(`/submissions/team/${teamId}`)
       .then((res) => {
@@ -136,21 +136,8 @@ const EventsDetailsPage = () => {
               </Link>
             </>
           )}
-          {user && isLeader && inValidTeam && (
-            <p className="text-xl text-center text-red-600 font-bold my-5">
-              You have successfully registered for the event.
-              <br /> Unfortunately your team size is less than the minimum team
-              size.
-              <br /> Please add more members to your team.
-              <br />
-              You can update your team in your{" "}
-              <Link to="/profile" className="text-blue-500">
-                Profile
-              </Link>
-              , under the "Your Events" tab
-            </p>
-          )}
-          {user && !inValidTeam && (
+
+          {user && (
             <TeamRegister
               size={teamSize}
               min_size={event.min_team_size ? event.min_team_size : 1}
@@ -164,6 +151,7 @@ const EventsDetailsPage = () => {
               setTeam={setTeam}
               setIsLeader={setIsLeader}
               team={team}
+              isInvalidTeam={inValidTeam}
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}

@@ -293,6 +293,11 @@ const UserPage = () => {
           <h1 className="text-3xl lg:text-left text-center">Your Events</h1>
 
           <div className="h-full w-full overflow-scroll [&::-webkit-scrollbar]:hidden mt-5">
+            {disUserEvents && userEvents.length === 0 && (
+              <p className="text-center text-lg">
+                You have not registered for any events
+              </p>
+            )}
             {disUserEvents &&
               userEvents.length > 0 &&
               userEvents.map((event) => (
