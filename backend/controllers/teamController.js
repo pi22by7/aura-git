@@ -179,6 +179,28 @@ module.exports.fetchAll = async (req, res, next) => {
 	return next();
 };
 
+// Fetch team
+module.exports.fetchById = async (req, res, next) => {
+	try {
+		const { params } = req;
+
+		const { id } = params;
+
+		const team = await Team.findById(id);
+		if (!team)
+			return res.status(404).send(Response(errors[404].teamNotFound));
+
+		if (!res.locals.data)
+			res.locals.data = {};
+		res.locals.data.team = team;
+	} catch (error) {
+		const { status, message } = errorHandler(error);
+		return res.status(status).send(Response(message));
+	}
+
+	return next();
+};
+
 // Fetch all teams under the a specific event
 module.exports.fetchByEvent = async (req, res, next) => {
 	try {
