@@ -56,6 +56,7 @@ const EventsPage = () => {
       ".png";
     const img = new Image();
     img.src = path;
+    console.log(img);
     img.onload = () => {
       console.log("here");
       const dominantColor = colorThief.getColor(img);
