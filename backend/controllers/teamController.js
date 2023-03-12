@@ -52,7 +52,7 @@ module.exports.createTeam = async (req, res, next) => {
 			return res.status(403).send(Response(errors[403].invalidOperation));
 
 		team_members = await Promise.all(team_members.map(aura_id => User.findOne({ aura_id })));
-		if (team_members.length > 0 && team_members.filter(member => member).length !== team_members.length)
+		if (team_members.length > 0 && team_members.length !== team_members.filter(member => !!member).length)
 			return res.status(404).send(Response(errors[404].userNotFound));
 
 		// Validate with min. team size
@@ -325,7 +325,7 @@ module.exports.modifyTeam = async (req, res, next) => {
 				return res.status(403).send(Response(errors[403].invalidOperation));
 
 			team_members = await Promise.all(team_members.map(aura_id => User.findOne({ aura_id })));
-			if (team_members.length > 0 && team_members.find(member => !member))
+			if (team_members.length > 0 && team_members.length !== team_members.filter(member => !!member).length)
 				return res.status(404).send(Response(errors[404].userNotFound));
 
 			// Validate with min. team size
