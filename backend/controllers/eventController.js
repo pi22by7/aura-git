@@ -6,7 +6,7 @@ const Response = require("../models/standard.response.model");
 const { errorHandler } = require("../utils/utils");
 
 // Body
-module.exports.eventGetAllController = async (req, res, next) => {
+module.exports.eventGetAllGroupedController = async (req, res, next) => {
   try {
     const { kind = eventConfig.kinds.event } = req.query;
     if (!Object.values(eventConfig.kinds).includes(kind))
@@ -43,6 +43,28 @@ module.exports.eventGetAllController = async (req, res, next) => {
         },
       },
     ]);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    if (kind === eventConfig.kinds.event)
+      res.locals.data.events = records;
+    else if (kind === eventConfig.kinds.rulebook)
+      res.locals.data.rulebooks = records;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
+module.exports.eventGetAllController = async (req, res, next) => {
+  try {
+    const { kind = eventConfig.kinds.event } = req.query;
+    if (!Object.values(eventConfig.kinds).includes(kind))
+      return res.status(400).send(Response(errors[400].invalidKind));
+
+    const records = await Event.find({ kind });
 
     if (!res.locals.data)
       res.locals.data = {};
