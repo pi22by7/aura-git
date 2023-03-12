@@ -176,7 +176,6 @@ const TeamRegister = (props) => {
             value={team[i] || ""}
             onChange={(e) => handleInputChange(i, e)}
             disabled={false}
-            required
             placeholder="Enter Teammate's Aura ID"
           />
         </>
