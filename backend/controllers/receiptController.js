@@ -39,8 +39,8 @@ async function receiptGetAllController(req, res, next) {
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;
-    res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
-    res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
+    res.locals.data.resultsSize = (receipts.length === pageSize + 1 ? pageSize : receipts.length);
+    res.locals.data.paginationTs = (receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt.getTime() : null);
     res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
@@ -83,8 +83,8 @@ async function receiptGetByCurrentUserController(req, res, next) {
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;
-    res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
-    res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
+    res.locals.data.resultsSize = (receipts.length === pageSize + 1 ? pageSize : receipts.length);
+    res.locals.data.paginationTs = (receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt.getTime() : null);
     res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
@@ -158,8 +158,8 @@ async function receiptGetByEventController(req, res, next) {
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;
-    res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
-    res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
+    res.locals.data.resultsSize = (receipts.length === pageSize + 1 ? pageSize : receipts.length);
+    res.locals.data.paginationTs = (receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt.getTime() : null);
     res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
