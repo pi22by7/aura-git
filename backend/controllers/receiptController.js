@@ -23,14 +23,15 @@ async function receiptGetAllController(req, res, next) {
       createdAt: { $lte: paginationTs },
     })
       .sort({ createdAt: -1 })
-      .limit(pageSize - 1)
+      .limit(pageSize + 1)
       .populate([
         {
           path: "user",
-          select: "-password",
+          select: "-password -paid_for",
         },
         {
           path: "event",
+          select: "-registered_teams",
         },
         {
           path: "team",
@@ -67,14 +68,15 @@ async function receiptGetByCurrentUserController(req, res, next) {
       createdAt: { $lte: paginationTs },
     })
       .sort({ createdAt: -1 })
-      .limit(pageSize - 1)
+      .limit(pageSize + 1)
       .populate([
         {
           path: "user",
-          select: "-password",
+          select: "-password -paid_for",
         },
         {
           path: "event",
+          select: "-registered_teams",
         },
         {
           path: "team",
@@ -142,14 +144,15 @@ async function receiptGetByEventController(req, res, next) {
       createdAt: { $lte: paginationTs },
     })
       .sort({ createdAt: -1 })
-      .limit(pageSize - 1)
+      .limit(pageSize + 1)
       .populate([
         {
           path: "user",
-          select: "-password",
+          select: "-password -paid_for",
         },
         {
           path: "event",
+          select: "-registered_teams",
         },
         {
           path: "team",
@@ -185,10 +188,11 @@ async function receiptGetByEventAndCurrentUserController(req, res, next) {
     }).populate([
       {
         path: "user",
-        select: "-password",
+        select: "-password -paid_for",
       },
       {
         path: "event",
+        select: "-registered_teams",
       },
       {
         path: "team",
