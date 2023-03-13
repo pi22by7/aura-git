@@ -38,7 +38,13 @@ async function userSearchController(req, res, next) {
 			paginationTs = Date.now(),
 		} = req.query;
 
-		if (!email && !name && !usn && (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
+		if (!aura_id
+			&& !email
+			&& !college
+			&& !name
+			&& !usn
+			&& !phone
+			&& (email_verified === undefined || !/^(true|false)$/i.test(email_verified)))
 			return res.status(400).send(Response(errors[400].searchQueryRequired));
 
 		if (aura_id)
