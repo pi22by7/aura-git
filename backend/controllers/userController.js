@@ -89,7 +89,7 @@ async function userSearchController(req, res, next) {
 		res.locals.data.pageSize = pageSize;
 		res.locals.data.resultsSize = (users.length === pageSize + 1 ? pageSize : users.length);
 		res.locals.data.paginationTs = (users.length - 1 === pageSize ? users[users.length - 1]._profile_information.account_creation_timestamp : null);
-		res.locals.data.results = users.copyWithin(0, 0, users.length - 1);
+		res.locals.data.results = users.slice(0, pageSize).filter(value => !!value);
 	} catch (error) {
 		const { status, message } = errorHandler(error);
 		return res.status(status).send(Response(message));
