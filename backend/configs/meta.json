@@ -1,6 +1,7 @@
 {
   "host": "https://aura.git.edu",
   "dev_host": "http://localhost:3000",
+  "dashboard_host": "https://aura-dashboard.netlify.app",
   "name": "Aura 23",
   "emails": {
     "primary": "aura23.klsgit@gmail.com",
