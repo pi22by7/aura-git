@@ -1,5 +1,12 @@
 [
   {
+    "university": "",
+    "college": "Jain College Of Engineering And Research",
+    "college_type": "Affiliated College",
+    "state": "Karnataka",
+    "district": "Belgaum"
+  },
+  {
     "university": "Amrita Vishwa Vidyapeetham, Coimbatore (Id: U-0436)",
     "college": "Amrita School of Arts and Sciences, Mysore (Id: C-7035)",
     "college_type": "PG Center / Off-Campus Center",
