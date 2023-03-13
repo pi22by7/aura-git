@@ -23,8 +23,17 @@ const Schedule = () => {
   return (
     <div className="schedule-bg grid lg:grid-cols-12  grid-cols-1 h-[100vh] bg-schedulec w-screen user-none bg-schedulee bg-day0 md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right bg-scroll overflow-scroll [&::-webkit-scrollbar]:hidden md:px-10 px-1 py-5">
       <div className="w-full h-full relative lg:col-start-3 lg:col-span-10 col-span-1 mx-auto">
-        <h1 className="text-3xl font-bold text-center">Schedule</h1>
-        <div className="grid grid-cols-4 md:gap-x-4 gap-x-1 my-5">
+        <h1 className="text-3xl font-bold text-center">
+          Schedule Will be Updated soon
+        </h1>
+        <h1 className="text-xl font-semibold text-center mt-12">
+          Please check updates on our{" "}
+          <a href="/#/news" className="text-blue-500">
+            News
+          </a>{" "}
+          page
+        </h1>
+        {/* <div className="grid grid-cols-4 md:gap-x-4 gap-x-1 my-5">
           <button
             className={`btn hover:bg-[#FF6301] ${
               day == 0 ? "bg-[#FF6301]" : "bg-[#FFD028]"
@@ -97,14 +106,7 @@ const Schedule = () => {
               className="md:w-full md:h-auto h-3/4 max-w-none"
             />
           )}
-        </div>
-        {/* <h1 className="text-xl font-semibold text-center mt-12">
-          Please check updates on our{" "}
-          <a href="/#/news" className="text-blue-500">
-            News
-          </a>{" "}
-          page
-        </h1> */}
+        </div> */}
       </div>
     </div>
   );

@@ -159,7 +159,7 @@ const EventsDetailsPage = () => {
             <Submission
               event={event._id}
               user={uid}
-              team={team[0]}
+              team={team}
               teamSub={teamSub}
               setTeamSub={setTeamSub}
             />
