@@ -320,6 +320,12 @@ const TeamRegister = (props) => {
                 (n > 1 ? "Register your team" : "Register yourself")}
               {props.team && "Update your team"}
             </h1>
+            {props.team && (
+              <p className="text-blue-600 text-center py-2 text-sm">
+                Note: You can only update your team before the payment is
+                complete.
+              </p>
+            )}
             {props.min_size > 1 && (
               <p className="text-center text-black">
                 Team size should be atleast {props.min_size}

@@ -55,6 +55,9 @@ code {
 .btn-secondary {
   @apply bg-quaternary;
 }
+.btn-sc {
+  @apply text-white rounded-full px-4 py-2 font-semibold duration-700;
+}
 /* Styles for form pages */
 .form-container {
   @apply min-h-[100vh] max-h-fit grid lg:grid-cols-2 grid-cols-1 place-items-center md:bg-contain bg-no-repeat bg-cover md:bg-left bg-right py-5;

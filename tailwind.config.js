@@ -5,7 +5,7 @@ module.exports = {
     { pattern: /^bg-/, type: "class" },
     {
       pattern:
-        /bg-(dancec|dramaticsc|egamingc|fashionc|fineartsc|literaryc|musicc|photographyc|quizc|shauryac|specialeventsc)/,
+        /bg-(dancec|dramaticsc|egamingc|fashionc|fineartsc|literaryc|musicc|photographyc|quizc|shauryac|specialeventsc|day0c|day1c|day2c|day3c)/,
       type: "class",
     },
   ],
@@ -33,6 +33,10 @@ module.exports = {
         quizc: "#d5fff6ff",
         shauryac: "#ffd5d5ff",
         specialeventsc: "#ffe4f9ff",
+        day0c: "#e3f4d7ff",
+        day1c: "#aade87ff",
+        day2c: "#fff6d5ff",
+        day3c: "#e6e6e6ff",
       },
       height: (theme) => ({
         "screen/90": "90vh",
@@ -61,6 +65,10 @@ module.exports = {
         quiz: "url('./Assets/Events/QUIZ.png')",
         shaurya: "url('./Assets/Events/SHAURYA.png')",
         specialevents: "url('./Assets/Events/SPECIAL.png')",
+        day0: "url('./Assets/Schedule/1bg.png')",
+        day1: "url('./Assets/Schedule/1bg.png')",
+        day2: "url('./Assets/Schedule/1bg.png')",
+        day3: "url('./Assets/Schedule/1bg.png')",
       },
     },
   },
