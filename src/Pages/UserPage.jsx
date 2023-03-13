@@ -99,7 +99,6 @@ const UserPage = () => {
       .get(`/receipts/team/${teamId}`)
       .then((res) => {
         const receipt = res.data.data.receipt;
-        console.log(receipt);
         if (receipt.team._id === teamId)
           setUserEvents((prevArr) => {
             // find the index of the object with the matching id and set payment_status to true

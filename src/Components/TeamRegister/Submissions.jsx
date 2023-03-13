@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import api from "../../Utils/axios.config";
 // import { useState } from "react";
-const Submission = ({ event, team, teamSub, setTeamSub }) => {
+const Submission = (props) => {
   const [link, setLink] = useState("");
   const [submission, setSubmission] = useState("");
 
   useEffect(() => {
-    if (teamSub) {
-      setLink(teamSub.links[0]);
+    if (props.teamSub) {
+      setLink(props.teamSub.links[0]);
     }
-  }, [teamSub]);
+  }, [props.teamSub]);
+
+  console.log(props);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,9 +22,9 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
     setSubmission("Submitting...");
     await api
       .post("/submissions", {
-        event_id: event,
+        event_id: props.event,
         links: [link],
-        team_id: team.team_id,
+        team_id: props.team._id,
       })
       .then((res) => {
         setSubmission("Submitted Successfully");
@@ -37,14 +39,14 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!teamSub) return;
+    if (!props.teamSub) return;
     if (link === "") {
       setSubmission("Please enter a valid link");
       return;
     }
     setSubmission("Updating...");
     await api
-      .patch(`/submissions/${teamSub._id}`, {
+      .patch(`/submissions/${props.teamSub._id}`, {
         links: [link],
       })
       .then((res) => {
@@ -57,13 +59,13 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    if (!teamSub) return;
+    if (!props.teamSub) return;
     setSubmission("Deleting...");
     await api
-      .delete(`/submissions/${teamSub._id}`)
+      .delete(`/submissions/${props.teamSub._id}`)
       .then((res) => {
         setLink("");
-        setTeamSub(null);
+        props.setTeamSub(null);
         setSubmission("Deleted Successfully");
       })
       .catch((err) => {
@@ -100,7 +102,7 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
             </p>
           </div>
           <div className="grid justify-center my-8">
-            {!teamSub && (
+            {!props.teamSub && (
               <button
                 className="btn btn-primary row-start-2 justify-self-center"
                 onClick={handleSubmit}
@@ -108,7 +110,7 @@ const Submission = ({ event, team, teamSub, setTeamSub }) => {
                 Submit
               </button>
             )}
-            {teamSub && (
+            {props.teamSub && (
               <div className="grid grid-cols-2 gap-x-16 place-items-center">
                 <button
                   className="btn btn-primary row-start-2 justify-self-center"
