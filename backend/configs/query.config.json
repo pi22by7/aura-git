@@ -1,5 +1,6 @@
 {
   "search.options": {
+    "aura_id": "^{aura_id}$",
     "email": "^{email}",
     "college": "{college}",
     "name": "^{name}",
