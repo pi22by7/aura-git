@@ -41,7 +41,7 @@ async function receiptGetAllController(req, res, next) {
     res.locals.data.pageSize = pageSize;
     res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
     res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
-    res.locals.data.results = receipts.copyWithin(0, 0, receipts.length - 1);
+    res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
@@ -85,7 +85,7 @@ async function receiptGetByCurrentUserController(req, res, next) {
     res.locals.data.pageSize = pageSize;
     res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
     res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
-    res.locals.data.results = receipts.copyWithin(0, 0, receipts.length - 1);
+    res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
@@ -160,7 +160,7 @@ async function receiptGetByEventController(req, res, next) {
     res.locals.data.pageSize = pageSize;
     res.locals.data.resultsSize = receipts.length === pageSize + 1 ? pageSize : receipts.length;
     res.locals.data.paginationTs = receipts.length - 1 === pageSize ? receipts[receipts.length - 1].createdAt : null;
-    res.locals.data.results = receipts.copyWithin(0, 0, receipts.length - 1);
+    res.locals.data.results = receipts.slice(0, pageSize).filter(receipt => !!receipt);
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
