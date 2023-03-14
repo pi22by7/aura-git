@@ -10,6 +10,7 @@ const {
 	receiptGetByEventAndCurrentUserController,
 	receiptGetByTeamController,
 	receiptGetStatsParticipationController,
+	receiptGetStatsGitParticipationController,
 	receiptCreateController,
 	receiptUpdateController,
 } = require("../controllers/receiptController");
@@ -28,6 +29,7 @@ Router.get("/event/:id/me", requireVerifiedAuth, receiptGetByEventAndCurrentUser
 Router.get("/team/:id", receiptGetByTeamController, complete);
 
 Router.get("/stats/participation", receiptGetStatsParticipationController, complete);
+Router.get("/stats/participation/git", receiptGetStatsGitParticipationController, complete);
 
 Router.post("/", requireVerifiedAuth, receiptCreateController, complete);
 

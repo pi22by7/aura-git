@@ -300,6 +300,103 @@ async function receiptGetStatsParticipationController(req, res, next) {
   return next();
 }
 
+async function receiptGetStatsGitParticipationController(req, res, next) {
+  try {
+    const aggregation = [
+      {
+        "$lookup": {
+          "from": "teams",
+          "localField": "team",
+          "foreignField": "_id",
+          "as": "_team"
+        }
+      }, {
+        "$match": {
+          "_team.0": {
+            "$exists": true
+          }
+        }
+      }, {
+        "$set": {
+          "team_doc": {
+            "$arrayElemAt": [
+              "$_team", 0
+            ]
+          }
+        }
+      }, {
+        "$lookup": {
+          "from": "users",
+          "localField": "user",
+          "foreignField": "_id",
+          "as": "_user"
+        }
+      }, {
+        "$match": {
+          "$or": [
+            {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?k.?l.?s *g.?i.?t ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?g.?i.?t ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?gogte +(institute|instiue|instiut|instuite) +(of|o|f) +(tech|techno|technology|technlogy) ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?C-1439 ?.*).+$",
+                "$options": "i"
+              }
+            }
+          ]
+        }
+      }, {
+        "$project": {
+          "users": {
+            "$concatArrays": [
+              [
+                {
+                  "$ifNull": [
+                    "$team_doc.team_leader.id", null
+                  ]
+                }
+              ], "$team_doc.team_members.id"
+            ]
+          }
+        }
+      }, {
+        "$unwind": "$users"
+      }, {
+        "$group": {
+          "_id": "$users",
+          "count": {
+            "$sum": 1
+          }
+        }
+      }, {
+        "$count": "total_gitian_participation"
+      }
+    ];
+    const result = await Receipt.aggregate(aggregation);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.result = result;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+}
+
 async function receiptCreateController(req, res, next) {
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
@@ -419,6 +516,7 @@ module.exports = {
   receiptGetByEventAndCurrentUserController,
   receiptGetByTeamController,
   receiptGetStatsParticipationController,
+  receiptGetStatsGitParticipationController,
   receiptCreateController,
   receiptUpdateController,
 };
