@@ -14,6 +14,8 @@ async function receiptGetAllController(req, res, next) {
     const { query } = req;
 
     let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -58,6 +60,8 @@ async function receiptGetByCurrentUserController(req, res, next) {
     const { query } = req;
 
     let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -132,6 +136,8 @@ async function receiptGetByEventController(req, res, next) {
 
     const { id } = params;
     let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -227,6 +233,70 @@ async function receiptGetByTeamController(req, res, next) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
   }
+  return next();
+}
+
+async function receiptGetStatsParticipationController(req, res, next) {
+  try {
+    const aggregation = [
+      {
+        "$lookup": {
+          "from": "teams",
+          "localField": "team",
+          "foreignField": "_id",
+          "as": "team_doc"
+        }
+      }, {
+        "$set": {
+          "doc": {
+            "$arrayElemAt": [
+              "$team_doc", 0
+            ]
+          }
+        }
+      }, {
+        "$project": {
+          "_id": 1,
+          "total_members_count": {
+            "$size": "$doc.team_members"
+          }
+        }
+      }, {
+        "$group": {
+          "_id": null,
+          "total_members_count": {
+            "$sum": "$total_members_count"
+          },
+          "total_doc_count": {
+            "$sum": 1
+          }
+        }
+      }, {
+        "$project": {
+          "_id": 0,
+          "total_members_count": 1,
+          "total_doc_count": 1
+        }
+      }, {
+        "$set": {
+          "total_participation": {
+            "$add": [
+              "$total_members_count", "$total_doc_count"
+            ]
+          }
+        }
+      }
+    ];
+    const result = await Receipt.aggregate(aggregation);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.result = result;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
   return next();
 }
 
@@ -354,6 +424,7 @@ module.exports = {
   receiptGetByEventController,
   receiptGetByEventAndCurrentUserController,
   receiptGetByTeamController,
+  receiptGetStatsParticipationController,
   receiptCreateController,
   receiptUpdateController,
 };

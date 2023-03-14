@@ -14,6 +14,8 @@ async function newsGetAllController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+		pageSize = parseInt(pageSize, 10);
+		paginationTs = parseInt(paginationTs, 10);
 
 		if (typeof pageSize === "string")
 			pageSize = parseInt(pageSize, 10);

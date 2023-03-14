@@ -33,17 +33,6 @@ module.exports.createTeam = async (req, res, next) => {
     // Check if the event has open registrations
     if (!event.canRegister()) return res.status(403).send(Response(errors[403].registrationsClosed));
 
-    // // Check if payment is done
-    // const item = res.locals.user.paid_for.find(item => String(item.event_id) === event_participated.event_id);
-    // if (!item)
-    // 	return res.status(403).send(Response(errors[403].incompletePayment));
-
-    // // Check receipt
-    // const { receipt_id } = item;
-    // const receipt = await Receipt.findById({ user_id: res.locals.user._id, receipt_id });
-    // if (!receipt)
-    // 	return res.status(403).send(Response(errors[403].incompletePayment));
-
     // Check if team members contains leader
     if (team_members.find((aura_id) => aura_id === res.locals.user.aura_id))
       return res.status(403).send(Response(errors[403].invalidOperation));
@@ -148,6 +137,8 @@ module.exports.fetchAll = async (req, res, next) => {
     const { query } = req;
 
     let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -158,6 +149,137 @@ module.exports.fetchAll = async (req, res, next) => {
     })
       .sort({ updatedAt: -1 })
       .limit(pageSize + 1);
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.pageSize = pageSize;
+    res.locals.data.resultsSize = teams.length === pageSize + 1 ? pageSize : teams.length;
+    res.locals.data.paginationTs = teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null;
+    res.locals.data.results = teams.slice(0, pageSize).filter((team) => !!team);
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
+module.exports.fetchPaidTeamsByEvent = async (req, res, next) => {
+  try {
+    const { params, query } = req;
+
+    const { id } = params;
+    let {
+      pageSize = queryConfig["search.pagination"]["page.size"],
+      paginationTs = Date.now(),
+    } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
+
+    if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
+    if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+      pageSize = queryConfig["search.pagination"]["page.size"];
+
+    const aggregationQuery = [
+      {
+        "$lookup": {
+          "from": "teams",
+          "localField": "team",
+          "foreignField": "_id",
+          "as": "team"
+        }
+      }, {
+        "$set": {
+          "team_doc": {
+            "$arrayElemAt": [
+              "$team", 0
+            ],
+          }
+        }
+      }, {
+        "$match": {
+          "team_doc.event_participated.event_id": new mongoose.Types.ObjectId(id),
+          "team_doc.updatedAt": {
+            "$lte": new Date(paginationTs)
+          }
+        }
+      }, {
+        "$project": {
+          "team_doc": 1
+        }
+      }, {
+        "$sort": {
+          "team_doc.updatedAt": -1
+        }
+      }, {
+        "$limit": pageSize + 1,
+      }
+    ];
+    const teams = await (await Receipt.aggregate(aggregationQuery)).map(doc => doc.team_doc);
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.pageSize = pageSize;
+    res.locals.data.resultsSize = teams.length === pageSize + 1 ? pageSize : teams.length;
+    res.locals.data.paginationTs = teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null;
+    res.locals.data.results = teams.slice(0, pageSize).filter((team) => !!team);
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
+module.exports.fetchUnpaidTeamsByEvent = async (req, res, next) => {
+  try {
+    const { params, query } = req;
+
+    const { id } = params;
+    let {
+      pageSize = queryConfig["search.pagination"]["page.size"],
+      paginationTs = Date.now(),
+    } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
+
+    if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
+    if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+      pageSize = queryConfig["search.pagination"]["page.size"];
+
+    const aggregationQuery = [
+      {
+        "$match": {
+          "event_participated.event_id": new mongoose.Types.ObjectId(id)
+        }
+      }, {
+        "$lookup": {
+          "from": "receipts",
+          "localField": "_id",
+          "foreignField": "team",
+          "as": "_receipt"
+        }
+      }, {
+        "$match": {
+          "_receipt.0": {
+            "$exists": false
+          }
+        }
+      }, {
+        "$sort": {
+          "updatedAt": -1
+        }
+      }, {
+        "$match": {
+          "updatedAt": {
+            "$lte": new Date(paginationTs)
+          }
+        }
+      }, {
+        "$limit": pageSize + 1
+      }, {
+        "$unset": "_receipt"
+      }
+    ];
+    const teams = await Team.aggregate(aggregationQuery);
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;
@@ -199,6 +321,8 @@ module.exports.fetchByEvent = async (req, res, next) => {
 
     const { id } = params;
     let { user_id = undefined, pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -236,6 +360,8 @@ module.exports.fetchByUser = async (req, res, next) => {
 
     const { id } = params;
     let { event_id = undefined, pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
@@ -265,6 +391,90 @@ module.exports.fetchByUser = async (req, res, next) => {
     res.locals.data.resultsSize = teams.length === pageSize + 1 ? pageSize : teams.length;
     res.locals.data.paginationTs = teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null;
     res.locals.data.results = teams.slice(0, pageSize).filter((team) => !!team);
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
+module.exports.statsPaidTeams = async (req, res, next) => {
+  try {
+    const aggregationQuery = [
+      {
+        "$project": {
+          "_id": 1
+        }
+      }, {
+        "$lookup": {
+          "from": "receipts",
+          "localField": "_id",
+          "foreignField": "team",
+          "as": "_receipt"
+        }
+      }, {
+        "$match": {
+          "_receipt.0": {
+            "$exists": true
+          }
+        }
+      }, {
+        "$count": "paid_teams_count"
+      }
+    ];
+    const result = await Team.aggregate(aggregationQuery);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.result = result;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
+module.exports.statsUnpaidTeams = async (req, res, next) => {
+  try {
+    const aggregationQuery = [
+      {
+        "$project": {
+          "_id": 1
+        }
+      }, {
+        "$lookup": {
+          "from": "receipts",
+          "localField": "_id",
+          "foreignField": "team",
+          "as": "receipt"
+        }
+      }, {
+        "$set": {
+          "receipt_doc": {
+            "$arrayElemAt": [
+              "$receipt", 0
+            ]
+          }
+        }
+      }, {
+        "$unset": "receipt"
+      }, {
+        "$match": {
+          "receipt_doc": {
+            "$eq": null
+          }
+        }
+      }, {
+        "$count": "unpaid_teams_count"
+      }
+    ];
+    const result = await Team.aggregate(aggregationQuery);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.result = result;
   } catch (error) {
     const { status, message } = errorHandler(error);
     return res.status(status).send(Response(message));
