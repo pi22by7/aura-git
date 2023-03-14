@@ -16,6 +16,7 @@ const TeamRegister = (props) => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [transID, setTransaction] = useState("");
+  const [disableReg, setDisable] = useState(false);
   const event_participated = {
     event_id: props.id,
     event_title: props.title,
@@ -31,6 +32,12 @@ const TeamRegister = (props) => {
         setTeam(props.team.team_members.map((member) => member.aura_id));
     }
   }, [props.team]);
+
+  useEffect(() => {
+    if (Date.now() >= 1678793506692) {
+      setDisable(true);
+    } else setDisable(false);
+  }, []);
 
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
@@ -300,7 +307,7 @@ const TeamRegister = (props) => {
       {!props.registered && (
         <p className="text-blue-600 text-center py-2">
           One who registers is the team leader and is already included in the
-          team. Note: Cross college entries is NOT ALLOWED.
+          team.
         </p>
       )}
       <div className="align-middle rounded-lg grid justify-items-stretch p-5 lg:w-4/6 md:w-5/6 w-11/12 shadow-xl bg-slate-400 bg-clip-padding backdrop-filter backdrop-blur-lg border overflow-hidden bg-opacity-20 border-black-100">
@@ -353,7 +360,7 @@ const TeamRegister = (props) => {
                 </div>
                 {n > 0 && (
                   <div className="grid justify-center my-8">
-                    {!props.registered && (
+                    {!props.registered && !disableReg && (
                       <>
                         <button
                           className="btn btn-primary row-start-2 justify-self-center"
@@ -364,7 +371,7 @@ const TeamRegister = (props) => {
                         </button>
                       </>
                     )}
-                    {props.registered && (
+                    {props.registered && !disableReg && (
                       <>
                         <button
                           className="btn btn-primary row-start-2 justify-self-center"
@@ -372,6 +379,16 @@ const TeamRegister = (props) => {
                           disabled={loading}
                         >
                           Update Team
+                        </button>
+                      </>
+                    )}
+                    {disableReg && (
+                      <>
+                        <button
+                          className="btn btn-primary row-start-2 justify-self-center"
+                          disabled={true}
+                        >
+                          Registrations have stopped
                         </button>
                       </>
                     )}
