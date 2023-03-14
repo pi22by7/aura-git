@@ -33,11 +33,11 @@ const TeamRegister = (props) => {
     }
   }, [props.team]);
 
-  useEffect(() => {
-    if (Date.now() >= 1678793506692) {
-      setDisable(true);
-    } else setDisable(false);
-  }, []);
+  // useEffect(() => {
+  //   if (Date.now() >= 1678793506692) {
+  //     setDisable(true);
+  //   } else setDisable(false);
+  // }, []);
 
   const handleInputChange = (index, event) => {
     const newInputs = [...team];
