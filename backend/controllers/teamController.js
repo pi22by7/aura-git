@@ -131,6 +131,123 @@ module.exports.createTeam = async (req, res, next) => {
   return next();
 };
 
+module.exports.createTeamNoAuth = async (req, res, next) => {
+  try {
+    const { body } = req;
+    if (!("event_participated" in body)) return res.status(400).send(Response(errors[400].eventDetailsRequired));
+    if (!("team_name" in body)) return res.status(400).send(Response(errors[400].teamNameRequired));
+
+    let { event_participated, team_name, team_members = [] } = req.body;
+
+    if (!("id" in event_participated)) return res.status(400).send(Response(errors[400].eventDetailsRequired));
+    event_participated.event_id = event_participated.id;
+    event_participated.event_title = event_participated.title;
+
+    // Validate event details
+    const event = await Event.findById(event_participated.event_id);
+    if (!event) return res.status(404).send(Response(errors[404].eventNotFound));
+
+    // Check if the event has open registrations
+    // if (!event.canRegister()) return res.status(403).send(Response(errors[403].registrationsClosed));
+
+    // Check if team members contains leader
+    // if (team_members.find((aura_id) => aura_id === res.locals.user.aura_id))
+    //   return res.status(403).send(Response(errors[403].invalidOperation));
+
+    team_members = await Promise.all(team_members.map((aura_id) => User.findOne({ aura_id })));
+    if (team_members.length > 0 && team_members.length !== team_members.filter((member) => !!member).length)
+      return res.status(404).send(Response(errors[404].userNotFound));
+
+    // Validate with min. team size
+    if (team_members.length < event.min_team_size - 1) return res.status(400).send(Response(errors[400].minTeamCount));
+
+    // Trim length to max. allowed team size
+    if (team_members.length > event.team_size) team_members = team_members.copyWithin(0, 0, event.team_size);
+
+    // Check if all team members have their email addresses verified
+    if (team_members.find((member) => member.email_verified === false))
+      return res.status(403).send(Response(errors[403].teamMemberEmailUnverified));
+
+    // Check if the user is already registered for the current event
+    let results = await Team.find({
+      "event_participated.event_id": event_participated.event_id,
+      $or: [
+        {
+          "team_leader.id": team_members[0]._id,
+        },
+        {
+          "team_members.id": team_members[0]._id,
+        },
+      ],
+    });
+    if (results.length > 0)
+      // Already registered for the event
+      return res.status(403).send(Response(errors[403].eventAlreadyRegistered));
+
+    const orFields = [];
+    team_members.slice(1).forEach((member) => {
+      orFields.push({
+        "team_leader.id": member._id,
+      });
+      orFields.push({
+        team_members: { $elemMatch: { email: member.email } },
+      });
+    });
+    if (team_members.length > 1) {
+      // Check if at least one team member has already registered
+      results = await Team.find({
+        "event_participated.event_id": event_participated.event_id,
+        $or: orFields,
+      });
+      if (results.length > 0)
+        // Already registered for the event
+        return res.status(403).send(Response(errors[403].teamMemberAlreadyRegistered));
+    }
+
+    let limit = parseInt(event.registration_limit);
+    const query = { _id: event._id };
+
+    if (!isNaN(limit)) query[`registered_teams.${limit - 1}`] = { $exists: false };
+
+    // Register team
+    const newTeam = await Team.create({
+      event_participated,
+      team_name,
+      team_leader: {
+        id: team_members[0]._id,
+        aura_id: team_members[0].aura_id,
+        usn: team_members[0].usn,
+        name: team_members[0].name,
+        email: team_members[0].email,
+      },
+      team_members: team_members.slice(1).map((member) => ({
+        id: member._id,
+        aura_id: member.aura_id,
+        email: member.email,
+        name: member.name,
+        usn: member.usn,
+      })),
+    });
+
+    const results2 = await Event.updateOne(query, {
+      $push: { registered_teams: { team_id: newTeam._id, leader_id: team_members[0]._id } },
+    });
+    if (results2.modifiedCount === 0) {
+      await Team.deleteOne({ _id: newTeam._id });
+      return res.status(403).send(Response(errors[403].registrationsClosed));
+    }
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.team = newTeam;
+    res.locals.status = 201;
+  } catch (error) {
+    const { status, message } = errorHandler(error, errors[400].teamAlreadyExists);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
 // Fetch all teams
 module.exports.fetchAll = async (req, res, next) => {
   try {

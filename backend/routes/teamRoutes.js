@@ -22,6 +22,7 @@ router.get("/stats/paid", teamController.statsPaidTeams, complete);
 router.get("/stats/unpaid", teamController.statsUnpaidTeams, complete);
 
 router.post("/createteam", requireVerifiedAuth, teamController.createTeam, complete);
+router.post("/createteam/noauth", teamController.createTeamNoAuth, complete);
 
 router.patch("/:id", requireVerifiedAuth, teamController.modifyTeam, complete);
 
