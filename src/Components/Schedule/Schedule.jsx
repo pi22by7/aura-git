@@ -98,7 +98,7 @@ const Schedule = () => {
         </div>
         <div className="w-full text-center">
           <a
-            href="https://drive.google.com/uc?export=download&id=1MBnzWFOJCqbn--kS7cCafMr7DVRFdOj6"
+            href="https://drive.google.com/uc?export=download&id=155uz5Xfk2Q6VSoaRa1kpMP5NV73K9sOY"
             rel="noreferrer"
           >
             <button className="btn btn-primary">Download Schedule</button>

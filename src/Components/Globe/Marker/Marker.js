@@ -6,7 +6,6 @@ const CreateMarker = ({ marker, url, title, navigate }) => {
   ele.style.width = "35px";
   ele.innerHTML = marker;
   ele.title = title;
-  console.log(url, title);
 
   // on click, navigate to the url
   ele.addEventListener("click", () => {
