@@ -38,6 +38,8 @@ async function submissionGetAllController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+		pageSize = parseInt(pageSize, 10);
+		paginationTs = parseInt(paginationTs, 10);
 
 		if (typeof pageSize === "string")
 			pageSize = parseInt(pageSize, 10);
@@ -73,6 +75,8 @@ async function submissionGetByEventController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+		pageSize = parseInt(pageSize, 10);
+		paginationTs = parseInt(paginationTs, 10);
 
 		if (typeof pageSize === "string")
 			pageSize = parseInt(pageSize, 10);
@@ -113,6 +117,8 @@ async function submissionGetByUserController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = query;
+		pageSize = parseInt(pageSize, 10);
+		paginationTs = parseInt(paginationTs, 10);
 
 		if (typeof pageSize === "string")
 			pageSize = parseInt(pageSize, 10);

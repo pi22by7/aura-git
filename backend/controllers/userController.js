@@ -37,6 +37,8 @@ async function userSearchController(req, res, next) {
 			pageSize = queryConfig["search.pagination"]["page.size"],
 			paginationTs = Date.now(),
 		} = req.query;
+		pageSize = parseInt(pageSize, 10);
+		paginationTs = parseInt(paginationTs, 10);
 
 		if (!aura_id
 			&& !email
