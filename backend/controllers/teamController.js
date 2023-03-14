@@ -350,6 +350,106 @@ module.exports.fetchByEvent = async (req, res, next) => {
   return next();
 };
 
+// Fetch all teams under the a specific event
+module.exports.fetchCompleteByEvent = async (req, res, next) => {
+  try {
+    const { params, query } = req;
+
+    const { id } = params;
+    let {
+      pageSize = queryConfig["search.pagination"]["page.size"],
+      paginationTs = Date.now(),
+    } = query;
+    pageSize = parseInt(pageSize, 10);
+    paginationTs = parseInt(paginationTs, 10);
+
+    if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
+    if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
+      pageSize = queryConfig["search.pagination"]["page.size"];
+
+    const aggregationQuery = [
+      {
+        "$match": {
+          "event_participated.event_id": new mongoose.Types.ObjectId(id)
+        }
+      }, {
+        "$sort": {
+          "updatedAt": -1
+        }
+      }, {
+        "$match": {
+          "updatedAt": {
+            "$lte": new Date(paginationTs)
+          }
+        }
+      }, {
+        "$limit": 21
+      }, {
+        "$lookup": {
+          "from": "users",
+          "localField": "team_leader.id",
+          "foreignField": "_id",
+          "as": "team_leader._doc"
+        }
+      }, {
+        "$set": {
+          "team_leader_doc": {
+            "$arrayElemAt": [
+              "$team_leader._doc", 0
+            ]
+          }
+        }
+      }, {
+        "$lookup": {
+          "from": "users",
+          "localField": "team_members.id",
+          "foreignField": "_id",
+          "as": "team_members_docs"
+        }
+      }, {
+        "$lookup": {
+          "from": "receipts",
+          "localField": "_id",
+          "foreignField": "team",
+          "as": "receipt_doc"
+        }
+      }, {
+        "$set": {
+          "receipt": {
+            "$cond": [
+              {
+                "$eq": [
+                  "$receipt_doc.0", null
+                ]
+              }, null, {
+                "$arrayElemAt": [
+                  "$receipt_doc", 0
+                ]
+              }
+            ]
+          }
+        }
+      }, {
+        "$unset": [
+          "_doc", "receipt_doc", "team_leader", "team_members"
+        ]
+      }
+    ];
+    const teams = await Team.aggregate(aggregationQuery);
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.pageSize = pageSize;
+    res.locals.data.resultsSize = teams.length === pageSize + 1 ? pageSize : teams.length;
+    res.locals.data.paginationTs = teams.length - 1 === pageSize ? teams[teams.length - 1].updatedAt.getTime() : null;
+    res.locals.data.results = teams.slice(0, pageSize).filter((team) => !!team);
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+};
+
 // Fetch all teams containing a user (either as the team leader or a team member)
 module.exports.fetchByUser = async (req, res, next) => {
   try {
