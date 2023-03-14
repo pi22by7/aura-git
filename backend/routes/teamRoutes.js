@@ -12,6 +12,7 @@ router.get("/", teamController.fetchAll, complete);
 router.get("/:id", teamController.fetchById, complete);
 
 router.get("/event/:id", checkUser, teamController.fetchByEvent, complete);
+router.get("/event/:id/complete", teamController.fetchCompleteByEvent, complete);
 router.get("/event/:id/paid", checkUser, teamController.fetchPaidTeamsByEvent, complete);
 router.get("/event/:id/unpaid", checkUser, teamController.fetchUnpaidTeamsByEvent, complete);
 
