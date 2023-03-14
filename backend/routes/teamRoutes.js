@@ -10,8 +10,15 @@ const router = Router();
 // Body
 router.get("/", teamController.fetchAll, complete);
 router.get("/:id", teamController.fetchById, complete);
+
 router.get("/event/:id", checkUser, teamController.fetchByEvent, complete);
+router.get("/event/:id/paid", checkUser, teamController.fetchPaidTeamsByEvent, complete);
+router.get("/event/:id/unpaid", checkUser, teamController.fetchUnpaidTeamsByEvent, complete);
+
 router.get("/user/:id", checkUser, teamController.fetchByUser, complete);
+
+router.get("/stats/paid", teamController.statsPaidTeams, complete);
+router.get("/stats/unpaid", teamController.statsUnpaidTeams, complete);
 
 router.post("/createteam", requireVerifiedAuth, teamController.createTeam, complete);
 
