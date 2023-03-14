@@ -4,8 +4,8 @@
   "dashboard_host": "https://aura-dashboard.netlify.app",
   "name": "Aura 23",
   "emails": {
-    "primary": "aura23.klsgit@gmail.com",
-    "reply_email": "aura23.klsgit@gmail.com"
+    "primary": "aura@git.edu",
+    "reply_email": "aura@git.edu"
   },
   "endpoints": {
     "email_verification": "/#/verifyEmail",
