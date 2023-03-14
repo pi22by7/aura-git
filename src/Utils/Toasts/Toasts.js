@@ -28,10 +28,10 @@ const errorToast = (message) => {
 };
 
 // Create a message toast instance
-const messageToast = (message) => {
+const messageToast = (message, position = "top-right", duration = 3000) => {
   toast(message, {
-    position: "top-right",
-    autoClose: 3000,
+    position: position,
+    autoClose: duration,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,

@@ -15,7 +15,16 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    messageToast("You can check the latest updates on our News section.");
+    messageToast(
+      "Online Registration will close on 14 March 5:00 PM",
+      "top-right",
+      5000
+    );
+    messageToast(
+      "No registrations will be accepted if the payment is not completed",
+      "top-right",
+      5000
+    );
     async function fetchEvents() {
       try {
         const response = await api.get("/events");
@@ -47,8 +56,6 @@ const EventsPage = () => {
     bg.classList.add(cur);
     bg.classList.add(cur + "c");
 
-    console.log(cur.toUpperCase());
-
     const colorThief = new ColorThief();
     const path =
       "../Assets/Events/" +
@@ -56,7 +63,6 @@ const EventsPage = () => {
       ".png";
     const img = new Image();
     img.src = path;
-    console.log(img);
     img.onload = () => {
       const dominantColor = colorThief.getColor(img);
       const palette = chroma(dominantColor).palette();

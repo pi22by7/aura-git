@@ -5,7 +5,7 @@ import "./News.css";
 import { errorToast } from "../../Utils/Toasts/Toasts";
 
 const News = () => {
-  const paginationT = null;
+  let paginationT = null;
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -20,8 +20,13 @@ const News = () => {
       })
       .then((res) => {
         const { data } = res.data;
-        if (data.paginationTs !== null) paginationT = data.paginationTs;
         setNews([...news, ...data.results]);
+        if (data.paginationTs !== null) {
+          paginationT = data.paginationTs;
+          getNews();
+        } else {
+          paginationT = null;
+        }
         setLoading(false);
       })
       .catch((err) => {

@@ -130,11 +130,9 @@ const TeamRegister = (props) => {
       team_name,
       team_members,
     };
-    console.log(data);
     api
       .patch(`/teams/${props.team._id}`, data)
       .then((res) => {
-        console.log(res);
         setMessage("Team Updated Successfully!");
         setError("");
         setLoading(false);
