@@ -12,6 +12,9 @@ const { errorHandler } = require("../utils/utils");
 // Body
 // Create a new team
 module.exports.createTeam = async (req, res, next) => {
+  if (Date.now() >= 1678793506692)
+    return res.status(403).send(Response(errors[403].registrationsClosed));
+
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
   try {
@@ -205,8 +208,8 @@ module.exports.fetchByEvent = async (req, res, next) => {
       "event_participated.event_id": id,
       ...(user_id !== undefined
         ? {
-            "team_leader.id": user_id,
-          }
+          "team_leader.id": user_id,
+        }
         : {}),
       updatedAt: { $lte: paginationTs },
     })
@@ -249,8 +252,8 @@ module.exports.fetchByUser = async (req, res, next) => {
       ],
       ...(event_id !== undefined
         ? {
-            "event_participated.event_id": event_id,
-          }
+          "event_participated.event_id": event_id,
+        }
         : {}),
       updatedAt: { $lte: paginationTs },
     })
@@ -271,6 +274,9 @@ module.exports.fetchByUser = async (req, res, next) => {
 };
 
 module.exports.modifyTeam = async (req, res, next) => {
+  if (Date.now() >= 1678793506692)
+    return res.status(403).send(Response(errors[403].registrationsClosed));
+
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
   try {
