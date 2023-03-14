@@ -15,7 +15,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    messageToast("You can check the latest updates on our News section.");
+    messageToast("Online Registration will close on 14 March 5:00 PM");
     async function fetchEvents() {
       try {
         const response = await api.get("/events");
