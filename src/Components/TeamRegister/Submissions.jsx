@@ -11,8 +11,6 @@ const Submission = (props) => {
     }
   }, [props.teamSub]);
 
-  console.log(props);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (link === "") {
