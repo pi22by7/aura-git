@@ -244,47 +244,47 @@ async function receiptGetStatsParticipationController(req, res, next) {
           "from": "teams",
           "localField": "team",
           "foreignField": "_id",
-          "as": "team_doc"
+          "as": "_team"
+        }
+      }, {
+        "$match": {
+          "_team.0": {
+            "$exists": true
+          }
         }
       }, {
         "$set": {
-          "doc": {
+          "team_doc": {
             "$arrayElemAt": [
-              "$team_doc", 0
+              "$_team", 0
             ]
           }
         }
       }, {
         "$project": {
-          "_id": 1,
-          "total_members_count": {
-            "$size": "$doc.team_members"
+          "users": {
+            "$concatArrays": [
+              [
+                {
+                  "$ifNull": [
+                    "$team_doc.team_leader.id", null
+                  ]
+                }
+              ], "$team_doc.team_members.id"
+            ]
           }
         }
       }, {
+        "$unwind": "$users"
+      }, {
         "$group": {
-          "_id": null,
-          "total_members_count": {
-            "$sum": "$total_members_count"
-          },
-          "total_doc_count": {
+          "_id": "$users",
+          "count": {
             "$sum": 1
           }
         }
       }, {
-        "$project": {
-          "_id": 0,
-          "total_members_count": 1,
-          "total_doc_count": 1
-        }
-      }, {
-        "$set": {
-          "total_participation": {
-            "$add": [
-              "$total_members_count", "$total_doc_count"
-            ]
-          }
-        }
+        "$count": "total_participation"
       }
     ];
     const result = await Receipt.aggregate(aggregation);
