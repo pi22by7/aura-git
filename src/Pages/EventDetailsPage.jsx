@@ -123,6 +123,18 @@ const EventsDetailsPage = () => {
       <div className="mt-10 w-full">
         <h1 className="text-3xl font-bold">{event.title}</h1>
         <p className="text-lg text-justify my-5">{event.description}</p>
+        {event._slugs.title === "spontanetics-just-a-minute-jam" && (
+          <div className="flex flex-col items-center">
+            <h1 className="text-3xl font-bold">Event Demonstration</h1>
+            <a
+              href="https://www.instagram.com/reel/CpxXsP0hUwf/?utm_source=ig_web_copy_link"
+              target="_blank"
+              className="text-2xl font-bold text-blue-500 mt-5"
+            >
+              Video Link
+            </a>
+          </div>
+        )}
         <EventDetails event={event} />
 
         <div className="grid grid-cols-1 place-items-center my-10">

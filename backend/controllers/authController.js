@@ -38,18 +38,12 @@ module.exports.signup_post = async (req, res, next) => {
       password = undefined,
     } = req.body;
 
-    if (name === undefined)
-      return res.status(400).send(Response(errors[400].nameRequired));
-    if (phone === undefined)
-      return res.status(400).send(Response(errors[400].phoneRequired));
-    if (email === undefined)
-      return res.status(400).send(Response(errors[400].emailRequired));
-    if (usn === undefined)
-      return res.status(400).send(Response(errors[400].usnRequired));
-    if (college === undefined)
-      return res.status(400).send(Response(errors[400].collegeRequired));
-    if (password === undefined)
-      return res.status(400).send(Response(errors[400].passwordRequired));
+    if (name === undefined) return res.status(400).send(Response(errors[400].nameRequired));
+    if (phone === undefined) return res.status(400).send(Response(errors[400].phoneRequired));
+    if (email === undefined) return res.status(400).send(Response(errors[400].emailRequired));
+    if (usn === undefined) return res.status(400).send(Response(errors[400].usnRequired));
+    if (college === undefined) return res.status(400).send(Response(errors[400].collegeRequired));
+    if (password === undefined) return res.status(400).send(Response(errors[400].passwordRequired));
 
     const user = await User.create({
       name,
@@ -87,8 +81,7 @@ module.exports.login_post = async (req, res, next) => {
       // sameSite: "none", TODO: Uncomment later
       maxAge: jwtConfig.ages.login * 1000,
     });
-    if (!res.locals.data)
-      res.locals.data = {};
+    if (!res.locals.data) res.locals.data = {};
     res.locals.data.user = await User.findById(user._id, "-password");
   } catch (error) {
     const { status, message } = errorHandler(error);
@@ -105,8 +98,7 @@ module.exports.logout_get = (req, res, next) => {
 };
 
 module.exports.authStatusController = (req, res, next) => {
-  if (!res.locals.data)
-    res.locals.data = {};
+  if (!res.locals.data) res.locals.data = {};
   res.locals.data.authenticated = !!res.locals.user;
 
   return next();

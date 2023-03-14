@@ -343,7 +343,7 @@ const UserPage = () => {
                             ? "You"
                             : event.team_leader.name}
                           <span className="text-sm font-thin mx-2 px-3 bg-green-200 rounded-full">
-                            {event.team_leader.id === uid ? "Leader" : "Member"}
+                            Leader
                           </span>
                         </h1>
                         <h3 className="relative">
@@ -367,7 +367,7 @@ const UserPage = () => {
                           <h1 className="font-semibold text-lg">
                             {member.id === uid ? "You" : member.name}
                             <span className="text-sm font-thin mx-2 px-3 bg-green-200 rounded-full">
-                              {member.id === uid ? "Leader" : "Member"}
+                              Member
                             </span>
                           </h1>
                           <h3 className="relative">

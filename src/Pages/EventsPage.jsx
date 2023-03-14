@@ -15,11 +15,11 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    messageToast(
-      "Online Registration will close on 14 March 5:00 PM",
-      "top-right",
-      5000
-    );
+    // messageToast(
+    //   "Online Registration will close on 14 March 5:00 PM",
+    //   "top-right",
+    //   5000
+    // );
     messageToast(
       "No registrations will be accepted if the payment is not completed",
       "top-right",
