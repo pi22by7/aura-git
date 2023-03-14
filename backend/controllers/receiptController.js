@@ -231,8 +231,8 @@ async function receiptGetByTeamController(req, res, next) {
 }
 
 async function receiptCreateController(req, res, next) {
-  if (Date.now() >= 1678793506692)
-    return res.status(403).send(Response(errors[403].registrationsClosed));
+  // if (Date.now() >= 1678793506692)
+  //   return res.status(403).send(Response(errors[403].registrationsClosed));
 
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
@@ -316,8 +316,8 @@ async function receiptCreateController(req, res, next) {
 }
 
 async function receiptUpdateController(req, res, next) {
-  if (Date.now() >= 1678793506692)
-    return res.status(403).send(Response(errors[403].registrationsClosed));
+  // if (Date.now() >= 1678793506692)
+  //   return res.status(403).send(Response(errors[403].registrationsClosed));
 
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
