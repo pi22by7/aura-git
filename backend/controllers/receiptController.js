@@ -244,47 +244,144 @@ async function receiptGetStatsParticipationController(req, res, next) {
           "from": "teams",
           "localField": "team",
           "foreignField": "_id",
-          "as": "team_doc"
+          "as": "_team"
+        }
+      }, {
+        "$match": {
+          "_team.0": {
+            "$exists": true
+          }
         }
       }, {
         "$set": {
-          "doc": {
+          "team_doc": {
             "$arrayElemAt": [
-              "$team_doc", 0
+              "$_team", 0
             ]
           }
         }
       }, {
         "$project": {
-          "_id": 1,
-          "total_members_count": {
-            "$size": "$doc.team_members"
+          "users": {
+            "$concatArrays": [
+              [
+                {
+                  "$ifNull": [
+                    "$team_doc.team_leader.id", null
+                  ]
+                }
+              ], "$team_doc.team_members.id"
+            ]
           }
         }
       }, {
+        "$unwind": "$users"
+      }, {
         "$group": {
-          "_id": null,
-          "total_members_count": {
-            "$sum": "$total_members_count"
-          },
-          "total_doc_count": {
+          "_id": "$users",
+          "count": {
             "$sum": 1
           }
         }
       }, {
-        "$project": {
-          "_id": 0,
-          "total_members_count": 1,
-          "total_doc_count": 1
+        "$count": "total_participation"
+      }
+    ];
+    const result = await Receipt.aggregate(aggregation);
+
+    if (!res.locals.data)
+      res.locals.data = {};
+    res.locals.data.result = result;
+  } catch (error) {
+    const { status, message } = errorHandler(error);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+}
+
+async function receiptGetStatsGitParticipationController(req, res, next) {
+  try {
+    const aggregation = [
+      {
+        "$lookup": {
+          "from": "teams",
+          "localField": "team",
+          "foreignField": "_id",
+          "as": "_team"
+        }
+      }, {
+        "$match": {
+          "_team.0": {
+            "$exists": true
+          }
         }
       }, {
         "$set": {
-          "total_participation": {
-            "$add": [
-              "$total_members_count", "$total_doc_count"
+          "team_doc": {
+            "$arrayElemAt": [
+              "$_team", 0
             ]
           }
         }
+      }, {
+        "$lookup": {
+          "from": "users",
+          "localField": "user",
+          "foreignField": "_id",
+          "as": "_user"
+        }
+      }, {
+        "$match": {
+          "$or": [
+            {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?k.?l.?s *g.?i.?t ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?g.?i.?t ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?gogte +(institute|instiue|instiut|instuite) +(of|o|f) +(tech|techno|technology|technlogy) ?.*).+$",
+                "$options": "i"
+              }
+            }, {
+              "_user.0.college": {
+                "$regex": "^(?=.* ?C-1439 ?.*).+$",
+                "$options": "i"
+              }
+            }
+          ]
+        }
+      }, {
+        "$project": {
+          "users": {
+            "$concatArrays": [
+              [
+                {
+                  "$ifNull": [
+                    "$team_doc.team_leader.id", null
+                  ]
+                }
+              ], "$team_doc.team_members.id"
+            ]
+          }
+        }
+      }, {
+        "$unwind": "$users"
+      }, {
+        "$group": {
+          "_id": "$users",
+          "count": {
+            "$sum": 1
+          }
+        }
+      }, {
+        "$count": "total_gitian_participation"
       }
     ];
     const result = await Receipt.aggregate(aggregation);
@@ -419,6 +516,7 @@ module.exports = {
   receiptGetByEventAndCurrentUserController,
   receiptGetByTeamController,
   receiptGetStatsParticipationController,
+  receiptGetStatsGitParticipationController,
   receiptCreateController,
   receiptUpdateController,
 };
