@@ -16,7 +16,7 @@ const TeamRegister = (props) => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [transID, setTransaction] = useState("");
-  const [disableReg, setDisable] = useState(false);
+  const [disableReg, setDisable] = useState(true); // disable regs
   const event_participated = {
     event_id: props.id,
     event_title: props.title,

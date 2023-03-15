@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 // Imports
 const mongoose = require("mongoose");
 const Team = require("../models/Team");
@@ -13,7 +14,7 @@ const { errorHandler } = require("../utils/utils");
 // Create a new team
 module.exports.createTeam = async (req, res, next) => {
   // if (Date.now() >= 1678793506692)
-  //   return res.status(403).send(Response(errors[403].registrationsClosed));
+  return res.status(403).send(Response(errors[403].registrationsClosed));
 
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
