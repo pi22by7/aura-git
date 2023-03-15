@@ -329,7 +329,7 @@ module.exports.fetchAll = async (req, res, next) => {
 
     const find_query = {};
     if (eventId)
-      find_query["event_participated.event_id"] = eventId;
+      find_query["event_participated.event_id"] = new mongoose.Types.ObjectId(eventId);
     if (teamName)
       find_query.team_name = { $regex: teamName, $options: "i" };
     if (teamMemberAuraId)
