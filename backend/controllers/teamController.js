@@ -224,6 +224,7 @@ module.exports.createTeamNoAuth = async (req, res, next) => {
         name: member.name,
         usn: member.usn,
       })),
+      noauthreg: true,
     });
 
     const results2 = await Event.updateOne(query, {
