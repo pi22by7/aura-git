@@ -307,19 +307,100 @@ module.exports.fetchAll = async (req, res, next) => {
   try {
     const { query } = req;
 
-    let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    let {
+      eventId = undefined,
+      teamName = undefined,
+      teamMemberAuraId = undefined,
+      paymentStatus = undefined,
+      pageSize = queryConfig["search.pagination"]["page.size"],
+      paginationTs = Date.now(),
+    } = query;
     pageSize = parseInt(pageSize, 10);
     paginationTs = parseInt(paginationTs, 10);
+
+    // Disable regex quoting
+
+    if (typeof paymentStatus === "string")
+      paymentStatus = paymentStatus.toLowerCase() === "true";
+
+    const find_query = {};
+    if (eventId)
+      find_query["event_participated.event_id"] = eventId;
+    if (teamName)
+      find_query.team_name = { $regex: teamName, $options: "i" };
+    if (teamMemberAuraId)
+      find_query.$or = [
+        {
+          "team_leader.aura_id": { $regex: teamMemberAuraId, $options: "i" },
+        },
+        {
+          "team_members": {
+            $elemMatch: {
+              "aura_id": { $regex: teamMemberAuraId, $options: "i" },
+            },
+          },
+        }
+      ];
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
       pageSize = queryConfig["search.pagination"]["page.size"];
 
-    const teams = await Team.find({
-      updatedAt: { $lte: paginationTs },
-    })
-      .sort({ updatedAt: -1 })
-      .limit(pageSize + 1);
+    let aggregate = [];
+    if (paymentStatus === undefined) {
+      // Should display all teams
+      aggregate = [
+        ...(Object.keys(find_query).length > 0 ? [{
+          "$match": find_query,
+        }] : []), {
+          "$sort": {
+            "updatedAt": -1
+          }
+        }, {
+          "$match": {
+            "updatedAt": {
+              "$lte": new Date(paginationTs)
+            }
+          }
+        }, {
+          "$limit": pageSize + 1
+        }
+      ];
+    } else {
+      // Show teams based on the payment status criteria
+      aggregate = [
+        ...(Object.keys(find_query).length > 0 ? [{
+          "$match": find_query,
+        }] : []), {
+          "$lookup": {
+            "from": "receipts",
+            "localField": "_id",
+            "foreignField": "team",
+            "as": "receipt"
+          }
+        }, {
+          "$match": {
+            "receipt.0": {
+              "$exists": !!paymentStatus
+            }
+          }
+        }, {
+          "$sort": {
+            "updatedAt": -1
+          }
+        }, {
+          "$match": {
+            "updatedAt": {
+              "$lte": new Date(paginationTs)
+            }
+          }
+        }, {
+          "$limit": pageSize + 1
+        }
+      ];
+    }
+
+    const teams = await Team.aggregate(aggregate);
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;
