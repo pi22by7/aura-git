@@ -6,6 +6,7 @@ const Response = require("../models/standard.response.model");
 const Receipt = require("../models/Receipt");
 const Event = require("../models/Event");
 const Team = require("../models/Team");
+const User = require("../models/User");
 const { errorHandler } = require("../utils/utils");
 
 // Body
@@ -481,6 +482,88 @@ async function receiptCreateController(req, res, next) {
 
   return next();
 }
+async function receiptCreateNoAuthController(req, res, next) {
+  try {
+    const { body } = req;
+
+    const { team_id = undefined, transaction_id = undefined } = body;
+
+    if (team_id === undefined) return res.status(400).send(Response(errors[400].teamIdRequired));
+    if (transaction_id === undefined) return res.status(400).send(Response(errors[400].transactionIdRequired));
+
+    if (!/^[a-z0-9-]+$/i.test(transaction_id)) return res.status(400).send(Response(errors[400].invalidTransactionId));
+
+    // Check if team exists and belongs to current user
+    const team = await Team.findById(team_id);
+    if (!team)
+      return res.status(404).send(Response(errors[404].teamNotFound));
+
+    // Check if team leader exists
+    const user = await User.findById(team.team_leader.id);
+    if (!user)
+      return res.status(404).send(Response(errors[404].userNotFound));
+
+    // Create receipt
+    const receipt = await Receipt.create({
+      user: team.team_leader.id,
+      event: team.event_participated.event_id,
+      team: team._id,
+      transaction_id,
+    });
+
+    // Update user
+    user.paid_for.push({
+      event_id: team.event_participated.event_id,
+      receipt_id: receipt._id,
+    });
+    await user.save();
+
+    // Update event
+    const event = await Event.findById(team.event_participated.event_id);
+    const index = event.registered_teams.findIndex((reg_team) => String(reg_team.team_id) === String(team._id));
+
+    if (index === -1) {
+      // Create entry
+
+      const results = await Event.updateOne(
+        { _id: event._id },
+        {
+          $push: {
+            registered_teams: {
+              team_id: team_id,
+              leader_id: user._id,
+              payment: {
+                status: true,
+                receipt_id: receipt._id,
+              },
+            },
+          },
+        }
+      );
+
+      if (results.modifiedCount === 0) throw Error("Unable to update entry in registered_teams");
+    } else {
+      // Update existing entry
+
+      const query = { $set: {} };
+      query.$set[`registered_teams.${index}.payment`] = {
+        status: true,
+        receipt_id: receipt._id,
+      };
+      const results = await Event.updateOne({ _id: event._id }, query);
+      if (results.modifiedCount === 0) throw Error("Event update failed!");
+    }
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.receipt = receipt;
+    res.locals.status = 201;
+  } catch (error) {
+    const { status, message } = errorHandler(error, errors[400].receiptExists);
+    return res.status(status).send(Response(message));
+  }
+
+  return next();
+}
 
 async function receiptUpdateController(req, res, next) {
   // if (Date.now() >= 1678793506692)
@@ -524,5 +607,6 @@ module.exports = {
   receiptGetStatsParticipationController,
   receiptGetStatsGitParticipationController,
   receiptCreateController,
+  receiptCreateNoAuthController,
   receiptUpdateController,
 };

@@ -48,7 +48,8 @@
     "teamIdRequired": "400-teamIdRequired",
     "transactionIdRequired": "400-transactionIdRequired",
     "receiptExists": "400-receiptExists",
-    "invalidTransactionId": "400-invalidTransactionId"
+    "invalidTransactionId": "400-invalidTransactionId",
+    "duplicateTeamMembers": "400-duplicateTeamMembers"
   },
   "401": {
     "authRequired": "401-authRequired",
@@ -67,7 +68,8 @@
     "registrationsClosed": "403-registrationsClosed",
     "teamNotRegistered": "403-teamNotRegistered",
     "minTeamCount": "403-minTeamCount",
-    "teamLocked": "403-teamLocked"
+    "teamLocked": "403-teamLocked",
+    "transactionIdAlreadyExists": "403-transactionIdAlreadyExists"
   },
   "404": {
     "userNotFound": "404-userNotFound",

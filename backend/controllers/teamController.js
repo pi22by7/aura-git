@@ -38,6 +38,10 @@ module.exports.createTeam = async (req, res, next) => {
     if (team_members.find((aura_id) => aura_id === res.locals.user.aura_id))
       return res.status(403).send(Response(errors[403].invalidOperation));
 
+    // Check if team does not contain duplicate members
+    if (team_members.length !== [...new Set(team_members)].length)
+      return res.status(400).send(Response(errors[400].duplicateTeamMembers));
+
     team_members = await Promise.all(team_members.map((aura_id) => User.findOne({ aura_id })));
     if (team_members.length > 0 && team_members.length !== team_members.filter((member) => !!member).length)
       return res.status(404).send(Response(errors[404].userNotFound));
@@ -135,14 +139,31 @@ module.exports.createTeam = async (req, res, next) => {
 module.exports.createTeamNoAuth = async (req, res, next) => {
   try {
     const { body } = req;
-    if (!("event_participated" in body)) return res.status(400).send(Response(errors[400].eventDetailsRequired));
-    if (!("team_name" in body)) return res.status(400).send(Response(errors[400].teamNameRequired));
 
-    let { event_participated, team_name, team_members = [] } = req.body;
+    let {
+      event_participated = undefined,
+      team_name = undefined,
+      team_members = [],
+      transaction_id = undefined
+    } = body;
 
+    // Check if all fields are provided
+    if (event_participated === undefined)
+      return res.status(400).send(Response(errors[400].eventDetailsRequired));
+    if (team_name === undefined)
+      return res.status(400).send(Response(errors[400].teamNameRequired));
+    if (team_members.length === 0)
+      return res.status(400).send(Response(errors[400].minTeamCount));
+    if (transaction_id === undefined)
+      return res.status(400).send(Response(errors[400].transactionIdRequired));
+
+    // Check if id is provided
     if (!("id" in event_participated)) return res.status(400).send(Response(errors[400].eventDetailsRequired));
     event_participated.event_id = event_participated.id;
     event_participated.event_title = event_participated.title;
+
+    if (!/^[a-z0-9-]+$/i.test(transaction_id))
+      return res.status(400).send(Response(errors[400].invalidTransactionId));
 
     // Validate event details
     const event = await Event.findById(event_participated.event_id);
@@ -155,6 +176,10 @@ module.exports.createTeamNoAuth = async (req, res, next) => {
     // if (team_members.find((aura_id) => aura_id === res.locals.user.aura_id))
     //   return res.status(403).send(Response(errors[403].invalidOperation));
 
+    // Check if team does not contain duplicate members
+    if (team_members.length !== [...new Set(team_members)].length)
+      return res.status(400).send(Response(errors[400].duplicateTeamMembers));
+
     team_members = await Promise.all(team_members.map((aura_id) => User.findOne({ aura_id })));
     if (team_members.length > 0 && team_members.length !== team_members.filter((member) => !!member).length)
       return res.status(404).send(Response(errors[404].userNotFound));
@@ -163,7 +188,7 @@ module.exports.createTeamNoAuth = async (req, res, next) => {
     if (team_members.length < event.min_team_size - 1) return res.status(400).send(Response(errors[400].minTeamCount));
 
     // Trim length to max. allowed team size
-    if (team_members.length > event.team_size) team_members = team_members.copyWithin(0, 0, event.team_size);
+    if (team_members.length > event.team_size) team_members = team_members.slice(0, event.team_size).filter(val => !!val);
 
     // Check if all team members have their email addresses verified
     if (team_members.find((member) => member.email_verified === false))
@@ -205,6 +230,10 @@ module.exports.createTeamNoAuth = async (req, res, next) => {
         return res.status(403).send(Response(errors[403].teamMemberAlreadyRegistered));
     }
 
+    // Check if transaction id is unique
+    if (await Receipt.findOne({ transaction_id }))
+      return res.status(403).send(Response(errors[403].transactionIdAlreadyExists));
+
     let limit = parseInt(event.registration_limit);
     const query = { _id: event._id };
 
@@ -231,16 +260,43 @@ module.exports.createTeamNoAuth = async (req, res, next) => {
       noauthreg: true,
     });
 
+    // Create receipt
+    const receipt = await Receipt.create({
+      user: team_members[0]._id,
+      event: newTeam.event_participated.event_id,
+      team: newTeam._id,
+      transaction_id,
+    });
+
+    // Update user (leader)
+    team_members[0].paid_for.push({
+      event_id: newTeam.event_participated.event_id,
+      receipt_id: receipt._id,
+    });
+    await team_members[0].save();
+
+    // Perform query
     const results2 = await Event.updateOne(query, {
-      $push: { registered_teams: { team_id: newTeam._id, leader_id: team_members[0]._id } },
+      $push: {
+        registered_teams: {
+          team_id: newTeam._id,
+          leader_id: team_members[0]._id,
+          payment: {
+            status: true,
+            receipt_id: receipt._id,
+          },
+        }
+      },
     });
     if (results2.modifiedCount === 0) {
       await Team.deleteOne({ _id: newTeam._id });
+      await Receipt.deleteOne({ transaction_id });
       return res.status(403).send(Response(errors[403].registrationsClosed));
     }
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.team = newTeam;
+    res.locals.data.receipt = receipt;
     res.locals.status = 201;
   } catch (error) {
     const { status, message } = errorHandler(error, errors[400].teamAlreadyExists);
@@ -255,19 +311,100 @@ module.exports.fetchAll = async (req, res, next) => {
   try {
     const { query } = req;
 
-    let { pageSize = queryConfig["search.pagination"]["page.size"], paginationTs = Date.now() } = query;
+    let {
+      eventId = undefined,
+      teamName = undefined,
+      teamMemberAuraId = undefined,
+      paymentStatus = undefined,
+      pageSize = queryConfig["search.pagination"]["page.size"],
+      paginationTs = Date.now(),
+    } = query;
     pageSize = parseInt(pageSize, 10);
     paginationTs = parseInt(paginationTs, 10);
+
+    // Disable regex quoting
+
+    if (typeof paymentStatus === "string")
+      paymentStatus = paymentStatus.toLowerCase() === "true";
+
+    const find_query = {};
+    if (eventId)
+      find_query["event_participated.event_id"] = eventId;
+    if (teamName)
+      find_query.team_name = { $regex: teamName, $options: "i" };
+    if (teamMemberAuraId)
+      find_query.$or = [
+        {
+          "team_leader.aura_id": { $regex: teamMemberAuraId, $options: "i" },
+        },
+        {
+          "team_members": {
+            $elemMatch: {
+              "aura_id": { $regex: teamMemberAuraId, $options: "i" },
+            },
+          },
+        }
+      ];
 
     if (typeof pageSize === "string") pageSize = parseInt(pageSize, 10);
     if (pageSize <= 0 || pageSize > queryConfig["search.pagination"]["page.max.size"])
       pageSize = queryConfig["search.pagination"]["page.size"];
 
-    const teams = await Team.find({
-      updatedAt: { $lte: paginationTs },
-    })
-      .sort({ updatedAt: -1 })
-      .limit(pageSize + 1);
+    let aggregate = [];
+    if (paymentStatus === undefined) {
+      // Should display all teams
+      aggregate = [
+        ...(Object.keys(find_query).length > 0 ? [{
+          "$match": find_query,
+        }] : []), {
+          "$sort": {
+            "updatedAt": -1
+          }
+        }, {
+          "$match": {
+            "updatedAt": {
+              "$lte": new Date(paginationTs)
+            }
+          }
+        }, {
+          "$limit": pageSize + 1
+        }
+      ];
+    } else {
+      // Show teams based on the payment status criteria
+      aggregate = [
+        ...(Object.keys(find_query).length > 0 ? [{
+          "$match": find_query,
+        }] : []), {
+          "$lookup": {
+            "from": "receipts",
+            "localField": "_id",
+            "foreignField": "team",
+            "as": "receipt"
+          }
+        }, {
+          "$match": {
+            "receipt.0": {
+              "$exists": !!paymentStatus
+            }
+          }
+        }, {
+          "$sort": {
+            "updatedAt": -1
+          }
+        }, {
+          "$match": {
+            "updatedAt": {
+              "$lte": new Date(paginationTs)
+            }
+          }
+        }, {
+          "$limit": pageSize + 1
+        }
+      ];
+    }
+
+    const teams = await Team.aggregate(aggregate);
 
     if (!res.locals.data) res.locals.data = {};
     res.locals.data.pageSize = pageSize;

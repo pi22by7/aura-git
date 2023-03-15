@@ -12,6 +12,7 @@ const {
 	receiptGetStatsParticipationController,
 	receiptGetStatsGitParticipationController,
 	receiptCreateController,
+	receiptCreateNoAuthController,
 	receiptUpdateController,
 } = require("../controllers/receiptController");
 
@@ -32,6 +33,7 @@ Router.get("/stats/participation", receiptGetStatsParticipationController, compl
 Router.get("/stats/participation/git", receiptGetStatsGitParticipationController, complete);
 
 Router.post("/", requireVerifiedAuth, receiptCreateController, complete);
+Router.post("/noauth", receiptCreateNoAuthController, complete);
 
 Router.patch("/:id", requireVerifiedAuth, receiptUpdateController, complete);
 
