@@ -136,9 +136,13 @@ const EventsDetailsPage = () => {
           </div>
         )}
         <EventDetails event={event} />
-
         <div className="grid grid-cols-1 place-items-center my-10">
-          {!user && (
+          {!event.reg_open && (
+            <p className="text-xl text-center font-bold my-5">
+              Sorry! Registrations are closed for this event
+            </p>
+          )}
+          {!user && event.reg_open && (
             <>
               <p className="text-xl text-center font-bold my-5">
                 Please login to register for the event
@@ -149,7 +153,7 @@ const EventsDetailsPage = () => {
             </>
           )}
 
-          {user && (
+          {user && event.reg_open && (
             <TeamRegister
               size={teamSize}
               min_size={event.min_team_size ? event.min_team_size : 1}
@@ -167,7 +171,7 @@ const EventsDetailsPage = () => {
               className="justify-center justify-self-center w-4 mb-12"
             />
           )}
-          {special && registered && (
+          {special && event.reg_open && registered && (
             <Submission
               event={event._id}
               user={uid}
@@ -176,7 +180,7 @@ const EventsDetailsPage = () => {
               setTeamSub={setTeamSub}
             />
           )}
-          {url && (
+          {url && event.reg_open && (
             <a
               href={url}
               target="_blank"
