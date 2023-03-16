@@ -108,6 +108,10 @@ const EventSchema = new mongoose.Schema({
 			}
 		},
 	},
+	reg_open: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 // Methods
