@@ -28,7 +28,7 @@ module.exports.createTeam = async (req, res, next) => {
     if (!event) return res.status(404).send(Response(errors[404].eventNotFound));
 
     // Check if the event has open registrations
-    if (event.reg_open && !event.canRegister()) return res.status(403).send(Response(errors[403].registrationsClosed));
+    if (!event.reg_open || !event.canRegister()) return res.status(403).send(Response(errors[403].registrationsClosed));
 
     // Check if team members contains leader
     if (team_members.find((aura_id) => aura_id === res.locals.user.aura_id))
