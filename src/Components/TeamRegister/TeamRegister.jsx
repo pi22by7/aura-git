@@ -16,7 +16,7 @@ const TeamRegister = (props) => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [transID, setTransaction] = useState("");
-  const [disableReg, setDisable] = useState(false); // disable regs
+  const [disableReg, setDisable] = useState(Date.now() > 1679036365737); // disable regs
   const event_participated = {
     event_id: props.id,
     event_title: props.title,

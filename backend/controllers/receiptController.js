@@ -399,8 +399,8 @@ async function receiptGetStatsGitParticipationController(req, res, next) {
 }
 
 async function receiptCreateController(req, res, next) {
-  // if (Date.now() >= 1678793506692)
-  //   return res.status(403).send(Response(errors[403].registrationsClosed));
+  if (Date.now() >= 1679036365737)
+    return res.status(403).send(Response(errors[403].registrationsClosed));
 
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
@@ -566,8 +566,8 @@ async function receiptCreateNoAuthController(req, res, next) {
 }
 
 async function receiptUpdateController(req, res, next) {
-  // if (Date.now() >= 1678793506692)
-  //   return res.status(403).send(Response(errors[403].registrationsClosed));
+  if (Date.now() >= 1679036365737)
+    return res.status(403).send(Response(errors[403].registrationsClosed));
 
   if (!res.locals.user) return res.status(401).send(Response(errors[401].authRequired));
 
