@@ -15,7 +15,5 @@ This is the official Aura 23 Back-end.
    | NODEMAILER_EMAIL    | Nodemailer email ID (Gmail SMTP settings) |
    | NODEMAILER_PASS     | Nodemailer password                       |
    | JWT_SECRET          | JsonWebToken secret                       |
-   | RAZORPAY_KEY_ID     | Razorpay API Key ID                       |
-   | RAZORPAY_KEY_SECRET | Razorpay API Key secret                   |
 
 4. Run the application using `npm start`.
